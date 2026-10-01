@@ -1,0 +1,40 @@
+/* Types v3 — color tokens. Single dark theme. */
+:root{
+  /* Surfaces */
+  --surface-page:#0a0b0d;
+  --surface-raised:#131519;
+  --surface-hover:#1b1e23;
+  --surface-inverse:#f4f5f6;
+  /* Borders */
+  --border-subtle:#262a31;
+  --border-control:#5c6370;
+  /* Ink */
+  --ink:#f4f5f6;
+  --ink-muted:#a3a9b3;
+  --ink-subtle:#8a909a;
+  --ink-inverse:#12141a;
+  --ink-inverse-muted:#53565f;
+  /* Brand — the 4 arrows of the isotype, in order. Use exact, never tinted. */
+  --brand-green:#90b73e;
+  --brand-magenta:#c92256;
+  --brand-teal:#00808b;
+  --brand-orange:#f8961c;
+  --on-brand-light:#0a0b0d;
+  --on-brand-dark:#ffffff;
+  --focus-ring:var(--ink);
+  /* Default section accent (overridden by .ty-accent-*) */
+  --accent:var(--brand-green);
+  --on-accent:var(--on-brand-light);
+  --accent-text:var(--brand-green);
+  /* Semantic aliases */
+  --surface-card:var(--surface-raised);
+  --surface-field:var(--surface-raised);
+  --text-heading:var(--ink);
+  --text-body:var(--ink);
+  --text-secondary:var(--ink-muted);
+  --text-caption:var(--ink-subtle);
+  --text-error:var(--brand-orange);
+  --border-divider:var(--border-subtle);
+  --border-input:var(--border-control);
+  --border-error:var(--brand-orange);
+}

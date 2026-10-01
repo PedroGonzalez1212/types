@@ -1,0 +1,24 @@
+/* Solutions — 4 cards (white header). Page-level overrides and interaction states
+   that the design-system tokens don't cover on their own. */
+
+:root {
+  --font-display: 'Montserrat', sans-serif;
+  --font-text: 'Montserrat', sans-serif;
+  --font-mono: 'Montserrat', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  background: var(--surface-page);
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+a { color: var(--ink); }
+a:hover { color: var(--brand-green); }
+
+/* Solution-card border lights up with the section accent on hover/focus. */
+[data-sol-card]:hover,
+[data-sol-card]:focus-visible {
+  border-color: var(--accent);
+}

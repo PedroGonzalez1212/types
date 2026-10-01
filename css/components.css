@@ -1,0 +1,99 @@
+/* Types v3 — component styles. Reads token custom properties. Prefix: ty- */
+
+.ty-root, body { background: var(--surface-page); color: var(--ink); font-family: var(--font-text); font-size: 16px; line-height: 26px; margin: 0; }
+
+/* ---------- Accent per section ---------- */
+.ty-accent-green   { --accent: var(--brand-green);   --on-accent: var(--on-brand-light); --accent-text: var(--brand-green); }
+.ty-accent-magenta { --accent: var(--brand-magenta); --on-accent: var(--on-brand-dark);  --accent-text: var(--ink); }
+.ty-accent-teal    { --accent: var(--brand-teal);    --on-accent: var(--on-brand-dark);  --accent-text: var(--ink); }
+.ty-accent-orange  { --accent: var(--brand-orange);  --on-accent: var(--on-brand-light); --accent-text: var(--brand-orange); }
+:root { --accent: var(--brand-green); --on-accent: var(--on-brand-light); --accent-text: var(--brand-green); }
+
+/* ---------- Triangle ---------- */
+.ty-tri { display: inline-block; flex: none; width: calc(var(--triangle-md) * 0.866); height: var(--triangle-md); background: var(--accent); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.ty-tri--sm { width: calc(var(--triangle-sm) * 0.866); height: var(--triangle-sm); }
+.ty-tri--lg { width: calc(var(--triangle-lg) * 0.866); height: var(--triangle-lg); }
+.ty-tri--green { background: var(--brand-green); }
+.ty-tri--magenta { background: var(--brand-magenta); }
+.ty-tri--teal { background: var(--brand-teal); }
+.ty-tri--orange { background: var(--brand-orange); }
+.ty-brandrow { display: inline-flex; gap: var(--space-1, 4px); align-items: center; }
+
+/* ---------- Type helpers ---------- */
+.ty-eyebrow { display: inline-flex; align-items: center; gap: var(--space-2, 8px); font-family: var(--font-mono); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-subtle); margin: 0; }
+.ty-h1xl { font-family: var(--font-display); font-size: clamp(44px, 6vw, 72px); line-height: 1.05; font-weight: 600; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.ty-h2 { font-family: var(--font-display); font-size: clamp(30px, 3.4vw, 40px); line-height: 1.15; font-weight: 500; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.ty-h3 { font-family: var(--font-display); font-size: 24px; line-height: 30px; font-weight: 500; margin: 0; }
+.ty-h1lg { font-family: var(--font-display); font-size: clamp(36px, 4.6vw, 56px); line-height: 1.07; font-weight: 600; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.ty-lead { font-size: 20px; line-height: 30px; color: var(--ink-muted); max-width: var(--text-max, 640px); margin: 0; }
+.ty-muted { color: var(--ink-muted); }
+
+/* ---------- Button ---------- */
+.ty-btn { display: inline-flex; align-items: center; gap: var(--space-3, 12px); font-family: var(--font-text); font-size: 15px; line-height: 20px; font-weight: 600; padding: var(--space-3, 12px) var(--space-6, 24px); border-radius: var(--radius-sm, 2px); border: 1px solid transparent; text-decoration: none; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
+.ty-btn .ty-tri { width: calc(var(--triangle-inline) * 0.866); height: var(--triangle-inline); }
+.ty-btn--primary { background: var(--accent); color: var(--on-accent); }
+.ty-btn--primary .ty-tri { background: var(--on-accent); }
+.ty-btn--primary:hover { background: var(--ink); color: var(--surface-page); }
+.ty-btn--primary:hover .ty-tri { background: var(--surface-page); }
+.ty-btn--secondary { background: transparent; color: var(--ink); border-color: var(--border-control); }
+.ty-btn--secondary:hover { border-color: var(--ink); background: var(--surface-hover); }
+.ty-link { display: inline-flex; align-items: center; gap: var(--space-2, 8px); font-weight: 600; font-size: 15px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--border-control); padding-bottom: 2px; }
+.ty-link:hover { border-bottom-color: var(--accent); }
+.ty-btn:focus-visible, .ty-link:focus-visible, .ty-faq summary:focus-visible, .ty-field input:focus-visible, .ty-field textarea:focus-visible, .ty-nav a:focus-visible, .ty-lang button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ---------- Section header ---------- */
+.ty-sechead { display: grid; gap: var(--space-4, 16px); max-width: var(--text-max, 640px); }
+.ty-sechead .ty-eyebrow .ty-tri { width: calc(var(--triangle-sm) * 0.866); height: var(--triangle-sm); }
+
+/* ---------- Hero ---------- */
+.ty-hero { display: grid; gap: var(--space-8, 32px); padding-block: var(--space-32, 128px) var(--space-24, 96px); border-bottom: 1px solid var(--border-subtle); }
+.ty-hero__line2 { display: block; color: var(--accent); }
+.ty-hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-4, 16px); align-items: center; }
+
+/* ---------- Solution card ---------- */
+.ty-card { display: grid; gap: var(--space-4, 16px); align-content: start; background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm, 2px); padding: var(--space-8, 32px); transition: border-color .15s; }
+.ty-card:hover { border-color: var(--accent); }
+.ty-card__need { font-size: 16px; line-height: 24px; color: var(--ink-muted); margin: 0; }
+.ty-card__list { list-style: none; margin: 0; padding: var(--space-4, 16px) 0 0; border-top: 1px solid var(--border-subtle); display: grid; gap: var(--space-3, 12px); font-size: 14px; line-height: 22px; }
+.ty-card__list li { display: flex; align-items: center; gap: var(--space-3, 12px); }
+.ty-card__list .ty-tri { width: calc(var(--triangle-sm) * 0.866); height: var(--triangle-sm); }
+
+/* ---------- Method step ---------- */
+.ty-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border-top: 1px solid var(--border-subtle); }
+.ty-step { display: grid; gap: var(--space-3, 12px); align-content: start; padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-6, 24px) 0; }
+.ty-step__index { display: flex; align-items: center; gap: var(--space-2, 8px); font-family: var(--font-mono); font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: .04em; color: var(--ink-subtle); }
+.ty-step__index .ty-tri { width: calc(var(--triangle-inline) * 0.866); height: var(--triangle-inline); }
+.ty-step p { margin: 0; font-size: 14px; line-height: 22px; color: var(--ink-muted); }
+
+/* ---------- FAQ ---------- */
+.ty-faq { border-bottom: 1px solid var(--border-subtle); }
+.ty-faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--space-6, 24px); padding: var(--space-6, 24px) 0; font-family: var(--font-display); font-size: 20px; line-height: 28px; font-weight: 500; }
+.ty-faq summary::-webkit-details-marker { display: none; }
+.ty-faq summary .ty-tri { transition: transform .15s; }
+.ty-faq[open] summary .ty-tri { transform: rotate(90deg); }
+.ty-faq__body { padding: 0 0 var(--space-6, 24px); color: var(--ink-muted); max-width: var(--text-max, 640px); }
+
+/* ---------- Header ---------- */
+.ty-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6, 24px); padding-block: var(--space-4, 16px); border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; }
+.ty-logo { display: inline-flex; align-items: center; justify-content: center; min-width: 112px; height: 40px; padding: 0 var(--space-3, 12px); border: 1px dashed var(--border-control); color: var(--ink-subtle); font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+.ty-logo img, .ty-logo svg { display: block; height: 32px; width: auto; }
+.ty-logo:has(img), .ty-logo:has(svg) { border: 0; padding: 0; min-width: 0; }
+.ty-nav { display: flex; gap: var(--space-6, 24px); align-items: center; flex-wrap: wrap; }
+.ty-nav a { color: var(--ink-muted); text-decoration: none; font-size: 15px; font-weight: 600; }
+.ty-nav a:hover, .ty-nav a[aria-current="page"] { color: var(--ink); }
+.ty-lang { display: inline-flex; border: 1px solid var(--border-control); border-radius: var(--radius-sm, 2px); }
+.ty-lang button { background: none; border: 0; color: var(--ink-subtle); font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .08em; padding: 6px 10px; cursor: pointer; }
+.ty-lang button[aria-pressed="true"] { color: var(--surface-page); background: var(--ink); }
+
+/* ---------- Field ---------- */
+.ty-field { display: grid; gap: var(--space-2, 8px); }
+.ty-field label { font-size: 15px; line-height: 20px; font-weight: 600; }
+.ty-field input, .ty-field textarea { font: inherit; color: var(--ink); background: var(--surface-raised); border: 1px solid var(--border-control); border-radius: var(--radius-sm, 2px); padding: var(--space-3, 12px) var(--space-4, 16px); }
+.ty-field input::placeholder, .ty-field textarea::placeholder { color: var(--ink-subtle); }
+.ty-field__help { font-size: 13px; line-height: 18px; color: var(--ink-subtle); }
+.ty-field--error input { border-color: var(--brand-orange); }
+.ty-field--error .ty-field__help { color: var(--brand-orange); }
+
+@media (prefers-reduced-motion: reduce) { .ty-btn, .ty-card, .ty-faq summary .ty-tri { transition: none; } }
+
+a { color: var(--ink); } a:hover { color: var(--accent-text); }

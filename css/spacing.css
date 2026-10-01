@@ -1,0 +1,10 @@
+/* Types v3 — spacing, radius, layout, triangle tokens. */
+:root{
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;
+  --space-12:48px;--space-16:64px;--space-24:96px;--space-32:128px;
+  --radius-none:0px;--radius-sm:2px;
+  --container-max:1200px;--text-max:640px;--grid-columns:12;
+
+  --triangle-sm:8px;--triangle-md:12px;--triangle-lg:24px;--triangle-inline:10px;
+  --duration-state:150ms;
+}

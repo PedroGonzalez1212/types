@@ -1,0 +1,22 @@
+/* Types v3 — typography tokens. */
+:root{
+  --font-display:'Sora','Helvetica Neue',Arial,sans-serif;
+  --font-text:'Inter','Helvetica Neue',Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --font-logo:'Ubuntu',system-ui,sans-serif;
+
+  --display-xl-size:72px;--display-xl-line:76px;--display-xl-weight:600;--display-xl-tracking:-0.02em;
+  --display-xl-size-mobile:44px;--display-xl-line-mobile:48px;
+  --display-lg-size:56px;--display-lg-line:60px;--display-lg-weight:600;--display-lg-tracking:-0.02em;
+  --display-lg-size-mobile:36px;--display-lg-line-mobile:40px;
+  --heading-size:40px;--heading-line:46px;--heading-weight:500;--heading-tracking:-0.01em;
+  --heading-size-mobile:30px;--heading-line-mobile:36px;
+  --title-size:24px;--title-line:30px;--title-weight:500;
+  --lead-size:20px;--lead-line:30px;
+  --body-size:16px;--body-line:26px;
+  --body-sm-size:14px;--body-sm-line:22px;
+  --label-size:15px;--label-line:20px;--label-weight:600;
+  --caption-size:13px;--caption-line:18px;
+  --eyebrow-size:12px;--eyebrow-line:16px;--eyebrow-weight:500;--eyebrow-tracking:0.12em;
+  --index-size:14px;--index-line:20px;--index-weight:500;--index-tracking:0.04em;
+}
