@@ -147,7 +147,7 @@
 
   function solExit(s, ex, cl, io) {
     var st = s.querySelector('[data-sol-sticky]'), gridEl = s.querySelector('[data-sol-grid]'), head = st.firstElementChild;
-    var cover = s.querySelector('[data-sol-cover]');
+    var cover = s.querySelector('[data-sol-cover]'), edge = s.querySelector('[data-sol-edge]');
     var m = io(cl(ex / .6)), z = parseFloat(gridEl.style.zoom) || 1;
     var D = head.offsetTop + head.offsetHeight + 40, up = m ? 'translateY(' + (-m * D) + 'px)' : '';
     head.style.transform = up;
@@ -163,7 +163,11 @@
     var sb = st.getBoundingClientRect(), cv = grid, cr = cv ? cv.getBoundingClientRect() : { left: 0, top: 0 };
     var sx = innerWidth / 2, sy = innerHeight / 2;
     if (cv) { var q = cl((ex - .06) / .18); cv.style.opacity = q ? 1 - q : ''; cv.style.transform = q ? 'translateY(' + (q * q * 60) + 'px)' : ''; }
-    if (ex <= 0) { exCell = null; cover.style.opacity = 0; cover.style.clipPath = 'polygon(0 0,0 0,0 0)'; return; }
+    if (ex <= 0) {
+      exCell = null; cover.style.opacity = 0; cover.style.clipPath = 'polygon(0 0,0 0,0 0)';
+      edge.style.opacity = 0; edge.style.clipPath = 'polygon(0 0,0 0,0 0)';
+      return;
+    }
     if (!exCell && cells) {
       var best = null, bd = 1e9;
       var o = gOff || { x: 0, y: 0 }, gb = gridEl.getBoundingClientRect(), tx = gb.left + gb.width / 2, ty = gb.top + gb.height / 2;
@@ -176,17 +180,22 @@
     var t = cl((ex - .06) / .9), rot = io(cl(t / .35)), mv = io(cl(t / .45)), g = cl((t - .12) / .88);
     var pop = 1 + .35 * Math.sin(Math.PI * cl(t / .22)) * (1 - cl((t - .11) / .2)), R = R0 * pop + (4.3 * Math.hypot(innerWidth, innerHeight) / 2 - R0) * Math.pow(g, 2.4);
     var X = x0 + (sx - R / 4 - x0) * mv - sb.left, Y = y0 + (sy - y0) * mv - sb.top, th = (1 - rot) * Math.PI / 2;
-    var pts = [0, 1, 2].map(function (k) { return (X + R * Math.cos(th + k * 2 * Math.PI / 3)) + 'px ' + (Y + R * Math.sin(th + k * 2 * Math.PI / 3)) + 'px'; });
+    var tri = function (rad) {
+      return 'polygon(' + [0, 1, 2].map(function (k) { return (X + rad * Math.cos(th + k * 2 * Math.PI / 3)) + 'px ' + (Y + rad * Math.sin(th + k * 2 * Math.PI / 3)) + 'px'; }).join(',') + ')';
+    };
     cover.style.opacity = cl((ex - .06) / .03);
-    cover.style.clipPath = t >= 1 ? 'none' : 'polygon(' + pts.join(',') + ')';
+    cover.style.clipPath = t >= 1 ? 'none' : tri(R);
+    // Teal rim: the same triangle 4px larger, peeking out from behind the cover.
+    edge.style.opacity = t >= 1 ? 0 : cover.style.opacity;
+    edge.style.clipPath = tri(R + 4);
   }
 
   function solTitle(s, ti, cl, io) {
     var st = s.querySelector('[data-sol-sticky]'), el = s.querySelector('[data-m-title]'); if (!el) return;
     var hd = root && root.querySelector('header');
-    var on = ti > 0, gy = on ? '#ffffff' : '';
+    var on = ti > 0, gy = on ? '#0a0b0d' : '';
     if (root) root.style.zIndex = on ? '3' : '';
-    s.style.background = on ? '#ffffff' : 'transparent';
+    s.style.background = on ? '#0a0b0d' : 'transparent';
     document.documentElement.style.background = gy; document.body.style.background = gy;
     if (!on) { el.style.opacity = 0; return; }
     var mh = document.querySelector('[data-m-h2]'), ms = mh && mh.closest('section'), mr = mh ? mh.getBoundingClientRect() : null, sr = st.getBoundingClientRect();

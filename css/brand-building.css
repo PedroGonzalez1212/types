@@ -1,0 +1,80 @@
+/* Brand Building — solution detail page. Hover, responsive and state styles
+   that the canvas design expressed as style-hover / JS-computed props. */
+
+a:hover { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Skip link ---------- */
+.bb-skip { position: absolute; left: -9999px; top: 16px; z-index: 60; padding: 12px 16px; background: #ffffff; color: #0a0b0d; font-family: var(--font-text); font-size: 16px; font-weight: 600; border-radius: 2px; }
+.bb-skip:focus { left: 16px; }
+
+/* ---------- Primary CTA (Book a discovery call) ---------- */
+.bb-cta { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
+.bb-cta .ty-tri { background: currentColor; height: 14px; width: 12.1px; }
+.bb-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
+.bb-cta:hover .ty-tri { background: currentColor; }
+
+/* ---------- Services rows ---------- */
+.bb-row { position: relative; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; row-gap: 16px; align-items: start; margin: 0 -16px; padding: clamp(32px,4vw,56px) 16px; border-radius: 4px; transition: background-color .2s, box-shadow .2s, transform .3s cubic-bezier(.22,1,.36,1); }
+.bb-row:hover { background-color: var(--surface-hover); box-shadow: 0 0 8px 2px var(--surface-hover); transform: scale(1.02); z-index: 1; }
+.bb-row__line { position: absolute; left: 16px; right: 16px; top: 0; height: 1px; background: var(--ink); transform-origin: 0 50%; }
+.bb-row__idx { display: flex; flex-direction: column; gap: 16px; font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .18em; color: var(--ink-muted); }
+.bb-row__tris { display: flex; gap: 5px; }
+.bb-row__tris .ty-tri { height: 16px; width: 13.9px; background: var(--accent); }
+.bb-row__title { margin: 0; font-family: var(--font-display); font-size: clamp(28px,3vw,46px); font-weight: 500; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
+.bb-row__pain { margin: 0; font-family: var(--font-text); font-size: 17px; line-height: 1.55; color: var(--ink-muted); text-wrap: pretty; }
+.bb-row__sol { margin: 0; font-family: var(--font-text); font-size: 19px; font-weight: 500; line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+
+/* ---------- Method strip ---------- */
+.bb-steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
+.bb-steps li { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.bb-steps__n { font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--ink-muted); }
+.bb-steps__t { font-family: var(--font-display); font-size: clamp(14px,1.8vw,26px); font-weight: 500; letter-spacing: -0.02em; transition: color .3s; overflow-wrap: anywhere; }
+.bb-cols { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); column-gap: 24px; row-gap: 32px; }
+.bb-cols__a { grid-column: 1 / span 5; min-width: 0; }
+.bb-cols__b { grid-column: 7 / span 6; }
+
+/* ---------- FAQ ---------- */
+.bb-faq-desk { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); column-gap: 24px; align-items: start; }
+.bb-faq-tabs { grid-column: 1 / span 6; display: flex; flex-direction: column; border-top: 1px solid var(--border-subtle); }
+.bb-faq-tab { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 56px; padding: 22px 16px 22px 0; background: none; border: 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; text-align: left; color: var(--ink-muted); font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; transition: color .15s; }
+.bb-faq-tab:hover, .bb-faq-tab[aria-selected="true"] { color: var(--ink); }
+.bb-faq-tab .ty-tri { flex: none; height: 12px; width: 10.4px; background: var(--border-control); transition: background-color .15s, transform .2s; }
+.bb-faq-tab[aria-selected="true"] .ty-tri { background: var(--brand-green); transform: translateX(6px); }
+.bb-faq-panel { grid-column: 7 / span 6; position: sticky; top: 128px; box-sizing: border-box; padding: clamp(28px,3vw,40px); background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: 2px; display: flex; flex-direction: column; gap: 20px; }
+
+.bb-faq-mob { display: none; border-bottom: 1px solid var(--border-subtle); }
+.bb-faq-item { border-top: 1px solid var(--border-subtle); }
+.bb-faq-q { width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; }
+.bb-faq-q .ty-tri { flex: none; height: 12px; width: 10.4px; background: var(--accent); transition: transform .3s; }
+.bb-faq-q[aria-expanded="true"] .ty-tri { transform: rotate(90deg); }
+.bb-faq-a { margin: 0 0 24px; font-family: var(--font-text); font-size: 16px; line-height: 1.6; color: var(--ink-muted); }
+
+/* ---------- What's next cards ---------- */
+.bb-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+.bb-card { position: relative; min-width: 0; display: flex; flex-direction: column; }
+.bb-card__link { position: relative; flex: 1; box-sizing: border-box; display: grid; align-content: start; row-gap: 24px; padding: 32px; text-decoration: none; color: var(--ink); background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: 2px; transition: border-color .15s; }
+.bb-card__link:hover, .bb-card__link:focus-visible { border-color: var(--accent); color: var(--ink); }
+.bb-card__bar { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--accent); }
+.bb-card__n { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .18em; color: var(--ink-muted); }
+.bb-card__n .ty-tri { height: 10px; width: 8.7px; background: var(--accent); }
+.bb-card__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(26px,2.4vw,34px); line-height: 1.08; letter-spacing: -0.02em; padding-top: 24px; border-top: 1px solid var(--border-subtle); }
+.bb-card__title > span { display: block; }
+.bb-card__q { min-height: 2.8em; font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink-muted); text-wrap: pretty; }
+.bb-card__list { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid var(--border-subtle); font-family: var(--font-text); font-size: 16px; font-weight: 500; }
+.bb-card__list > span { display: flex; align-items: center; gap: 10px; }
+.bb-card__list .ty-tri { height: 8px; width: 6.9px; background: var(--accent); }
+.bb-card__btn { justify-self: start; margin-top: 8px; background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.bb-card__btn .ty-tri { background: currentColor; }
+
+/* ---------- Mobile (< 768px) ---------- */
+@media (max-width: 767.98px) {
+  .bb-row { grid-template-columns: minmax(0,1fr); }
+  .bb-cols { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .bb-cols__a, .bb-cols__b { grid-column: 1 / -1; }
+  .bb-faq-desk { display: none; }
+  .bb-faq-mob { display: block; }
+  .bb-cards { grid-template-columns: minmax(0,1fr); }
+}

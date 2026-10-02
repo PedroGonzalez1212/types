@@ -1,189 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Types — Move forward with clarity.</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="google" content="notranslate">
+<title>Types — In development</title>
 <link rel="icon" type="image/png" href="assets/favicon-types.png">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/site.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--surface-page);color:var(--ink);font-family:var(--font-text,"Montserrat",sans-serif);display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center}
+  .gate img{height:40px;width:auto}
+  .gate h1{margin:0;font-family:var(--font-display,"Montserrat",sans-serif);font-weight:500;font-size:clamp(24px,4vw,32px);line-height:1.2;letter-spacing:-0.02em}
+  .gate p{margin:0;font-size:15px;line-height:1.5;color:var(--ink-muted)}
+  .tag{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)}
+  .tag::before{content:"";width:7px;height:7px;background:var(--brand-teal);clip-path:polygon(0 0,100% 50%,0 100%)}
+  form{width:100%;display:flex;flex-direction:column;gap:14px}
+  input[type="password"]{width:100%;padding:14px 16px;background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:2px;color:var(--ink);font-family:inherit;font-size:15px;outline:none;transition:border-color .15s}
+  input[type="password"]:focus{border-color:var(--brand-teal)}
+  button{width:100%;padding:14px 16px;background:var(--brand-teal);border:1px solid var(--brand-teal);border-radius:2px;color:#fff;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:opacity .15s}
+  button:hover{opacity:.9}
+  .err{min-height:18px;font-size:13px;color:var(--brand-orange)}
+</style>
 </head>
 <body>
-<div id="root" class="ty-accent-green" style="position:relative;min-height:100vh;overflow-x:clip;overflow-y:visible;background:var(--surface-page);color:var(--ink);box-sizing:border-box;isolation:isolate">
-  <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;bottom:-70vh;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 45%,transparent 100%);mask-image:linear-gradient(#000 45%,transparent 100%)"><div id="blobs" style="position:absolute;inset:0;filter:blur(110px);opacity:0">
-    <div data-blob="" style="position:absolute;left:48%;top:44%;width:46vw;height:22vw;border-radius:50%;background:var(--brand-teal);opacity:.5"></div>
-    <div data-blob="" style="position:absolute;right:-8%;top:18%;width:30vw;height:48vw;border-radius:50%;background:var(--brand-teal);opacity:.8"></div>
-    <div data-blob="" style="position:absolute;left:55%;top:68%;width:34vw;height:12vw;border-radius:50%;background:var(--brand-teal);opacity:.6;transform:rotate(-8deg)"></div>
-    <div data-blob="" style="position:absolute;left:6%;top:70%;width:40vw;height:34vw;border-radius:50%;background:var(--brand-teal);opacity:.6"></div>
-    <div data-blob="" style="position:absolute;left:30%;top:-12%;width:36vw;height:26vw;border-radius:50%;background:var(--brand-teal);opacity:.35"></div>
-  </div></div>
-  <canvas id="grid" aria-hidden="true" style="position:absolute;top:0;left:0;z-index:1;width:100%;height:calc(100% + 220vh);display:block;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 70vw 90vh at 78% 75vh,#000 20%,transparent 75%),linear-gradient(to bottom,transparent 0,transparent 110vh,#000 150vh,#000 calc(100% - 40vh),transparent 100%);mask-image:radial-gradient(ellipse 70vw 90vh at 78% 75vh,#000 20%,transparent 75%),linear-gradient(to bottom,transparent 0,transparent 110vh,#000 150vh,#000 calc(100% - 40vh),transparent 100%)"></canvas>
-  <div id="content" style="position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;padding:104px 32px 56px;box-sizing:border-box;opacity:0">
-    <header data-in="" class="ty-header" style="position:fixed;top:0;left:0;right:0;z-index:20;box-sizing:border-box;padding:14px 32px;border-bottom:3px solid var(--brand-teal);background:#ffffff;--ink:#0a0b0d;--ink-muted:#33373e;--ink-subtle:#4a4f57;--border-control:#6b7079;--surface-page:#ffffff;--surface-hover:#eef0f2;--focus-ring:#0a0b0d;color:#0a0b0d">
-      <a href="#" aria-label="Types — home" style="display:flex;align-items:center;height:48px"><img src="assets/types-logo.png" alt="Types" style="display:block;height:44px;width:auto"></a>
-      <span id="mark" aria-hidden="true" style="position:absolute;top:0;left:0;width:24px;height:16px;background:#8a8f98;clip-path:polygon(0 0,100% 0,50% 100%);transform:translate(0,-100%);transition:transform .45s cubic-bezier(.22,1,.36,1);pointer-events:none"></span>
-      <nav id="nav" class="ty-nav" aria-label="Main" style="gap:48px">
-        <a href="#solutions">Solutions</a>
-        <a href="#method">Method</a>
-        <a href="#about">About</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <div class="ty-lang" role="group" aria-label="Language">
-        <button id="lang-en" lang="en" aria-pressed="true" onclick="setLang('en')">EN</button>
-        <button id="lang-es" lang="es" aria-pressed="false" onclick="setLang('es')">ES</button>
-      </div>
-    </header>
-    <div style="flex:1"></div>
-    <div style="display:flex;flex-direction:column;gap:24px;padding-left:clamp(0px,6vw,120px)">
-      <h1 style="margin:0 0 0 -.06em;font-family:var(--font-display);font-weight:500;font-size:clamp(56px,9vw,152px);line-height:.98;letter-spacing:-0.04em;text-wrap:balance">
-        <span data-line="" style="display:block;overflow:hidden;padding-bottom:.24em;margin-bottom:-.24em"><span style="display:block"><span id="mf">Move forward</span></span></span>
-        <span data-line="" style="display:block;overflow:hidden;padding-bottom:.24em;margin-bottom:-.24em"><span style="display:block"><span style="font-weight:300;color:var(--ink)">with </span><span style="display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.24em;margin-bottom:-.24em"><span id="word" style="display:inline-block">clarity.</span></span></span></span>
-      </h1>
-      <div data-in="" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px">
-        <p id="dd" style="margin:0;font-family:var(--font-text);font-size:19px;line-height:1.3;color:var(--ink);white-space:nowrap">Data-driven marketing for B2B companies building what's next.</p>
-      </div>
-    </div>
+  <div class="gate">
+    <img src="assets/types-logo.png" alt="Types">
+    <span class="tag">In development</span>
+    <h1>We're building something.</h1>
+    <p>This site is in progress and not yet public. Enter the access code shared with you to preview it.</p>
+    <form id="gate-form">
+      <input type="password" id="gate-pw" placeholder="Access code" autocomplete="off" autofocus>
+      <button type="submit">Enter</button>
+      <div class="err" id="gate-err"></div>
+    </form>
   </div>
-  <div id="intro" aria-hidden="true" style="position:fixed;inset:0;z-index:30;pointer-events:none;background:var(--surface-page)">
-    <div id="tri" aria-hidden="true" style="position:absolute;left:50%;top:50%;height:42vmin;width:36.37vmin;margin-left:-12.12vmin;margin-top:-21vmin;background:var(--brand-teal);clip-path:polygon(0 0,100% 50%,0 100%);transform-origin:33.33% 50%;will-change:transform"></div>
-  </div>
-</div>
-<section id="solutions" class="ty-accent-orange" style="position:relative;z-index:1;height:400vh;background:transparent;color:var(--ink);overflow-x:clip">
-  <div data-sol-sticky="" style="position:sticky;top:0;min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;gap:clamp(24px,4vh,48px);padding:clamp(112px,16vh,160px) clamp(16px,4vw,64px) clamp(24px,5vh,64px)">
-    <div style="position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:end">
-      <div style="display:flex;flex-direction:column;gap:16px">
-        <span style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Solutions</span>
-        <h2 data-sol-h2="" style="margin:0;overflow:hidden;font-family:var(--font-display);font-weight:500;font-size:clamp(36px,min(5vw,10vh),84px);line-height:1;letter-spacing:-0.045em;text-wrap:balance" aria-label="What's Next?"><span aria-hidden="true" style="display:inline-grid"><span style="grid-area:1/1;visibility:hidden">What's Next?</span><span style="grid-area:1/1"><span data-type="">What's Next?</span><span data-caret="" style="display:inline-block;width:.06em;height:.82em;margin-left:.06em;vertical-align:-.04em;background:var(--accent)"></span></span></span></h2>
-      </div>
-    </div>
-    <div data-sol-grid="" style="position:relative;z-index:1;flex:none;margin-top:auto;margin-bottom:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px">
-      <article data-sol="" class="ty-accent-green" style="position:relative;min-width:0;display:flex;flex-direction:column">
-        <a href="#brand-building" data-sol-card="" style="position:relative;flex:1;box-sizing:border-box;display:block;text-decoration:none;color:var(--ink);background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:2px;clip-path:inset(50% 100% calc(50% - 3px) 0);transition:border-color .15s">
-          <span data-sol-fill="" aria-hidden="true" style="position:absolute;inset:0;background:var(--accent)"></span>
-          <span data-sol-num="" aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-text);font-size:15px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);opacity:0;pointer-events:none"></span>
-          <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)"></span>
-          <span style="position:relative;min-height:100%;box-sizing:border-box;padding:clamp(16px,min(2.2vw,3.4vh),32px);display:grid;grid-template-rows:auto;align-content:start;row-gap:clamp(10px,1.8vh,24px)">
-            <span data-sol-in="" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted)">01<span class="ty-tri" aria-hidden="true" style="height:10px;width:8.7px;background:var(--accent)"></span></span>
-            <span data-sol-in="" style="font-family:var(--font-display);font-weight:500;font-size:clamp(20px,min(2.2vw,3.6vh),34px);line-height:1.08;letter-spacing:-0.02em;text-wrap:balance;min-height:2.16em;padding-top:clamp(10px,1.8vh,24px);border-top:1px solid var(--border-subtle)"><span style="display:block">Brand</span><span style="display:block">Building</span></span>
-            <span data-sol-in="" style="min-height:2.8em;font-family:var(--font-display);font-size:clamp(14px,min(1.3vw,2.3vh),19px);line-height:1.4;color:var(--ink-muted);text-wrap:pretty">"I need my company to be recognized for its value"</span>
-            <span data-sol-in="" data-sol-list="" style="display:flex;flex-direction:column;gap:clamp(8px,1.6vh,14px);padding-top:clamp(12px,2.4vh,20px);border-top:1px solid var(--border-subtle);font-family:var(--font-text);font-size:clamp(13px,min(1vw,2vh),15px);font-weight:500">
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Corporate Identity</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Commercial Assets</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Market Authority</span>
-            </span>
-            <span data-sol-in="" class="ty-btn ty-btn--primary" style="justify-self:start;margin-top:8px;background:var(--accent);border-color:var(--accent);color:#ffffff">Explore<span class="ty-tri" aria-hidden="true" style="background:currentColor"></span></span>
-          </span>
-        </a>
-      </article>
-      <article data-sol="" class="ty-accent-magenta" style="position:relative;min-width:0;display:flex;flex-direction:column">
-        <a href="#lead-generation" data-sol-card="" style="position:relative;flex:1;box-sizing:border-box;display:block;text-decoration:none;color:var(--ink);background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:2px;clip-path:inset(50% 100% calc(50% - 3px) 0);transition:border-color .15s">
-          <span data-sol-fill="" aria-hidden="true" style="position:absolute;inset:0;background:var(--accent)"></span>
-          <span data-sol-num="" aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-text);font-size:15px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);opacity:0;pointer-events:none"></span>
-          <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)"></span>
-          <span style="position:relative;min-height:100%;box-sizing:border-box;padding:clamp(16px,min(2.2vw,3.4vh),32px);display:grid;grid-template-rows:auto;align-content:start;row-gap:clamp(10px,1.8vh,24px)">
-            <span data-sol-in="" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted)">02<span class="ty-tri" aria-hidden="true" style="height:10px;width:8.7px;background:var(--accent)"></span></span>
-            <span data-sol-in="" style="font-family:var(--font-display);font-weight:500;font-size:clamp(20px,min(2.2vw,3.6vh),34px);line-height:1.08;letter-spacing:-0.02em;text-wrap:balance;min-height:2.16em;padding-top:clamp(10px,1.8vh,24px);border-top:1px solid var(--border-subtle)"><span style="display:block">Lead</span><span style="display:block">Generation</span></span>
-            <span data-sol-in="" style="min-height:2.8em;font-family:var(--font-display);font-size:clamp(14px,min(1.3vw,2.3vh),19px);line-height:1.4;color:var(--ink-muted);text-wrap:pretty">"I need a predictable flow of qualified opportunities"</span>
-            <span data-sol-in="" data-sol-list="" style="display:flex;flex-direction:column;gap:clamp(8px,1.6vh,14px);padding-top:clamp(12px,2.4vh,20px);border-top:1px solid var(--border-subtle);font-family:var(--font-text);font-size:clamp(13px,min(1vw,2vh),15px);font-weight:500">
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Prospecting</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Audience Growth</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Customer Retention</span>
-            </span>
-            <span data-sol-in="" class="ty-btn ty-btn--primary" style="justify-self:start;margin-top:8px;background:var(--accent);border-color:var(--accent);color:#ffffff">Explore<span class="ty-tri" aria-hidden="true" style="background:currentColor"></span></span>
-          </span>
-        </a>
-      </article>
-      <article data-sol="" class="ty-accent-teal" style="position:relative;min-width:0;display:flex;flex-direction:column">
-        <a href="#content-globalization" data-sol-card="" style="position:relative;flex:1;box-sizing:border-box;display:block;text-decoration:none;color:var(--ink);background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:2px;clip-path:inset(50% 100% calc(50% - 3px) 0);transition:border-color .15s">
-          <span data-sol-fill="" aria-hidden="true" style="position:absolute;inset:0;background:var(--accent)"></span>
-          <span data-sol-num="" aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-text);font-size:15px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);opacity:0;pointer-events:none"></span>
-          <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)"></span>
-          <span style="position:relative;min-height:100%;box-sizing:border-box;padding:clamp(16px,min(2.2vw,3.4vh),32px);display:grid;grid-template-rows:auto;align-content:start;row-gap:clamp(10px,1.8vh,24px)">
-            <span data-sol-in="" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted)">03<span class="ty-tri" aria-hidden="true" style="height:10px;width:8.7px;background:var(--accent)"></span></span>
-            <span data-sol-in="" style="font-family:var(--font-display);font-weight:500;font-size:clamp(20px,min(2.2vw,3.6vh),34px);line-height:1.08;letter-spacing:-0.02em;text-wrap:balance;min-height:2.16em;padding-top:clamp(10px,1.8vh,24px);border-top:1px solid var(--border-subtle)"><span style="display:block">Content</span><span style="display:block">Globalization</span></span>
-            <span data-sol-in="" style="min-height:2.8em;font-family:var(--font-display);font-size:clamp(14px,min(1.3vw,2.3vh),19px);line-height:1.4;color:var(--ink-muted);text-wrap:pretty">"I need my brand to remain relevant across markets"</span>
-            <span data-sol-in="" data-sol-list="" style="display:flex;flex-direction:column;gap:clamp(8px,1.6vh,14px);padding-top:clamp(12px,2.4vh,20px);border-top:1px solid var(--border-subtle);font-family:var(--font-text);font-size:clamp(13px,min(1vw,2vh),15px);font-weight:500">
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Multilingual Localization</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Digital Accessibility</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Creative Production</span>
-            </span>
-            <span data-sol-in="" class="ty-btn ty-btn--primary" style="justify-self:start;margin-top:8px;background:var(--accent);border-color:var(--accent);color:#ffffff">Explore<span class="ty-tri" aria-hidden="true" style="background:currentColor"></span></span>
-          </span>
-        </a>
-      </article>
-      <article data-sol="" class="ty-accent-orange" style="position:relative;min-width:0;display:flex;flex-direction:column">
-        <a href="#business-intelligence" data-sol-card="" style="position:relative;flex:1;box-sizing:border-box;display:block;text-decoration:none;color:var(--ink);background:var(--surface-raised);border:1px solid var(--border-subtle);border-radius:2px;clip-path:inset(50% 100% calc(50% - 3px) 0);transition:border-color .15s">
-          <span data-sol-fill="" aria-hidden="true" style="position:absolute;inset:0;background:var(--accent)"></span>
-          <span data-sol-num="" aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-text);font-size:15px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);opacity:0;pointer-events:none"></span>
-          <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)"></span>
-          <span style="position:relative;min-height:100%;box-sizing:border-box;padding:clamp(16px,min(2.2vw,3.4vh),32px);display:grid;grid-template-rows:auto;align-content:start;row-gap:clamp(10px,1.8vh,24px)">
-            <span data-sol-in="" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted)">04<span class="ty-tri" aria-hidden="true" style="height:10px;width:8.7px;background:var(--accent)"></span></span>
-            <span data-sol-in="" style="font-family:var(--font-display);font-weight:500;font-size:clamp(20px,min(2.2vw,3.6vh),34px);line-height:1.08;letter-spacing:-0.02em;text-wrap:balance;min-height:2.16em;padding-top:clamp(10px,1.8vh,24px);border-top:1px solid var(--border-subtle)"><span style="display:block">Business</span><span style="display:block">Intelligence</span></span>
-            <span data-sol-in="" style="min-height:2.8em;font-family:var(--font-display);font-size:clamp(14px,min(1.3vw,2.3vh),19px);line-height:1.4;color:var(--ink-muted);text-wrap:pretty">"I need clarity to make better decisions"</span>
-            <span data-sol-in="" data-sol-list="" style="display:flex;flex-direction:column;gap:clamp(8px,1.6vh,14px);padding-top:clamp(12px,2.4vh,20px);border-top:1px solid var(--border-subtle);font-family:var(--font-text);font-size:clamp(13px,min(1vw,2vh),15px);font-weight:500">
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Data Integration</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Performance Measurement</span>
-              <span style="display:flex;align-items:center;gap:10px"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Decision Systems</span>
-            </span>
-            <span data-sol-in="" class="ty-btn ty-btn--primary" style="justify-self:start;margin-top:8px;background:var(--accent);border-color:var(--accent);color:#ffffff">Explore<span class="ty-tri" aria-hidden="true" style="background:currentColor"></span></span>
-          </span>
-        </a>
-      </article>
-    </div>
-    <div data-sol-cover="" aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;background:#ffffff;clip-path:polygon(0 0,0 0,0 0)"></div>
-    <h2 data-m-title="" style="position:absolute;left:0;top:0;z-index:3;margin:0;font-family:var(--font-display);font-weight:500;font-size:min(7.6vw,16vh);line-height:1;letter-spacing:-0.045em;white-space:nowrap;color:#0a0b0d;transform-origin:0 0;opacity:0;pointer-events:none;will-change:transform">The Types Method</h2>
-  </div>
-</section>
-<section id="method" style="position:relative;z-index:2;margin-top:-100vh;visibility:hidden;background:#ffffff;color:#0a0b0d;--ink:#0a0b0d;--ink-muted:#1f2227;--ink-subtle:#22252a;--border-subtle:#d4d6da;--border-control:#3a3e45;--surface-page:#ffffff;--accent:var(--brand-teal);--focus-ring:#0a0b0d">
+  <script>
+    var PASSWORD = "types2025";
 
-  <div data-m-grid="" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:clamp(24px,6vw,112px);padding:0 clamp(16px,4vw,64px)">
-    <div data-m-left="" style="position:sticky;top:0;height:100vh;box-sizing:border-box;padding-top:79px;display:flex;flex-direction:column;justify-content:center;gap:clamp(24px,4vh,40px)">
-      <div style="display:flex;flex-direction:column;gap:16px"><span style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent)"></span>Method</span><h2 data-m-h2="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:26px;line-height:1;letter-spacing:-0.045em;white-space:nowrap;color:#0a0b0d">The Types Method</h2></div>
+    var form = document.getElementById('gate-form');
+    var input = document.getElementById('gate-pw');
+    var err = document.getElementById('gate-err');
 
-      <div style="display:flex;flex-direction:column;gap:14px;padding-top:clamp(24px,4vh,40px);border-top:1px solid var(--border-subtle)">
-        <span data-m-count="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted)">01 / 05</span>
-        <span style="display:block;overflow:hidden;font-size:clamp(56px,7vw,120px);line-height:.95;padding-bottom:.3em;margin-bottom:-.3em"><span data-m-word="" style="display:block;font-family:var(--font-display);font-weight:500;font-size:clamp(56px,7vw,120px);line-height:.95;letter-spacing:-0.05em;margin-left:-.05em">Explore</span></span>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px"><span data-m-lbl="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle);transition:color .15s">Explore</span><span class="ty-tri" aria-hidden="true" style="flex:none;height:7px;width:6.1px;background:var(--border-control)"></span><span data-m-lbl="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle);transition:color .15s">Design</span><span class="ty-tri" aria-hidden="true" style="flex:none;height:7px;width:6.1px;background:var(--border-control)"></span><span data-m-lbl="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle);transition:color .15s">Build</span><span class="ty-tri" aria-hidden="true" style="flex:none;height:7px;width:6.1px;background:var(--border-control)"></span><span data-m-lbl="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle);transition:color .15s">Measure</span><span class="ty-tri" aria-hidden="true" style="flex:none;height:7px;width:6.1px;background:var(--border-control)"></span><span data-m-lbl="" style="font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle);transition:color .15s">Evolve</span></div>
-    </div>
-    <div data-m-right="" style="position:relative;padding:70vh 0 30vh clamp(32px,4vw,64px)">
-      <span data-m-track="" aria-hidden="true" style="position:absolute;left:0;top:70vh;bottom:30vh;width:1px;background:var(--border-subtle)"></span>
-      <span data-m-fill="" aria-hidden="true" style="position:absolute;left:-.5px;top:70vh;width:2px;height:0;background:var(--accent)"></span>
-      <span data-m-mark="" aria-hidden="true" class="ty-tri" style="position:absolute;left:-3px;top:70vh;margin-top:-7px;height:14px;width:12.1px;background:var(--accent)"></span>
-      <article data-m-step="" style="min-height:72vh;box-sizing:border-box;padding:48px 0;display:flex;flex-direction:column;justify-content:center;gap:24px">
-        <span data-m-in="" style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);text-transform:uppercase">01<span aria-hidden="true" style="width:24px;height:1px;background:var(--border-control)"></span>Explore</span>
-        <h3 data-m-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(32px,3.6vw,60px);line-height:1.08;letter-spacing:-0.025em;color:var(--accent);text-wrap:balance">Where are we today?</h3>
-        <p data-m-in="" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.5;color:var(--ink-muted);max-width:40ch;text-wrap:pretty;font-size:19px">Before proposing, we understand.</p>
-        <div data-m-in="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;padding-top:24px;border-top:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:14px;min-width:0"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)">Activities</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-family:var(--font-text);font-size:15px;font-weight:500;line-height:1.35"><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Initial information gathering</span></li></ul></div><div style="display:flex;flex-direction:column;gap:10px;min-width:0;"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Deliverable</span><span style="font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;text-wrap:balance">Opportunity Brief</span><span style="font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-muted);text-wrap:pretty;max-width:46ch">A concise summary of our understanding of the business, along with the proposed next steps for the personalized offer phase.</span></div></div>
-      </article>
-      <article data-m-step="" style="min-height:72vh;box-sizing:border-box;padding:48px 0;display:flex;flex-direction:column;justify-content:center;gap:24px">
-        <span data-m-in="" style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);text-transform:uppercase">02<span aria-hidden="true" style="width:24px;height:1px;background:var(--border-control)"></span>Design</span>
-        <h3 data-m-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(32px,3.6vw,60px);line-height:1.08;letter-spacing:-0.025em;color:var(--accent);text-wrap:balance">Where is the opportunity?</h3>
-        <p data-m-in="" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.5;color:var(--ink-muted);max-width:40ch;text-wrap:pretty;font-size:19px">Every transformation starts with clarity.</p>
-        <div data-m-in="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;padding-top:24px;border-top:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:14px;min-width:0"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)">Activities</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-family:var(--font-text);font-size:15px;font-weight:500;line-height:1.35"><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Opportunity identification and prioritization</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Strategic roadmap development</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Impact, scope, and effort estimation</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Definition of objectives and success metrics</span></li></ul></div><div style="display:flex;flex-direction:column;gap:10px;min-width:0;"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Deliverable</span><span style="font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;text-wrap:balance">Strategic Roadmap &amp; Implementation Proposal</span><span style="font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-muted);text-wrap:pretty;max-width:46ch">A comprehensive assessment of the current situation, including key challenges, opportunities, and areas with the highest potential impact.</span></div></div>
-      </article>
-      <article data-m-step="" style="min-height:72vh;box-sizing:border-box;padding:48px 0;display:flex;flex-direction:column;justify-content:center;gap:24px">
-        <span data-m-in="" style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);text-transform:uppercase">03<span aria-hidden="true" style="width:24px;height:1px;background:var(--border-control)"></span>Build</span>
-        <h3 data-m-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(32px,3.6vw,60px);line-height:1.08;letter-spacing:-0.025em;color:var(--accent);text-wrap:balance">Let's make it happen.</h3>
-        <p data-m-in="" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.5;color:var(--ink-muted);max-width:40ch;text-wrap:pretty;font-size:19px">We bring together the right capabilities to execute the strategy.</p>
-        <div data-m-in="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;padding-top:24px;border-top:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:14px;min-width:0"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)">Solutions</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-family:var(--font-text);font-size:15px;font-weight:500;line-height:1.35"><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Brand Building</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Lead Generation</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Content Globalization</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Business Intelligence</span></li></ul></div><div style="display:flex;flex-direction:column;gap:10px;min-width:0;"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Deliverable</span><span style="font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;text-wrap:balance">Business Solution</span><span style="font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-muted);text-wrap:pretty;max-width:46ch">A fully implemented solution with clearly defined KPIs, ready to deliver measurable business results.</span></div></div>
-      </article>
-      <article data-m-step="" style="min-height:72vh;box-sizing:border-box;padding:48px 0;display:flex;flex-direction:column;justify-content:center;gap:24px">
-        <span data-m-in="" style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);text-transform:uppercase">04<span aria-hidden="true" style="width:24px;height:1px;background:var(--border-control)"></span>Measure</span>
-        <h3 data-m-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(32px,3.6vw,60px);line-height:1.08;letter-spacing:-0.025em;color:var(--accent);text-wrap:balance">What changed?</h3>
-        <p data-m-in="" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.5;color:var(--ink-muted);max-width:40ch;text-wrap:pretty;font-size:19px">Execution only creates value when its impact can be measured.</p>
-        <div data-m-in="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;padding-top:24px;border-top:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:14px;min-width:0"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)">Activities</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-family:var(--font-text);font-size:15px;font-weight:500;line-height:1.35"><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>KPI tracking</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Performance analysis</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Feedback</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Continuous learning</span></li></ul></div><div style="display:flex;flex-direction:column;gap:10px;min-width:0;"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Deliverable</span><span style="font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;text-wrap:balance">Impact Report</span><span style="font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-muted);text-wrap:pretty;max-width:46ch">Results, insights, lessons learned and recommendations for the next stage.</span></div></div>
-      </article>
-      <article data-m-step="" style="min-height:72vh;box-sizing:border-box;padding:48px 0;display:flex;flex-direction:column;justify-content:center;gap:24px">
-        <span data-m-in="" style="display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--ink-muted);text-transform:uppercase">05<span aria-hidden="true" style="width:24px;height:1px;background:var(--border-control)"></span>Evolve</span>
-        <h3 data-m-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(32px,3.6vw,60px);line-height:1.08;letter-spacing:-0.025em;color:var(--accent);text-wrap:balance">What's next?</h3>
-        <p data-m-in="" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.5;color:var(--ink-muted);max-width:40ch;text-wrap:pretty;font-size:19px">Evolution is a continuous cycle.</p>
-        <div data-m-in="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;padding-top:24px;border-top:1px solid var(--border-subtle)"><div style="display:flex;flex-direction:column;gap:14px;min-width:0"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)">Activities</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-family:var(--font-text);font-size:15px;font-weight:500;line-height:1.35"><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Strategic review</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>New opportunity identification</span></li><li style="display:flex;align-items:flex-start;gap:10px"><span class="ty-tri" aria-hidden="true" style="flex:none;height:8px;width:6.9px;background:var(--accent);margin-top:.4em"></span><span>Continuous improvement</span></li></ul></div><div style="display:flex;flex-direction:column;gap:10px;min-width:0;"><span style="font-family:var(--font-text);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Deliverable</span><span style="font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-0.01em;text-wrap:balance">Next Opportunity Brief</span><span style="font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-muted);text-wrap:pretty;max-width:46ch">A summary of new opportunities, priorities and recommendations that kick off the next evolution cycle.</span></div></div>
-      </article>
-    </div>
-  </div>
-</section>
-<script src="js/main.js" defer></script>
+    if (sessionStorage.getItem('types-access') === '1') {
+      window.location.replace('preview.html');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value === PASSWORD) {
+        sessionStorage.setItem('types-access', '1');
+        window.location.href = 'preview.html';
+      } else {
+        err.textContent = 'Incorrect code. Try again.';
+        input.value = '';
+        input.focus();
+      }
+    });
+  </script>
 </body>
 </html>
