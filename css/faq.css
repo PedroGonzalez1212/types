@@ -1,0 +1,64 @@
+/* Types — FAQ section (rendered by js/faq.js). Shared by every page; the
+   accent color comes from the section's .ty-accent-* class. */
+
+/* ---------- FAQ: desktop tabs + panel ---------- */
+.faq-desk { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: stretch; }
+.faq-tabs { grid-column: 1 / span 5; display: flex; flex-direction: column; border-top: 1px solid var(--border-subtle); }
+.faq-tab {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  width: 100%; min-height: 56px; padding: 22px 16px 22px 0;
+  background: none; border: 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; text-align: left;
+  color: rgba(255, 255, 255, .78); font-family: var(--font-display); font-size: 21px; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em;
+  transition: color .15s;
+}
+.faq-tab:hover, .faq-tab[aria-selected="true"] { color: var(--ink); }
+.faq-tab:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.faq-tri { flex: none; height: 12px; width: 10.4px; transition: background-color .15s, transform .2s; }
+.faq-tab .faq-tri { background: var(--border-control); }
+.faq-tab[aria-selected="true"] .faq-tri { background: var(--accent); transform: translateX(6px); }
+
+.faq-panel {
+  grid-column: 6 / span 7; position: relative; box-sizing: border-box;
+  padding: clamp(32px, 3.6vw, 56px);
+  background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: 2px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.faq-panel:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.faq-panel__bar { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--accent); }
+.faq-panel__body { display: flex; flex-direction: column; gap: 6px; max-width: 62ch; }
+.faq-panel__body p { margin: 0; font-family: var(--font-text); font-size: 21px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+.faq-panel__body strong, .faq-acc__panel strong { font-weight: 700; color: var(--accent); }
+
+/* ---------- FAQ: mobile accordion ---------- */
+.faq-mob { border-bottom: 1px solid var(--border-subtle); }
+.faq-acc { border-top: 1px solid var(--border-subtle); }
+.faq-acc h3 { margin: 0; }
+.faq-acc__btn {
+  width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 22px 0; background: none; border: 0; cursor: pointer; text-align: left;
+  color: var(--ink); font-family: var(--font-display); font-size: 20px; font-weight: 500; line-height: 1.35;
+}
+.faq-acc__btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.faq-acc__btn .faq-tri { background: var(--accent); transition: transform .3s; }
+.faq-acc__btn[aria-expanded="true"] .faq-tri { transform: rotate(90deg); }
+.faq-acc__panel { display: flex; flex-direction: column; gap: 4px; margin: 0 0 24px; }
+.faq-acc__panel[hidden] { display: none; }
+.faq-acc__panel p { margin: 0; font-family: var(--font-text); font-size: 19px; line-height: 1.6; color: var(--ink); }
+
+/* ---------- Responsive (tabs ≥ 1024px, accordion below — see faq.js) ---------- */
+@media (max-width: 1279px) {
+  .faq-tab { font-size: 19px; }
+  .faq-panel__body p { font-size: 19px; }
+}
+@media (max-width: 767px) {
+  .faq-acc__btn { font-size: 19px; }
+  .faq-acc__panel p { font-size: 17px; }
+}
+@media (max-width: 479px) {
+  .faq-acc__btn { font-size: 17px; gap: 14px; padding: 18px 0; }
+  .faq-acc__panel p { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-tab, .faq-tri { transition: none; }
+}

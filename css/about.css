@@ -1,0 +1,76 @@
+/* Types — About page. 12-column layout on desktop that collapses to 4 below
+   900px, plus hover states the design expressed as interaction props. */
+
+a:hover { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Layout grid ---------- */
+.ab-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+.ab-a    { grid-column: 1 / span 5; }
+.ab-b    { grid-column: 8 / span 5; }
+.ab-wide { grid-column: 1 / span 7; }
+.ab-q    { grid-column: 6 / span 7; }
+.ab-full { grid-column: 1 / -1; }
+.ab-sticky { position: sticky; top: 140px; }
+.ab-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 64px); row-gap: 48px; }
+.ab-two   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 56px; }
+
+/* ---------- Hero ---------- */
+.ab-scroll { display: flex; align-items: center; gap: 12px; min-height: 44px; font-family: var(--font-text); font-size: 15px; font-weight: 600; letter-spacing: .06em; color: var(--ink-muted); text-decoration: none; transition: color .15s; }
+.ab-scroll:hover { color: var(--ink); }
+
+/* ---------- Questions ---------- */
+.ab-qlist { margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--border-subtle); }
+.ab-qitem { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(20px, 2.4vw, 40px); padding: clamp(36px, 7vh, 80px) 0; border-top: 1px solid var(--border-subtle); color: var(--ink-subtle); transition: color .15s; }
+.ab-qitem__n { align-self: start; display: flex; align-items: center; gap: 10px; padding-top: clamp(10px, 1.3vw, 20px); font-family: var(--font-text); font-size: 15px; font-weight: 600; letter-spacing: .18em; }
+.ab-qitem__n .ty-tri { height: 12px; width: 10.4px; background: var(--border-control); transition: background-color .15s; }
+.ab-qitem__t { font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 3.6vw, 56px); line-height: 1.08; letter-spacing: -0.035em; text-wrap: balance; }
+.ab-seg { position: relative; height: 2px; background: var(--border-subtle); }
+.ab-seg > span { position: absolute; left: 0; top: 0; bottom: 0; width: 0; transition: width .15s; }
+
+/* ---------- Closing CTA ---------- */
+.ab-cta { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; }
+.ab-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
+
+/* ---------- Responsive (breakpoints: see site.css) ---------- */
+
+/* Laptop (≤ 1279px) */
+@media (max-width: 1279px) {
+  .ab-sticky { top: 120px; }
+}
+
+/* Tablet (≤ 1023px): the hero statement and the "what we believe" headline
+   take the full width, with their supporting copy in the right half below.
+   The sticky question tracker narrows so the questions get more room. */
+@media (max-width: 1023px) {
+  .ab-wide { grid-column: 1 / -1; }
+  .ab-b { grid-column: 7 / span 6; }
+  #questions .ab-a { grid-column: 1 / span 4; }
+  #questions .ab-q { grid-column: 5 / span 8; }
+  .ab-cards { column-gap: 24px; }
+  .ab-qitem { padding: clamp(32px, 6vh, 64px) 0; }
+}
+
+/* Mobile (≤ 767px): one column; the stats read as number | label rows. */
+@media (max-width: 767px) {
+  .ab-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ab-a, .ab-b, .ab-wide, .ab-q, #questions .ab-a, #questions .ab-q { grid-column: 1 / -1; }
+  .ab-sticky { position: static; }
+  .ab-two { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
+  .ab-cards { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
+  .ab-cards > li { flex-direction: row !important; align-items: center; gap: 24px !important; padding-top: 24px !important; }
+  .ab-cards > li > p:first-of-type { flex: 0 0 46%; font-size: clamp(56px, 13vw, 96px) !important; }
+  .ab-qitem { column-gap: 16px; padding: 32px 0; }
+  .ab-qitem__t { font-size: clamp(26px, 6.4vw, 40px); }
+  .ab-cta { font-size: 18px; padding: 18px 28px; }
+}
+
+/* Small mobile (≤ 479px): stats stack again, number above label. */
+@media (max-width: 479px) {
+  .ab-cards > li { flex-direction: column !important; align-items: flex-start; gap: 12px !important; }
+  .ab-cards > li > p:first-of-type { flex: none; font-size: 72px !important; }
+  .ab-qitem { grid-template-columns: minmax(0, 1fr); row-gap: 12px; padding: 28px 0; }
+  .ab-qitem__n { padding-top: 0; }
+  .ab-qitem__t { font-size: 26px; }
+}

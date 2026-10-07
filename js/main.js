@@ -1,12 +1,19 @@
-/* Types — Solutions (4 cards, white header). Scroll-driven hero/solutions/method
-   animation, ported from the Claude Design canvas component to plain JS.
-   Loaded with `defer`, so the DOM below is already parsed when this runs. */
+/* Types — Home. Scroll-driven hero/solutions/method animation, ported from the
+   Claude Design canvas component (home.dc.html) to plain JS.
+   Loaded with `defer`, so the DOM below is already parsed when this runs.
+   Header menu/language/wordmark: nav.js. FAQ, contact form and section
+   reveals: faq.js, contact.js, reveal.js. */
 
 (function () {
   "use strict";
 
-  // Defaults for the knobs the canvas editor used to expose as live-tunable props.
-  var PROPS = { skipIntro: false, gridDuration: 3800, scrollLength: 1.5, exitLength: 1.5, titleLength: 1.4 };
+  // Defaults for the knobs the canvas editor exposed as live-tunable props.
+  var PROPS = {
+    skipIntro: false, gridDuration: 3800,
+    scrollLength: 0.8, exitLength: 1, titleLength: 0.9,
+    wordColors: true, wordGlow: true
+  };
+  var WORDS = ['clarity.', 'confidence.', 'focus.', 'intelligence.'];
 
   var root = document.getElementById('root');
   var blobs = document.getElementById('blobs');
@@ -27,17 +34,10 @@
   var markX = null, lineCap, lineT = 0, line = 0;
   var gOff, gTarget, exCell = null, cells = [];
   var drawGrid = null, onResize, ro;
-  var onGridScroll, onKey, onSolResize, onSolScroll, onNav;
   var fitGrid, fitDD, hdRo, solRo, mOff;
 
   function later(f, ms) { timeouts.push(setTimeout(f, ms)); }
-
-  // ---------- Language toggle (visual state only — no translated copy yet) ----------
-  function setLang(l) {
-    document.getElementById('lang-en').setAttribute('aria-pressed', String(l === 'en'));
-    document.getElementById('lang-es').setAttribute('aria-pressed', String(l === 'es'));
-  }
-  window.setLang = setLang;
+  function header() { return root && root.querySelector('header'); }
 
   // ---------- Background triangle grid (canvas) ----------
   function setupGrid() {
@@ -46,7 +46,7 @@
     var ease = function (p) { return 1 - Math.pow(1 - p, 3); };
     var size = function () {
       var old = new Map(cells.map(function (c) { return [c.i + ',' + c.j, c.st]; }));
-      dpr = Math.min(1.5, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; VH = innerHeight;
+      dpr = 1; W = cv.clientWidth; H = cv.clientHeight; VH = innerHeight;
       cv.width = W * dpr; cv.height = H * dpr; cells = [];
       var maxD = Math.hypot(W, VH);
       var dm = new Set(), nb = function (i, j) {
@@ -58,11 +58,15 @@
       }
     };
     drawGrid = function (now) {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.lineWidth = 1;
-      { var o = gOff || { x: 0, y: 0 }; ctx.setTransform(dpr, 0, 0, dpr, dpr * o.x, dpr * o.y); }
+      ctx.lineWidth = 1;
+      // The canvas spans several screens; only clear and draw the band near the viewport.
+      var vt = -cv.getBoundingClientRect().top - TH - 100, vb = vt + VH + TH * 2 + 200;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, Math.max(0, vt - 100), W, VH + TH * 2 + 400);
+      { var o2 = gOff || { x: 0, y: 0 }; ctx.setTransform(dpr, 0, 0, dpr, dpr * o2.x, dpr * o2.y); vt -= o2.y; vb -= o2.y; }
       var busy = false;
       for (var k = 0; k < cells.length; k++) {
         var c = cells[k], r;
+        if (c.y + TH < vt || c.y > vb) { if (c.hero && c.st != null && now - c.st < DUR) busy = true; continue; }
         if (c.hero) { if (c.st == null) continue; r = Math.min(1, Math.max(0, (now - c.st) / DUR)); if (r < 1) busy = true; }
         else { if (!revealed) continue; r = Math.min(1, Math.max(0, (line - c.y - Math.pow(1 - c.x / W, 1.3) * VH * 1.2 - c.rnd * VH * .1) / (VH * .45))); }
         if (r <= 0) continue;
@@ -107,8 +111,8 @@
   // ---------- Solutions section: pinned scroll choreography ----------
   function solTick() {
     var s = sol; if (!s) return;
-    var L = PROPS.scrollLength ?? 1.5, EL = PROPS.exitLength ?? 1.5;
-    var TLf = PROPS.titleLength ?? 1.4, nh = (100 + 200 * L + 100 * EL + 100 * TLf) + 'vh';
+    var L = PROPS.scrollLength, EL = PROPS.exitLength;
+    var TLf = PROPS.titleLength, nh = (100 + 200 * L + 100 * EL + 100 * TLf) + 'vh';
     if (s.style.height !== nh) { s.style.height = nh; fitGrid && fitGrid(); }
     var r = s.getBoundingClientRect(), cl = function (v) { return Math.min(1, Math.max(0, v)); }, ease = function (v) { return 1 - Math.pow(1 - v, 3); }, io = function (v) { return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
     var RV = innerHeight * 2 * L, EX = innerHeight * EL, rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -120,27 +124,35 @@
     solTitle(s, rmo ? 0 : cl((-r.top - RV - EX) / Math.max(1, innerHeight * TLf)), cl, io);
     var tEl = s.querySelector('[data-type]'), caret = s.querySelector('[data-caret]');
     if (tEl) {
-      var full = "What's Next?", rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var tp = rm ? 1 : cl((innerHeight * .85 - r.top) / (innerHeight * .7));
+      var full = 'What’s Next?';
+      var tp = rmo ? 1 : cl((innerHeight * .85 - r.top) / (innerHeight * .7));
       var n = Math.round(tp * full.length);
       if (tEl.textContent.length !== n) tEl.textContent = full.slice(0, n);
-      caret.style.opacity = rm ? 0 : 1 - cl((p - .02) / .06);
+      caret.style.opacity = rmo ? 0 : 1 - cl((p - .02) / .06);
     }
     var st = s.querySelector('[data-sol-sticky]');
     if (st) st.style.top = '0px';
+    // Mobile track: the row of cards slides left with the scroll. Card i is centred
+    // when its slice below has fully opened it (p ≈ .13, .39, .62, .85), and is
+    // already sliding in while it starts to open.
+    var gridEl = s.querySelector('[data-sol-grid]');
+    if (gridEl.classList.contains('is-track')) {
+      var K = [.13, .39, .62, .85], c0 = gridEl.firstElementChild, cw = c0.offsetWidth + 16, idx = 0;
+      for (var j = 1; j < K.length; j++) idx += cl((p - K[j - 1]) / (K[j] - K[j - 1]));
+      var shift = Math.max(0, gridEl.scrollWidth - gridEl.clientWidth);
+      var x = Math.min(shift, Math.max(0, idx * cw - (gridEl.clientWidth - c0.offsetWidth) / 2));
+      gridEl.style.transform = 'translateX(' + (-x) + 'px)';
+    } else if (gridEl.style.transform) gridEl.style.transform = '';
+    // Cards open one after another: each gets its own slice of the scroll progress.
     s.querySelectorAll('[data-sol]').forEach(function (col, i) {
       var card = col.querySelector('[data-sol-card]');
-      var R = (1 - ease(cl((p - i * .035) / .12))) * 100;
-      var qb = io(cl((p - .12 - i * .05) / .32)), qt = io(cl((p - .17 - i * .05) / .32));
+      var S0 = [0, .24, .47, .7][i] ?? 0, LN = i ? .3 : .26, q = cl((p - S0) / LN);
+      var R = (1 - ease(cl(q / .12))) * 100;
+      var qb = io(cl((q - .12) / .32)), qt = io(cl((q - .17) / .32));
       card.style.clipPath = 'inset(' + ((1 - qt) * 50) + '% ' + R + '% calc(' + ((1 - qb) * 50) + '% - ' + ((1 - qb) * 3) + 'px) 0)';
       card.querySelector('[data-sol-fill]').style.opacity = 1 - ease(cl((qb - .1) / .7));
-      var num = card.querySelector('[data-sol-num]');
-      num.textContent = String(i + 1).padStart(2, '0');
-      var ni = ease(cl((p - .56 - i * .03) / .08)), no = ease(cl((p - .72 - i * .03) / .08));
-      num.style.opacity = ni * (1 - no); num.style.transform = 'translateY(' + ((1 - ni) * 16 - no * 24) + 'px)';
-      card.querySelectorAll('[data-sol-in]').forEach(function (n2, k) {
-        var c = ease(cl((p - .8 - i * .025 - k * .015) / .1));
-        n2.style.opacity = c; n2.style.transform = 'translateY(' + ((1 - c) * 20) + 'px)';
+      card.querySelectorAll('[data-sol-in]').forEach(function (n2) {
+        n2.style.opacity = qb > 0 ? 1 : 0; n2.style.transform = 'none';
       });
     });
   }
@@ -151,7 +163,7 @@
     var m = io(cl(ex / .6)), z = parseFloat(gridEl.style.zoom) || 1;
     var D = head.offsetTop + head.offsetHeight + 40, up = m ? 'translateY(' + (-m * D) + 'px)' : '';
     head.style.transform = up;
-    var hd = root && root.querySelector('header');
+    var hd = header();
     if (hd) hd.style.transform = up;
     var e0 = cl(ex / .6);
     s.querySelectorAll('[data-sol]').forEach(function (col, i) {
@@ -165,7 +177,7 @@
     if (cv) { var q = cl((ex - .06) / .18); cv.style.opacity = q ? 1 - q : ''; cv.style.transform = q ? 'translateY(' + (q * q * 60) + 'px)' : ''; }
     if (ex <= 0) {
       exCell = null; cover.style.opacity = 0; cover.style.clipPath = 'polygon(0 0,0 0,0 0)';
-      edge.style.opacity = 0; edge.style.clipPath = 'polygon(0 0,0 0,0 0)';
+      if (edge) { edge.style.opacity = 0; edge.style.clipPath = 'polygon(0 0,0 0,0 0)'; }
       return;
     }
     if (!exCell && cells) {
@@ -180,19 +192,18 @@
     var t = cl((ex - .06) / .9), rot = io(cl(t / .35)), mv = io(cl(t / .45)), g = cl((t - .12) / .88);
     var pop = 1 + .35 * Math.sin(Math.PI * cl(t / .22)) * (1 - cl((t - .11) / .2)), R = R0 * pop + (4.3 * Math.hypot(innerWidth, innerHeight) / 2 - R0) * Math.pow(g, 2.4);
     var X = x0 + (sx - R / 4 - x0) * mv - sb.left, Y = y0 + (sy - y0) * mv - sb.top, th = (1 - rot) * Math.PI / 2;
-    var tri = function (rad) {
+    var triPoly = function (rad) {
       return 'polygon(' + [0, 1, 2].map(function (k) { return (X + rad * Math.cos(th + k * 2 * Math.PI / 3)) + 'px ' + (Y + rad * Math.sin(th + k * 2 * Math.PI / 3)) + 'px'; }).join(',') + ')';
     };
     cover.style.opacity = cl((ex - .06) / .03);
-    cover.style.clipPath = t >= 1 ? 'none' : tri(R);
+    cover.style.clipPath = t >= 1 ? 'none' : triPoly(R);
     // Teal rim: the same triangle 4px larger, peeking out from behind the cover.
-    edge.style.opacity = t >= 1 ? 0 : cover.style.opacity;
-    edge.style.clipPath = tri(R + 4);
+    if (edge) { edge.style.opacity = t >= 1 ? 0 : cover.style.opacity; edge.style.clipPath = triPoly(R + 4); }
   }
 
   function solTitle(s, ti, cl, io) {
     var st = s.querySelector('[data-sol-sticky]'), el = s.querySelector('[data-m-title]'); if (!el) return;
-    var hd = root && root.querySelector('header');
+    var hd = header();
     var on = ti > 0, gy = on ? '#0a0b0d' : '';
     if (root) root.style.zIndex = on ? '3' : '';
     s.style.background = on ? '#0a0b0d' : 'transparent';
@@ -212,31 +223,56 @@
 
   function solLayout() {
     var s = sol; if (!s) return;
-    var cols = innerWidth < 640 ? 1 : (innerWidth < 1000 && innerHeight >= 860) ? 2 : 4, gridEl = s.querySelector('[data-sol-grid]');
+    // Breakpoints (see css/site.css): ≥ 1024 four columns · 768–1023 a 2×2 grid
+    // (when there is height for it) · < 768, or under 560px tall, a sliding track.
+    var track = innerWidth < 768 || innerHeight < 560;
+    var cols = track ? 4 : (innerWidth < 1024 && innerHeight >= 700) ? 2 : 4, gridEl = s.querySelector('[data-sol-grid]');
+    gridEl.classList.toggle('is-track', track);
     gridEl.style.gridTemplateColumns = 'repeat(' + cols + ',minmax(0,1fr))';
     gridEl.style.gap = innerWidth < 1280 ? '16px' : '24px';
-    var hd = root && root.querySelector('header');
+    var hd = header();
     var st = s.querySelector('[data-sol-sticky]'), pt = (hd ? hd.offsetHeight : 80) + Math.max(24, innerHeight * .05); st.style.paddingTop = pt + 'px';
     var eb = s.querySelector('[data-sol-h2]').previousElementSibling, cs = getComputedStyle(st);
     gridEl.style.zoom = 1;
     var avail = innerHeight - pt - eb.parentElement.offsetHeight - parseFloat(cs.rowGap || 0) - parseFloat(cs.paddingBottom || 0);
     var lim = innerHeight - parseFloat(cs.paddingBottom || 0);
     var zMin = innerWidth < 1000 ? .6 : .75;
-    var z = cols === 1 ? 1 : Math.max(zMin, Math.min(1, (avail - 4) / gridEl.offsetHeight));
+    var z = track ? 1 : Math.max(zMin, Math.min(1, (avail - 4) / gridEl.offsetHeight));
     gridEl.style.zoom = z;
-    for (var k = 0; k < 4 && cols > 1 && z > zMin; k++) {
+    for (var k = 0; k < 4 && !track && z > zMin; k++) {
       var b = gridEl.getBoundingClientRect().bottom - st.getBoundingClientRect().top;
       if (b <= lim) break;
       z = Math.max(zMin, z * (lim - 4) / b); gridEl.style.zoom = z;
     }
     var cv = grid;
     if (cv) {
-      var cr = cv.getBoundingClientRect(), r = s.getBoundingClientRect(), gb = gridEl.getBoundingClientRect(), sb = st.getBoundingClientRect(), RV = innerHeight * 2 * (PROPS.scrollLength ?? 1.5);
-      var gx = gb.left + gb.width / 2 - cr.left, gy = gb.top + gb.height / 2 - sb.top - (cr.top - r.top - RV - .06 * innerHeight * (PROPS.exitLength ?? 1.5)), md = function (a, n) { return ((a % n) + n) % n; };
+      var cr = cv.getBoundingClientRect(), r = s.getBoundingClientRect(), gb = gridEl.getBoundingClientRect(), sb = st.getBoundingClientRect(), RV = innerHeight * 2 * PROPS.scrollLength;
+      // On the track the grid box runs off-screen, so aim at the middle of the screen.
+      var gx = (track ? sb.left + sb.width / 2 : gb.left + gb.width / 2) - cr.left, gy = gb.top + gb.height / 2 - sb.top - (cr.top - r.top - RV - .06 * innerHeight * PROPS.exitLength), md = function (a, n) { return ((a % n) + n) % n; };
       gOff = { x: md(gx - 14 + 28, 56) - 28, y: md(gy - 30.17 + 48.5, 97) - 48.5 };
       gTarget = { x: gx, y: gy }; exCell = null;
       if (drawGrid && !graf) drawGrid(performance.now());
     }
+  }
+
+  // ---------- In-page anchors: land where each pinned section reads best ----------
+  function scrollToSection(id, smooth) {
+    var s = id && document.getElementById(id); if (!s) return false;
+    var rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hd = header(), hh = hd ? hd.offsetHeight : 80;
+    var base = s.getBoundingClientRect().top + scrollY;
+    // Solutions lands with every card open; on the mobile track, with the first one open.
+    var track = id === 'solutions' && s.querySelector('[data-sol-grid].is-track');
+    var y = id === 'solutions' ? base + (rmo ? 0 : track ? innerHeight * .22 : innerHeight * 2 * PROPS.scrollLength / 1.08 + 2) : id === 'method' ? base + 2 : base - hh;
+    window.scrollTo({ top: y, behavior: smooth && !rmo ? 'smooth' : 'auto' });
+    return true;
+  }
+  function onAnchorClick(ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if (!scrollToSection(id, true)) return;
+    ev.preventDefault();
+    history.replaceState(null, '', '#' + id);
   }
 
   // ---------- Header nav indicator ----------
@@ -272,11 +308,12 @@
     later(function () { reveal(false); }, 450);
   }
   function reveal(instant) {
-    var r = root, e = 'cubic-bezier(.2,.8,.2,1)', gd = PROPS.gridDuration ?? 3800, now = performance.now();
+    var r = root, e = 'cubic-bezier(.2,.8,.2,1)', gd = PROPS.gridDuration, now = performance.now();
     cells.forEach(function (c) { c.st = instant ? -1e9 : now + c.d * gd + c.rnd * 300; });
     revealed = true; line = lineT = -grid.getBoundingClientRect().top + innerHeight * 1.5;
     if (instant) {
       drawGrid(now); blobs.style.opacity = '.4'; content.style.opacity = '1';
+      paintWord(0);
       if (!reduce) { startBlobs(); startRotation(); }
       return;
     }
@@ -290,18 +327,18 @@
         n.animate([{ opacity: 0, transform: 'translateY(-16px)' }, { opacity: 1, transform: 'none' }], { duration: 800, easing: e, fill: 'backwards' });
       });
       r.querySelectorAll('[data-line] > span').forEach(function (n, i) {
-        n.animate([{ transform: 'translateY(55%)', opacity: 0, filter: 'blur(6px)' }, { transform: 'none', opacity: 1, filter: 'blur(0)' }], { duration: 1700, delay: 150 + i * 240, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+        n.animate([{ transform: 'translateY(55%)', opacity: 0, filter: 'blur(6px)' }, { transform: 'none', opacity: 1, filter: 'blur(0)' }], { duration: 1100, delay: 60 + i * 140, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
       });
       r.querySelectorAll('[data-in]:not(header)').forEach(function (n, i) {
-        n.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: 700 + i * 140, easing: e, fill: 'backwards' });
+        n.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 600, delay: 400 + i * 100, easing: e, fill: 'backwards' });
       });
-      later(function () { startRotation(); }, 1600);
-    }, gd * .75);
+      later(function () { startRotation(); }, 1100);
+    }, 500);
   }
   function replay() {
     clearInterval(timer); cancelAnimationFrame(graf); graf = 0; timeouts.forEach(clearTimeout); timeouts = [];
     root.getAnimations({ subtree: true }).forEach(function (a) { a.cancel(); });
-    if (word) word.textContent = 'clarity.';
+    if (word) { word.textContent = WORDS[0]; paintWord(0); }
     content.style.opacity = '0'; blobs.style.opacity = '0';
     revealed = false; cells.forEach(function (c) { c.st = null; }); drawGrid(0);
     intro.style.display = ''; intro.style.background = 'var(--surface-page)';
@@ -317,16 +354,24 @@
       ], { duration: 14000 + i * 3000, iterations: Infinity, easing: 'ease-in-out' });
     });
   }
+  // Each rotating word takes one of the four brand colors, with a soft glow.
+  function paintWord(i) {
+    if (!word) return;
+    var c = PROPS.wordColors ? ['--brand-green', '--brand-magenta', '--brand-teal', '--brand-orange'][i % 4] : '--brand-green';
+    word.style.color = 'var(' + c + ')';
+    word.style.textShadow = PROPS.wordGlow ? '0 0 .35em rgba(255,255,255,.14), 0 0 .08em rgba(255,255,255,.18)' : 'none';
+  }
   function startRotation() {
     clearInterval(timer);
-    var words = ['clarity.', 'confidence.', 'focus.', 'intelligence.'], e = 'cubic-bezier(.7,0,.2,1)';
+    var e = 'cubic-bezier(.7,0,.2,1)';
     var i = 0;
+    paintWord(0);
     timer = setInterval(function () {
-      i = (i + 1) % words.length;
-      var next = words[i];
+      i = (i + 1) % WORDS.length;
+      var next = WORDS[i], k = i;
       [word].filter(Boolean).forEach(function (w) {
         w.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-105%)', opacity: 0 }], { duration: 450, easing: e, fill: 'forwards' }).onfinish = function () {
-          w.textContent = next;
+          w.textContent = next; paintWord(k);
           w.animate([{ transform: 'translateY(105%)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 550, easing: e, fill: 'forwards' });
         };
       });
@@ -339,11 +384,11 @@
     if (!el) return;
     var cl = function (v) { return Math.min(1, Math.max(0, v)); }, ease = function (v) { return 1 - Math.pow(1 - v, 3); }, rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var $ = function (s) { return [].slice.call(el.querySelectorAll(s)); };
-    var lblOn = function (a) { $('[data-m-lbl]').forEach(function (l, i) { l.style.color = i === a ? 'var(--brand-teal)' : i < a ? 'var(--ink-muted)' : 'var(--ink-subtle)'; }); };
+    var lblOn = function (a) { $('[data-m-lbl]').forEach(function (l, i) { l.style.color = i === a ? 'var(--brand-teal)' : 'var(--ink-muted)'; }); };
     var N = ['Explore', 'Design', 'Build', 'Measure', 'Evolve'];
     var gridEl = el.querySelector('[data-m-grid]'), left = el.querySelector('[data-m-left]'), right = el.querySelector('[data-m-right]'), fill = el.querySelector('[data-m-fill]'), markEl = el.querySelector('[data-m-mark]'), wordEl = el.querySelector('[data-m-word]'), count = el.querySelector('[data-m-count]'), steps = $('[data-m-step]');
     var track = el.querySelector('[data-m-track]'), divL = count.parentElement;
-    var act = 0, busy = false, pb = innerHeight * .3, tb = pb, ty = innerHeight * .5;
+    var act = 0, busy = false, pb = innerHeight * .3, tb = pb, ty = innerHeight * .5, t0 = innerHeight * .7, narrow = false;
     var swap = function () {
       if (busy || wordEl.textContent === N[act]) return;
       if (rm) { wordEl.textContent = N[act]; return; }
@@ -352,38 +397,6 @@
         wordEl.textContent = N[act];
         wordEl.animate([{ transform: 'translateY(105%)' }, { transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).onfinish = function () { busy = false; swap(); };
       };
-    };
-    var layout = function () {
-      var narrow = innerWidth < 900, hd = root && root.querySelector('header'), hh = hd ? hd.offsetHeight : 79;
-      gridEl.style.gridTemplateColumns = narrow ? 'minmax(0,1fr)' : 'minmax(0,5fr) minmax(0,7fr)';
-      left.style.position = narrow ? 'relative' : 'sticky'; left.style.top = '0';
-      left.style.height = narrow ? 'auto' : innerHeight + 'px'; left.style.paddingTop = narrow ? (hh + 48) + 'px' : hh + 'px';
-      fitBox(left, [].slice.call(left.children));
-      var last = steps[steps.length - 1], g = last && last.querySelector('[data-m-in]:last-child');
-      if (narrow || !g) { pb = tb = innerHeight * .3; ty = innerHeight * .5; }
-      else {
-        var dl = divL.getBoundingClientRect().top - left.getBoundingClientRect().top;
-        var inner = last.getBoundingClientRect().bottom - g.getBoundingClientRect().top;
-        pb = Math.max(0, innerHeight - dl - inner); tb = pb + inner; ty = dl;
-      }
-      right.style.paddingBottom = pb + 'px'; track.style.bottom = tb + 'px';
-    };
-    var tick = function () {
-      el.style.visibility = el.getBoundingClientRect().top <= 1 ? 'visible' : 'hidden';
-      var rr = right.getBoundingClientRect(), top = rr.top + innerHeight * .7, len = rr.height - innerHeight * .7 - tb, f = cl((ty - top) / len);
-      fill.style.height = (f * len) + 'px'; markEl.style.transform = 'translateY(' + (f * len) + 'px)';
-      var a = 0;
-      steps.forEach(function (s, i) {
-        var b = s.getBoundingClientRect(); if (b.top < innerHeight * .5) a = i;
-        var e = rm ? 1 : ease(cl((innerHeight * .92 - b.top) / (innerHeight * .45)));
-        var focus = .35 + .65 * (1 - cl((Math.abs(b.top + b.height / 2 - innerHeight / 2) - b.height * .3) / (innerHeight * .3)));
-        s.querySelectorAll('[data-m-in]').forEach(function (n, k) {
-          var v = ease(cl(e * 1.5 - k * .14));
-          n.style.opacity = v * focus; n.style.transform = 'translateX(' + ((1 - v) * 72) + 'px)';
-        });
-      });
-      count.textContent = String(a + 1).padStart(2, '0') + ' / 05'; lblOn(a);
-      if (a !== act) { act = a; swap(); }
     };
     var fitBox = function (box, kids) {
       kids.forEach(function (k) { k.style.zoom = 1; });
@@ -394,11 +407,50 @@
         kids.forEach(function (k) { k.style.zoom = z; });
       }
     };
-    var fitAll = function () {
-      var sh = innerHeight < 760;
-      el.querySelectorAll('[style*="46ch"]').forEach(function (n) { n.style.display = sh ? 'none' : ''; });
-      layout(); tick();
+    var layout = function () {
+      // Sticky two-column scrubber from the tablet breakpoint up; one column on mobile,
+      // where the steps follow the intro straight away instead of after 70vh of space.
+      var hd = header(), hh = hd ? hd.offsetHeight : 79;
+      narrow = innerWidth < 768;
+      gridEl.style.gridTemplateColumns = narrow ? 'minmax(0,1fr)' : 'minmax(0,5fr) minmax(0,7fr)';
+      left.style.position = narrow ? 'relative' : 'sticky'; left.style.top = '0';
+      left.style.height = narrow ? 'auto' : innerHeight + 'px'; left.style.paddingTop = narrow ? (hh + 48) + 'px' : hh + 'px';
+      right.style.paddingTop = narrow ? '56px' : '70vh';
+      right.style.paddingLeft = narrow ? '28px' : 'clamp(32px,4vw,64px)';
+      fitBox(left, [].slice.call(left.children));
+      var last = steps[steps.length - 1], g = last && last.querySelector('[data-m-in]:last-child');
+      if (narrow) { pb = tb = 48; ty = innerHeight * .5; }
+      else if (!g) { pb = tb = innerHeight * .3; ty = innerHeight * .5; }
+      else {
+        var dl = divL.getBoundingClientRect().top - left.getBoundingClientRect().top;
+        var inner = last.getBoundingClientRect().bottom - g.getBoundingClientRect().top;
+        pb = Math.max(0, innerHeight - dl - inner); tb = pb + inner; ty = dl;
+      }
+      // On desktop the track starts at the divider's height, so the marker sits level with it from the first frame.
+      t0 = narrow ? 56 : !g ? innerHeight * .7 : ty;
+      track.style.top = fill.style.top = markEl.style.top = t0 + 'px';
+      right.style.paddingBottom = pb + 'px'; track.style.bottom = tb + 'px';
     };
+    var tick = function () {
+      el.style.visibility = el.getBoundingClientRect().top <= 1 ? 'visible' : 'hidden';
+      var rr = right.getBoundingClientRect(), top = rr.top + t0, len = rr.height - t0 - tb, f = cl((ty - top) / len);
+      fill.style.height = (f * len) + 'px'; markEl.style.transform = 'translateY(' + (f * len) + 'px)';
+      var a = 0;
+      steps.forEach(function (s, i) {
+        var b = s.getBoundingClientRect(); if (b.top < innerHeight * .5) a = i;
+        var e = rm ? 1 : ease(cl((innerHeight * .92 - b.top) / (innerHeight * .45)));
+        var focus = .62 + .38 * (1 - cl((Math.abs(b.top + b.height / 2 - innerHeight / 2) - b.height * .3) / (innerHeight * .3)));
+        s.querySelectorAll('[data-m-in]').forEach(function (n, k) {
+          var v = ease(cl(e * 1.5 - k * .14)), nb = n.getBoundingClientRect(), inView = nb.top >= 0 && nb.bottom <= innerHeight;
+          // Entrance: in from the right beside the sticky column; rising from below on mobile.
+          n.style.opacity = v * (inView ? Math.max(focus, .92) : focus);
+          n.style.transform = narrow ? 'translateY(' + ((1 - v) * 28) + 'px)' : 'translateX(' + ((1 - v) * (innerWidth < 1024 ? 40 : 72)) + 'px)';
+        });
+      });
+      count.textContent = String(a + 1).padStart(2, '0') + ' / 05'; lblOn(a);
+      if (a !== act) { act = a; swap(); }
+    };
+    var fitAll = function () { layout(); tick(); };
     var raf2 = 0, on = function () { if (!raf2) raf2 = requestAnimationFrame(function () { raf2 = 0; tick(); }); };
     fitAll(); addEventListener('resize', fitAll); document.fonts && document.fonts.ready.then(fitAll);
     var to = setTimeout(fitAll, 1500);
@@ -410,23 +462,26 @@
   function init() {
     reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     setupGrid();
-    onGridScroll = function () { gridScroll(); };
-    addEventListener('scroll', onGridScroll, { passive: true });
-    onKey = function (ev) { if ((ev.key === 'r' || ev.key === 'R') && !ev.metaKey && !ev.ctrlKey && entered !== false) replay(); };
-    addEventListener('keydown', onKey);
+    addEventListener('scroll', gridScroll, { passive: true });
+    addEventListener('keydown', function (ev) {
+      var t = ev.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+      if ((ev.key === 'r' || ev.key === 'R') && !ev.metaKey && !ev.ctrlKey && !typing && entered !== false) replay();
+    });
     startIntro();
     solLayout(); solTick();
     document.fonts && document.fonts.ready.then(function () { solLayout(); solTick(); });
     later(function () { solLayout(); solTick(); }, 1500);
     {
-      var hd = root.querySelector('header');
+      var hd = header();
       hdRo = new ResizeObserver(function () { solLayout(); solTick(); });
       if (hd) hdRo.observe(hd);
     }
-    onSolResize = function () { solLayout(); solTick(); };
-    addEventListener('resize', onSolResize);
-    onSolScroll = function () { solTick(); };
-    addEventListener('scroll', onSolScroll, { passive: true });
+    addEventListener('resize', function () { solLayout(); solTick(); });
+    // One rAF per frame for the scroll-driven layout work, instead of running it on every scroll event.
+    var sraf = 0;
+    addEventListener('scroll', function () {
+      if (!sraf) sraf = requestAnimationFrame(function () { sraf = 0; solTick(); navMark(); });
+    }, { passive: true });
     fitGrid = function () {
       var cv = grid, r = root, s = sol;
       if (cv && r && s) {
@@ -441,18 +496,24 @@
     fitDD = function () {
       var m = mf, p = dd;
       if (!m || !p) return;
+      // Below the tablet breakpoint the tagline wraps instead (home.css).
+      if (innerWidth < 1024) { p.style.fontSize = ''; return; }
       p.style.fontSize = '20px';
       var w = p.scrollWidth;
       if (w) p.style.fontSize = (20 * m.getBoundingClientRect().width / w) + 'px';
     };
-    onNav = function () { navMark(); };
-    addEventListener('scroll', onNav, { passive: true });
-    addEventListener('resize', onNav);
+    document.addEventListener('click', onAnchorClick);
+    addEventListener('resize', navMark);
     navMark();
     fitDD();
     addEventListener('resize', fitDD);
     document.fonts && document.fonts.ready.then(fitDD);
     methSetup(meth);
+    // Arriving from another page with a hash (e.g. brand-building.html → preview.html#faq).
+    if (location.hash) {
+      var target = location.hash.slice(1);
+      later(function () { scrollToSection(target, false); }, 50);
+    }
   }
 
   init();

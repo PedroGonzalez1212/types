@@ -16,6 +16,13 @@ a:hover { color: inherit; }
 .bb-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
 .bb-cta:hover .ty-tri { background: currentColor; }
 
+/* ---------- Facts (market stats) ---------- */
+.bb-facts { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); column-gap: 24px; row-gap: 48px; }
+.bb-fact { min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 28px; border-top: 1px solid var(--ink); }
+.bb-fact__n { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(72px,8vw,128px); line-height: .92; letter-spacing: -0.05em; color: var(--brand-green); }
+.bb-fact__u { font-size: .36em; letter-spacing: -0.02em; font-weight: 400; }
+.bb-fact__l { margin: 0; max-width: 32ch; font-family: var(--font-text); font-size: clamp(17px,1.4vw,19px); line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+
 /* ---------- Services rows ---------- */
 .bb-row { position: relative; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; row-gap: 16px; align-items: start; margin: 0 -16px; padding: clamp(32px,4vw,56px) 16px; border-radius: 4px; transition: background-color .2s, box-shadow .2s, transform .3s cubic-bezier(.22,1,.36,1); }
 .bb-row:hover { background-color: var(--surface-hover); box-shadow: 0 0 8px 2px var(--surface-hover); transform: scale(1.02); z-index: 1; }
@@ -69,12 +76,60 @@ a:hover { color: inherit; }
 .bb-card__btn { justify-self: start; margin-top: 8px; background: var(--accent); border-color: var(--accent); color: #ffffff; }
 .bb-card__btn .ty-tri { background: currentColor; }
 
-/* ---------- Mobile (< 768px) ---------- */
-@media (max-width: 767.98px) {
-  .bb-row { grid-template-columns: minmax(0,1fr); }
-  .bb-cols { grid-template-columns: repeat(4,minmax(0,1fr)); }
+/* ---------- Responsive (breakpoints: see site.css) ---------- */
+
+/* Laptop (≤ 1279px) */
+@media (max-width: 1279px) {
+  .bb-card__link { padding: 28px; row-gap: 20px; }
+  .bb-row__sol { font-size: 18px; }
+  .bb-faq-tab { font-size: 17px; }
+}
+
+/* Tablet (≤ 1023px): index + title share the first line of each service, with
+   pain | solution side by side below; FAQ turns into the accordion; "What's
+   next" cards become full-width rows split in two. */
+@media (max-width: 1023px) {
+  .bb-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); row-gap: 20px; }
+  .bb-row__idx { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+  .bb-row__title { grid-column: 1 / -1; }
   .bb-cols__a, .bb-cols__b { grid-column: 1 / -1; }
   .bb-faq-desk { display: none; }
   .bb-faq-mob { display: block; }
-  .bb-cards { grid-template-columns: minmax(0,1fr); }
+  .bb-cards { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .bb-card__link { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "n n" "title list" "q list" "q btn"; column-gap: 32px; align-items: start; }
+  .bb-card__n { grid-area: n; }
+  .bb-card__title { grid-area: title; }
+  .bb-card__q { grid-area: q; min-height: 0; }
+  .bb-card__list { grid-area: list; padding-top: 24px; }
+  .bb-card__btn { grid-area: btn; align-self: end; margin-top: 0; }
+}
+
+/* Mobile (≤ 767px): one column. Facts read as number | label rows. */
+@media (max-width: 767px) {
+  .bb-cta { font-size: 18px; padding: 18px 28px; }
+  .bb-facts { grid-template-columns: minmax(0,1fr); row-gap: 32px; }
+  .bb-fact { flex-direction: row; align-items: center; gap: 24px; padding-top: 20px; }
+  .bb-fact__n { flex: 0 0 44%; font-size: clamp(56px, 13vw, 96px); }
+  .bb-row { grid-template-columns: minmax(0,1fr); row-gap: 14px; }
+  .bb-row:hover { background-color: transparent; box-shadow: none; transform: none; }
+  .bb-row__sol { font-size: 17px; }
+  .bb-row__pain { font-size: 16px; }
+  .bb-cols { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .bb-steps__t { font-size: 17px; overflow-wrap: normal; }
+  .bb-card__link { grid-template-columns: minmax(0,1fr); grid-template-areas: none; padding: 24px; row-gap: 20px; }
+  .bb-card__n, .bb-card__title, .bb-card__q, .bb-card__list, .bb-card__btn { grid-area: auto; }
+  .bb-card__list { padding-top: 20px; }
+  .bb-card__btn { margin-top: 0; }
+}
+
+/* Small mobile (≤ 479px): facts stack again, number above label. */
+@media (max-width: 479px) {
+  .bb-cta { font-size: 17px; padding: 16px 24px; }
+  .bb-fact { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .bb-fact__n { flex: none; font-size: 72px; }
+  .bb-steps { gap: 4px; }
+  .bb-steps__t { font-size: 13px; letter-spacing: -0.01em; }
+  .bb-steps__n { font-size: 11px; }
+  .bb-faq-q { font-size: 17px; padding: 18px 0; }
+  .bb-faq-a { font-size: 15px; }
 }

@@ -1,5 +1,7 @@
-/* Types — Brand Building. Hero grid/blob animation, scroll reveals, method strip
-   and FAQ tabs/accordion, ported from the Claude Design canvas component to plain JS.
+/* Types — solution detail pages (Lead Generation, Content Globalization,
+   Business Intelligence). Hero grid/blob animation, intro word highlight,
+   service-row reveal, method strip and fade-up reveals, ported from the
+   Claude Design canvas components to plain JS. Header: nav.js. FAQ: faq.js.
    Loaded with `defer`, so the DOM below is already parsed when this runs. */
 
 (function () {
@@ -18,9 +20,11 @@
   var quote = document.getElementById('quote');
 
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var gA = 0, gB = 0, gARaf = 0, gBRaf = 0, raf = 0;
+  var gA = 0, gB = 0, raf = 0;
+  var cl = function (v) { return Math.min(1, Math.max(0, v)); };
+  var ez = function (t) { return 1 - Math.pow(1 - t, 3); };
 
-  // ---------- Hero quote: match the width of "Building" ----------
+  // ---------- Hero quote: same width as the second title line ----------
   function fitQuote() {
     if (!bld || !quote) return;
     quote.style.fontSize = '20px';
@@ -42,8 +46,8 @@
     var dots = [];
     for (var y = -TH + 14; y < H + TH; y += TH) for (var x = -14; x < W + TW; x += TW) {
       var rn = r(), dot = r() < .28, d = Math.hypot(x + 28 - W * ox, y) / maxD;
-      var k = Math.min(1, Math.max(0, (t - d * .75 - rn * .12) / .25)); if (k <= 0) continue;
-      var p = 1 - Math.pow(1 - k, 3);
+      var k = cl((t - d * .75 - rn * .12) / .25); if (k <= 0) continue;
+      var p = ez(k);
       c.moveTo(x, y + .5); c.lineTo(x + TW * p, y + .5); c.moveTo(x, y + 48.5); c.lineTo(x + TW * p, y + 48.5);
       c.moveTo(x, y); c.lineTo(x + TW * p, y + TH * p); c.moveTo(x + TW, y); c.lineTo(x + TW - TW * p, y + TH * p);
       if (dot) dots.push([x, y + .5, p]);
@@ -58,13 +62,14 @@
       if (!t0) t0 = now;
       var v = Math.min(1.2, Math.max(0, (now - t0 - delay) / 2800 * 1.2));
       if (which === 'a') { gA = v; drawGrid(gridA, gA, .95); } else { gB = v; drawGrid(gridB, gB, .5); }
-      if (v < 1.2) { if (which === 'a') gARaf = requestAnimationFrame(step); else gBRaf = requestAnimationFrame(step); }
+      if (v < 1.2) requestAnimationFrame(step);
     };
-    if (which === 'a') gARaf = requestAnimationFrame(step); else gBRaf = requestAnimationFrame(step);
+    requestAnimationFrame(step);
   }
 
   // ---------- Intro paragraph: word-by-word scroll highlight ----------
   function splitWords() {
+    if (!intro) return;
     [].slice.call(intro.querySelectorAll('p')).forEach(function (p) {
       var words = p.textContent.trim().split(/\s+/);
       p.textContent = '';
@@ -78,18 +83,17 @@
     if (!intro) return;
     var ws = intro.querySelectorAll('[data-w]');
     if (reduce) { ws.forEach(function (w) { w.style.opacity = ''; }); return; }
-    var r = intro.getBoundingClientRect(), pr = Math.min(1, Math.max(0, (innerHeight * .85 - r.top) / (r.height + innerHeight * .3))), n = ws.length;
-    ws.forEach(function (w, i) { var v = Math.min(1, Math.max(0, pr * n * 1.15 - i)); w.style.opacity = .2 + .8 * v; });
+    var r = intro.getBoundingClientRect(), pr = cl((innerHeight * .85 - r.top) / (r.height + innerHeight * .3)), n = ws.length;
+    ws.forEach(function (w, i) { w.style.opacity = .2 + .8 * cl(pr * n * 1.15 - i); });
   }
 
   // ---------- Services rows: line draw + staggered column reveal ----------
   // Side by side (tablet/desktop) the cells share the row's progress, offset per
   // column. Stacked on mobile each cell follows its own position on screen.
-  function revealCards() {
+  function revealRows() {
     if (!svc) return;
-    var rs = svc.querySelectorAll('[data-row]'), H = innerHeight, mobile = innerWidth < 768;
-    var cl = function (v) { return Math.min(1, Math.max(0, v)); }, ez = function (t) { return 1 - Math.pow(1 - t, 3); };
-    rs.forEach(function (r) {
+    var H = innerHeight, mobile = innerWidth < 768;
+    svc.querySelectorAll('[data-row]').forEach(function (r) {
       var p = reduce ? 1 : cl((H * .95 - r.getBoundingClientRect().top) / (H * .45));
       var l = r.querySelector('[data-rl]'); if (l) l.style.transform = 'scaleX(' + ez(cl(p / .7)) + ')';
       r.querySelectorAll('[data-rc]').forEach(function (c, k) {
@@ -105,38 +109,19 @@
     var fill = m.querySelector('[data-fill]'), mk = m.querySelector('[data-mk]'), ls = [].slice.call(m.querySelectorAll('[data-sl]'));
     var set = function (p) {
       fill.style.width = (p * 40) + '%'; mk.style.left = (p * 40) + '%';
-      ls.forEach(function (l, i) { l.style.color = (i === 2 && p >= 1) ? 'var(--brand-green)' : (i * .5 <= p ? 'var(--ink)' : 'var(--ink-muted)'); });
+      ls.forEach(function (l, i) { l.style.color = (i === 2 && p >= 1) ? 'var(--accent)' : (i * .5 <= p ? 'var(--ink)' : 'var(--ink-muted)'); });
     };
     set(0);
     var io = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return; io.disconnect(); var t0 = 0;
       var step = function (now) {
         if (!t0) t0 = now;
-        var k = Math.min(1, (now - t0 - 300) / 1600), e = k <= 0 ? 0 : 1 - Math.pow(1 - k, 3);
+        var k = Math.min(1, (now - t0 - 300) / 1600), e = k <= 0 ? 0 : ez(k);
         set(e); if (k < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
     }, { threshold: .4 });
     io.observe(m);
-  }
-
-  // ---------- Facts: numbers count up from 0 when the row scrolls into view ----------
-  function setupCount() {
-    var u = document.getElementById('stats');
-    if (!u || u.getBoundingClientRect().top < innerHeight * .9) return;
-    var ns = [].slice.call(u.querySelectorAll('[data-cnt]'));
-    ns.forEach(function (n) { n.textContent = '0'; });
-    var io = new IntersectionObserver(function (es) {
-      if (!es[0].isIntersecting) return; io.disconnect(); var t0 = 0;
-      var step = function (now) {
-        if (!t0) t0 = now;
-        var k = Math.min(1, (now - t0) / 1600), e = 1 - Math.pow(1 - k, 3);
-        ns.forEach(function (n) { n.textContent = Math.round(+n.dataset.cnt * e); });
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }, { threshold: .4 });
-    io.observe(u);
   }
 
   // ---------- Generic fade-up reveal for [data-in] below the fold ----------
@@ -160,48 +145,6 @@
     ins.forEach(function (n) { io.observe(n); });
   }
 
-  // ---------- FAQ: desktop tabs + mobile accordion share one selection ----------
-  function setupFaq() {
-    var tabs = [].slice.call(document.querySelectorAll('.bb-faq-tab'));
-    var qs = [].slice.call(document.querySelectorAll('.bb-faq-q'));
-    var answers = [].slice.call(document.querySelectorAll('.bb-faq-a')).map(function (p) { return p.textContent; });
-    var panel = document.getElementById('faq-panel'), ans = document.getElementById('faq-answer');
-    var fq = 0;
-    var isMob = function () { return innerWidth < 1024; }; // accordion below the tablet breakpoint (brand-building.css)
-    var pulse = function () {
-      if (reduce) return;
-      panel.querySelectorAll('[data-fi]').forEach(function (n, k) {
-        n.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 550, delay: k * 70, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
-      });
-    };
-    var render = function () {
-      tabs.forEach(function (t, i) { t.setAttribute('aria-selected', String(i === fq)); t.tabIndex = i === fq ? 0 : -1; });
-      qs.forEach(function (q, i) {
-        q.setAttribute('aria-expanded', String(i === fq));
-        document.getElementById(q.getAttribute('aria-controls')).hidden = i !== fq;
-      });
-      ans.textContent = answers[fq] || answers[0];
-      panel.setAttribute('aria-labelledby', 'faq-t' + Math.max(0, fq));
-    };
-    var pick = function (i) {
-      if (i === fq) return;
-      fq = i; render(); pulse();
-    };
-    tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { pick(i); });
-      t.addEventListener('mouseenter', function () { pick(i); });
-      t.addEventListener('keydown', function (e) {
-        var d = { ArrowDown: 1, ArrowUp: -1 }[e.key]; if (!d) return;
-        e.preventDefault();
-        var k = (Math.max(0, fq) + d + tabs.length) % tabs.length;
-        pick(k); tabs[k].focus();
-      });
-    });
-    // On mobile, tapping the open question collapses it.
-    qs.forEach(function (q, i) { q.addEventListener('click', function () { pick(isMob() && i === fq ? -1 : i); }); });
-    render();
-  }
-
   // ---------- Blobs: slow drifting loop ----------
   function startBlobs() {
     blobsA.animate([{ opacity: 0 }, { opacity: .4 }], { duration: 2400, easing: 'ease-out', fill: 'backwards' });
@@ -220,13 +163,10 @@
 
   // ---------- Boot ----------
   function init() {
-    document.documentElement.lang = 'en';
     splitWords();
-    setupFaq();
-
     addEventListener('resize', function () { redrawGrids(); words(); });
     addEventListener('scroll', function () {
-      if (!raf) raf = requestAnimationFrame(function () { raf = 0; words(); revealCards(); });
+      if (!raf) raf = requestAnimationFrame(function () { raf = 0; words(); revealRows(); });
     }, { passive: true });
     var ro = new ResizeObserver(redrawGrids);
     [gridA, gridB].forEach(function (c) { if (c) ro.observe(c); });
@@ -247,9 +187,8 @@
       startBlobs();
       setupMethod();
       revealIn();
-      setupCount();
     }
-    words(); revealCards();
+    words(); revealRows();
 
     fitQuote();
     document.fonts && document.fonts.ready.then(fitQuote);

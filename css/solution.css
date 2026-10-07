@@ -1,0 +1,101 @@
+/* Types — solution detail pages (Lead Generation, Content Globalization,
+   Business Intelligence). Every color comes from --accent, set by the
+   .ty-accent-* class on each section, so one stylesheet serves all three. */
+
+a:hover { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Primary CTA (Book a discovery call) ---------- */
+.sol-cta { background: var(--accent); border-color: var(--accent); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
+.sol-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
+
+/* ---------- Services rows: Service · Diagnosis · Solution ---------- */
+.sol-rows-head, .sol-row { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; }
+.sol-rows-head { padding: 0 0 clamp(16px,2vw,24px); }
+.sol-lbl { font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-muted); }
+.sol-row { position: relative; row-gap: 16px; align-items: start; margin: 0 -16px; padding: clamp(32px,4vw,56px) 16px; border-radius: 2px; transition: background-color .15s; }
+.sol-row:hover { background-color: var(--surface-raised); }
+.sol-row__line { position: absolute; left: 16px; right: 16px; top: 0; height: 1px; background: var(--ink); transform-origin: 0 50%; transition: background-color .15s, height .15s; }
+.sol-row:hover .sol-row__line { height: 3px; background: var(--accent); }
+.sol-row__title { margin: 0; font-family: var(--font-display); font-size: clamp(28px,3vw,46px); font-weight: 500; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; color: var(--ink); transition: color .15s; }
+.sol-row:hover .sol-row__title { color: var(--accent); }
+.sol-row__cell { display: flex; flex-direction: column; gap: 10px; }
+.sol-row__cell .sol-lbl { display: none; }
+.sol-row__pain { margin: 0; font-family: var(--font-text); font-size: 17px; line-height: 1.55; color: var(--ink-muted); text-wrap: pretty; }
+.sol-row__sol { margin: 0; font-family: var(--font-text); font-size: 19px; font-weight: 500; line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+
+/* ---------- Method strip ---------- */
+.sol-steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
+.sol-steps li { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sol-steps__n { font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--ink-muted); }
+.sol-steps__t { font-family: var(--font-display); font-size: clamp(14px,1.8vw,26px); font-weight: 500; letter-spacing: -0.02em; transition: color .3s; overflow-wrap: anywhere; }
+.sol-cols { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); column-gap: 24px; row-gap: 32px; }
+.sol-cols__a { grid-column: 1 / span 5; min-width: 0; }
+.sol-cols__b { grid-column: 7 / span 6; }
+.sol-deliv { display: flex; flex-direction: column; gap: 8px; width: 0; min-width: 100%; box-sizing: border-box; padding: 24px; background: var(--surface-raised); border: 1px solid var(--accent); border-radius: 2px; }
+.sol-deliv__list { margin: 8px 0 0; padding: 16px 0 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px 24px; border-top: 1px solid var(--border-subtle); }
+.sol-deliv__list li { font-family: var(--font-text); font-size: 15px; font-weight: 500; color: var(--ink); }
+
+/* ---------- What's next cards ---------- */
+.sol-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+.sol-card { position: relative; min-width: 0; display: flex; flex-direction: column; }
+.sol-card__link { position: relative; flex: 1; box-sizing: border-box; display: grid; align-content: start; row-gap: 24px; padding: 32px; text-decoration: none; color: var(--ink); background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: 2px; transition: border-color .15s; }
+.sol-card__link:hover, .sol-card__link:focus-visible { border-color: var(--accent); color: var(--ink); }
+.sol-card__bar { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--accent); }
+.sol-card__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(26px,2.4vw,34px); line-height: 1.08; letter-spacing: -0.02em; }
+.sol-card__title > span { display: block; }
+.sol-card__q { min-height: 2.8em; font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink-muted); text-wrap: pretty; }
+.sol-card__list { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid var(--border-subtle); font-family: var(--font-text); font-size: 16px; font-weight: 500; }
+.sol-card__list > span { display: block; }
+.sol-card__btn { justify-self: start; margin-top: 8px; background: var(--accent); border-color: var(--accent); color: #ffffff; }
+
+/* ---------- Responsive (breakpoints: see site.css) ---------- */
+
+/* Laptop (≤ 1279px) */
+@media (max-width: 1279px) {
+  .sol-card__link { padding: 28px; row-gap: 20px; }
+  .sol-row__sol { font-size: 18px; }
+}
+
+/* Tablet (≤ 1023px): service title on its own line above Diagnosis | Solution;
+   "What's next" cards become full-width rows split in two. */
+@media (max-width: 1023px) {
+  .sol-rows-head { display: none; }
+  .sol-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); row-gap: 20px; }
+  .sol-row__title { grid-column: 1 / -1; }
+  .sol-row__cell .sol-lbl { display: block; }
+  .sol-cols__a, .sol-cols__b { grid-column: 1 / -1; }
+  .sol-cards { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .sol-card__link { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "title list" "q list" "q btn"; column-gap: 32px; align-items: start; }
+  .sol-card__title { grid-area: title; }
+  .sol-card__q { grid-area: q; min-height: 0; }
+  .sol-card__list { grid-area: list; padding-top: 0; padding-left: 24px; border-top: 0; border-left: 1px solid var(--border-subtle); }
+  .sol-card__btn { grid-area: btn; align-self: end; margin-top: 0; margin-left: 24px; }
+}
+
+/* Mobile (≤ 767px): everything stacks in one column. */
+@media (max-width: 767px) {
+  .sol-cta { font-size: 18px; padding: 18px 28px; }
+  .sol-row { grid-template-columns: minmax(0,1fr); row-gap: 16px; }
+  .sol-row:hover { background-color: transparent; }
+  .sol-row__sol { font-size: 17px; }
+  .sol-row__pain { font-size: 16px; }
+  .sol-cols { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .sol-steps__t { font-size: 17px; overflow-wrap: normal; }
+  .sol-card__link { grid-template-columns: minmax(0,1fr); grid-template-areas: none; padding: 24px; row-gap: 20px; }
+  .sol-card__title, .sol-card__q, .sol-card__list, .sol-card__btn { grid-area: auto; }
+  .sol-card__list { padding: 20px 0 0; border-left: 0; border-top: 1px solid var(--border-subtle); }
+  .sol-card__btn { margin: 0; }
+}
+
+/* Small mobile (≤ 479px) */
+@media (max-width: 479px) {
+  .sol-cta { font-size: 17px; padding: 16px 24px; }
+  .sol-steps { gap: 4px; }
+  .sol-steps__t { font-size: 13px; letter-spacing: -0.01em; }
+  .sol-steps__n { font-size: 11px; }
+  .sol-deliv { padding: 20px; }
+  .sol-deliv__list { gap: 8px 16px; }
+}

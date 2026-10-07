@@ -1,0 +1,122 @@
+/* Types — Home. Styles for the contact form. Layout of the hero/solutions/
+   method/about stays inline in preview.html, as exported. FAQ styles are in
+   faq.css; header/footer in site.css. */
+
+/* ---------- Contact form ---------- */
+.cf-form { display: flex; flex-direction: column; gap: 40px; }
+.cf-form[hidden], .cf-done[hidden], .cf-error[hidden], .cf-count[hidden] { display: none; }
+.cf-note { margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+.cf-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 36px 24px; }
+.cf-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cf-label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 0; margin: 0; width: 100%;
+  font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink);
+}
+.cf-label small { font-size: 13px; font-weight: 500; color: var(--ink-subtle); }
+
+.cf-input {
+  box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 0 10px;
+  font-family: var(--font-text); font-size: 17px; line-height: 24px; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 1px solid var(--border-control); border-radius: 0;
+  transition: border-color .15s;
+}
+textarea.cf-input { min-height: 112px; line-height: 26px; resize: vertical; }
+.cf-input.is-filled { border-bottom-color: var(--ink-muted); }
+.cf-input[aria-invalid="true"] { border-bottom: 2px solid var(--brand-orange); }
+.cf-input:focus { outline: 2px solid var(--focus-ring); outline-offset: 4px; border-bottom-color: var(--ink); }
+
+.cf-error, .cf-count { margin: 2px 0 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--brand-orange); }
+.cf-count { margin: 0; }
+.cf-error__icon {
+  flex: none; box-sizing: border-box; width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--brand-orange); border-radius: 2px; font-size: 12px; font-weight: 700; line-height: 1;
+}
+
+.cf-services { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.cf-services legend { margin-bottom: 14px; }
+.cf-svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.cf-svc {
+  display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 64px;
+  padding: 10px 16px 10px 14px; box-sizing: border-box; text-align: left;
+  font-family: var(--font-text); font-size: 15px; line-height: 20px; font-weight: 600; color: #ffffff;
+  background: transparent; border: 1px solid var(--border-control); border-radius: 2px; cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+.cf-services.has-error .cf-svc { border-color: var(--brand-orange); }
+.cf-svc[aria-pressed="true"] { background: var(--surface-raised); border-color: var(--svc); }
+.cf-svc:hover { border-color: var(--ink); }
+.cf-svc:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.cf-svc__box {
+  position: relative; flex: none; box-sizing: border-box; width: 18px; height: 18px; border-radius: 2px;
+  border: 1px solid var(--border-control); background: transparent; transition: background-color .15s, border-color .15s;
+}
+.cf-svc[aria-pressed="true"] .cf-svc__box { border-color: var(--svc); background: var(--svc); }
+.cf-svc[aria-pressed="true"] .cf-svc__box::after {
+  content: ""; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px;
+  border: solid #0a0b0d; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+
+.cf-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.cf-submit { min-height: 56px; padding: 0 32px; font-size: 18px; background: var(--brand-teal); border: 1px solid var(--brand-teal); color: #ffffff; }
+.cf-submit:hover { background: var(--surface-hover); border-color: var(--ink); color: #ffffff; }
+
+.cf-done {
+  box-sizing: border-box; min-height: 420px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  gap: 28px; padding: 48px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
+}
+.cf-done__check { position: relative; box-sizing: border-box; width: 40px; height: 40px; border-radius: 2px; background: var(--brand-teal); }
+.cf-done__check::after {
+  content: ""; position: absolute; left: 14px; top: 7px; width: 9px; height: 18px;
+  border: solid #ffffff; border-width: 0 3px 3px 0; transform: rotate(45deg);
+}
+.cf-done h3 {
+  margin: 0; max-width: 560px; outline: none;
+  font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 2.8vw, 40px); line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance;
+}
+.cf-done p { margin: 0; font-size: 17px; line-height: 26px; color: var(--ink-muted); }
+.cf-done p span { color: var(--ink); }
+.cf-done .ty-btn { min-height: 48px; padding: 0 24px; color: #ffffff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-input, .cf-svc, .cf-svc__box { transition: none; }
+}
+
+/* ---------- Responsive (breakpoints: see site.css) ----------
+   Hero, Solutions and Method are laid out inline in preview.html and by
+   js/main.js; these rules re-flow them per breakpoint. */
+@media (max-width: 1279px) {
+  .cf-fields { gap: 32px 20px; }
+}
+@media (max-width: 1023px) {
+  /* The tagline stops being stretched to the title's width and simply wraps. */
+  #dd { white-space: normal !important; font-size: clamp(18px, 2.4vw, 20px) !important; max-width: 32ch; text-wrap: pretty; }
+  .hm-hero { padding-left: 0 !important; }
+}
+@media (max-width: 767px) {
+  #content { padding: 96px 16px 48px !important; }
+  .hm-hero { gap: 20px !important; }
+  .hm-h1 { font-size: 12.5vw !important; }
+  /* The rotating word gets its own line, so long words never re-wrap the title. */
+  .hm-word { display: block !important; width: max-content; }
+  [data-m-step] { min-height: 0 !important; padding: 48px 0 !important; }
+  .cf-form { gap: 32px; }
+  .cf-done { min-height: 320px; }
+}
+@media (max-width: 479px) {
+  .hm-h1 { font-size: 13vw !important; }
+  #dd { font-size: 17px !important; }
+  .cf-actions .cf-submit { width: 100%; justify-content: center; }
+}
+
+/* ---------- Solutions as a horizontal track (mobile / short screens) ----------
+   main.js adds .is-track below 768px wide (or under 560px tall): the four cards
+   sit side by side and slide across as you scroll, each one opening as it
+   arrives, instead of stacking taller than the pinned screen. */
+[data-sol-grid].is-track { display: flex !important; gap: 16px !important; will-change: transform; }
+[data-sol-grid].is-track > [data-sol] { flex: 0 0 min(80vw, 340px); }
+.is-track [data-sol-card] > span:last-child { row-gap: 18px !important; padding: 24px !important; }
+.is-track [data-sol-card] > span:last-child > span:nth-child(1) { font-size: 28px !important; }
+.is-track [data-sol-card] > span:last-child > span:nth-child(2) { font-size: 16px !important; }
+.is-track [data-sol-card] > span:last-child > span:nth-child(3) { font-size: 15px !important; gap: 10px !important; }

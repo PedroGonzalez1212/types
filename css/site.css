@@ -1,10 +1,18 @@
-/* Solutions — 4 cards (white header). Page-level overrides and interaction states
-   that the design-system tokens don't cover on their own. */
+/* Types — shared site styles, loaded on every page after tokens.css.
+   Page-level overrides the design-system tokens don't cover: header (with the
+   mobile menu), footer links and responsive type. Page-specific styles live in
+   home.css, solution.css, about.css and brand-building.css. */
 
 :root {
   --font-display: 'Montserrat', sans-serif;
   --font-text: 'Montserrat', sans-serif;
   --font-mono: 'Montserrat', sans-serif;
+}
+
+/* Ligatures off everywhere, as in the design. */
+* {
+  font-variant-ligatures: no-common-ligatures no-discretionary-ligatures;
+  font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
 }
 
 html, body {
@@ -22,3 +30,103 @@ a:hover { color: var(--brand-green); }
 [data-sol-card]:focus-visible {
   border-color: var(--accent);
 }
+
+/* ---------- Skip link ---------- */
+.skip-link { position: absolute; left: -9999px; top: 16px; z-index: 60; padding: 12px 16px; background: #ffffff; color: #0a0b0d; font-family: var(--font-text); font-size: 16px; font-weight: 600; border-radius: 2px; }
+.skip-link:focus { left: 16px; }
+
+/* ---------- Hover helpers (links that light up in a brand color) ---------- */
+.hv-ink:hover     { color: var(--ink); }
+.hv-green:hover   { color: var(--brand-green);   border-bottom-color: var(--brand-green); }
+.hv-magenta:hover { color: var(--brand-magenta); border-bottom-color: var(--brand-magenta); }
+.hv-teal:hover    { color: var(--brand-teal);    border-bottom-color: var(--brand-teal); }
+.hv-orange:hover  { color: var(--brand-orange);  border-bottom-color: var(--brand-orange); }
+
+/* ---------- Footer brand: Types · Powered by · The Typesetter ---------- */
+.ft-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 16px clamp(24px, 3vw, 40px); }
+.ft-brand__types { display: flex; align-items: center; min-height: 44px; }
+.ft-brand__types img, .ft-brand__ts { display: block; height: clamp(52px, 5.5vw, 76px); width: auto; }
+.ft-brand__ts-link { display: flex; align-items: center; min-height: 44px; transition: opacity .15s; }
+.ft-brand__ts-link:hover { opacity: .8; }
+.ft-brand__by { font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-subtle); }
+
+/* ---------- Header: mobile menu button (shown < 768px) ---------- */
+.nav-burger {
+  display: none; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  width: 44px; height: 44px; padding: 0; background: none; border: 1px solid #6b7079; border-radius: 2px; cursor: pointer;
+}
+.nav-burger span { display: block; width: 20px; height: 2px; background: #0a0b0d; transition: transform .15s, opacity .15s; }
+
+/* ---------- Responsive ----------
+   Four breakpoints, shared by every page (and mirrored in the JS):
+     XL  ≥ 1280px   desktop (base styles)
+     LG  ≤ 1279px   laptop
+     MD  ≤ 1023px   tablet — header collapses to the menu button
+     SM  ≤ 767px    mobile
+     XS  ≤ 479px    small mobile */
+@media (max-width: 1279px) {
+  .ty-header .ty-nav { gap: 32px !important; }
+}
+@media (max-width: 1023px) {
+  .ty-header { flex-wrap: nowrap !important; gap: 16px !important; }
+  .ty-header > a:first-child { margin-right: auto; }
+  .ty-header > span[aria-hidden] { display: none !important; }
+  .nav-burger { display: inline-flex; }
+  .ty-header .ty-nav {
+    display: none !important; position: absolute; top: calc(100% + 3px); left: 0; right: 0;
+    flex-direction: column; align-items: stretch !important; gap: 0 !important; padding: 8px clamp(16px, 4vw, 32px) 24px;
+    background: #ffffff; border-bottom: 3px solid var(--brand-teal); max-height: calc(100vh - 80px); overflow-y: auto;
+  }
+  .ty-header[data-open] .ty-nav { display: flex !important; animation: nav-drop .32s cubic-bezier(.22,1,.36,1); }
+  .ty-header .ty-nav a { display: flex; align-items: center; min-height: 56px; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: #0a0b0d; border-bottom: 1px solid #d7dade; }
+  .ty-header[data-open] .ty-nav a { animation: nav-item .4s cubic-bezier(.22,1,.36,1) backwards; }
+  .ty-header[data-open] .ty-nav a:nth-child(2) { animation-delay: .04s; }
+  .ty-header[data-open] .ty-nav a:nth-child(3) { animation-delay: .08s; }
+  .ty-header[data-open] .ty-nav a:nth-child(4) { animation-delay: .12s; }
+  .ty-header[data-open] .ty-nav a:nth-child(5) { animation-delay: .16s; }
+  .ty-header .ty-nav a[aria-current] { color: var(--brand-teal); }
+  .ty-header[data-open] .nav-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .ty-header[data-open] .nav-burger span:nth-child(2) { opacity: 0; }
+  .ty-header[data-open] .nav-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  [data-r="fit"] { white-space: normal !important; font-size: clamp(18px, 2.6vw, 22px) !important; max-width: 34ch; text-wrap: pretty; }
+  [data-r="wrap"] { white-space: normal !important; font-size: 17px !important; text-wrap: pretty; }
+  [data-r="mc"] { width: auto !important; justify-self: stretch !important; }
+  [data-r="h1sol"] { font-size: 12vw !important; }
+}
+@media (max-width: 767px) {
+  .ty-header { gap: 12px !important; padding: 10px 16px !important; }
+  .ty-header > a:first-child { height: 40px !important; }
+  .ty-header > a:first-child img { height: 34px !important; }
+  [data-r="h1sol"] { font-size: 12.5vw !important; }
+  [data-r="h1about"] { font-size: 13vw !important; }
+  [data-r="fit"] { font-size: 18px !important; }
+  .hero-in { padding-left: 0 !important; }
+  [data-blob] { scale: 2; }
+}
+@media (max-width: 479px) {
+  .ty-header > a:first-child img { height: 30px !important; }
+  .ty-lang button { padding: 6px 8px; }
+  [data-r="h1sol"] { font-size: 13vw !important; }
+  [data-r="h1about"] { font-size: 14.5vw !important; }
+  [data-r="fit"] { font-size: 17px !important; }
+  .ft-brand { gap: 12px 20px; }
+  .ft-brand__types img, .ft-brand__ts { height: 44px; }
+}
+@keyframes nav-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes nav-item { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ty-header[data-open] .ty-nav, .ty-header[data-open] .ty-nav a { animation: none; }
+}
+
+/* ---------- Background blobs (performance) ----------
+   The blob layers used filter: blur(110px) on the parent while the blobs drift
+   forever, which forced the browser to re-blur the whole layer every frame and
+   made scrolling stutter. Each blob is feathered with a static radial mask
+   instead, so the drift is a pure compositor transform. */
+div:has(> [data-blob]) { filter: none !important; }
+[data-blob] {
+  -webkit-mask-image: radial-gradient(closest-side, #000 20%, rgba(0,0,0,.5) 60%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 20%, rgba(0,0,0,.5) 60%, transparent 100%);
+  will-change: transform;
+}
+@media (min-width: 768px) { [data-blob] { scale: 1.5; } }
