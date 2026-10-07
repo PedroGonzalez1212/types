@@ -124,6 +124,33 @@
     io.observe(m);
   }
 
+  // ---------- Facts: numbers count up from 0 when the row scrolls into view ----------
+  // Only the visible copy counts; screen readers get the final figure from a
+  // visually hidden copy, so they never hear "0%".
+  function setupCount() {
+    var u = document.getElementById('stats');
+    if (!u || u.getBoundingClientRect().top < innerHeight * .9) return;
+    var ns = [].slice.call(u.querySelectorAll('[data-cnt]'));
+    ns.forEach(function (n) {
+      var p = n.parentNode, sr = document.createElement('span');
+      sr.className = 'bb-fact__sr'; sr.textContent = p.textContent;
+      [].forEach.call(p.children, function (c) { c.setAttribute('aria-hidden', 'true'); });
+      p.appendChild(sr);
+      n.textContent = '0';
+    });
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect(); var t0 = 0;
+      var step = function (now) {
+        if (!t0) t0 = now;
+        var k = Math.min(1, (now - t0) / 1600), e = ez(k);
+        ns.forEach(function (n) { n.textContent = Math.round(+n.dataset.cnt * e); });
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, { threshold: .4 });
+    io.observe(u);
+  }
+
   // ---------- Generic fade-up reveal for [data-in] below the fold ----------
   // Items that come into view together cascade; one that arrives on its own (e.g.
   // a card stacked further down on mobile) doesn't wait for the others.
@@ -186,6 +213,7 @@
       });
       startBlobs();
       setupMethod();
+      setupCount();
       revealIn();
     }
     words(); revealRows();

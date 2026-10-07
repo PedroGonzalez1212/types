@@ -1,0 +1,39 @@
+/* Facts (market stats) — shared by Brand Building (imported from
+   brand-building.css) and the solution pages. The number takes the section's
+   --accent (.ty-accent-*): it's large text, so the 3:1 contrast threshold
+   applies. Label and source stay in neutral ink. */
+
+.bb-facts { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); column-gap: 24px; row-gap: 48px; }
+.bb-facts--4 { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.bb-fact { min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 28px; border-top: 1px solid var(--ink); }
+.bb-fact__n { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(72px,8vw,128px); line-height: .92; letter-spacing: -0.05em; color: var(--accent); }
+/* A phrase in place of the number: half size, wrapping to two lines so it
+   takes the same height as a figure. */
+.bb-fact__n--txt { max-width: 4.2em; font-size: clamp(36px,4vw,64px); letter-spacing: -0.03em; }
+.bb-fact__u { font-size: max(.36em, 24px); letter-spacing: -0.02em; font-weight: 400; }
+.bb-fact__l { margin: 0; max-width: 32ch; font-family: var(--font-text); font-size: clamp(17px,1.4vw,19px); line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+/* Label + source. The source sits at the bottom so sources line up across a row. */
+.bb-fact__b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.bb-fact__s { margin: auto 0 0; font-family: var(--font-text); font-size: 13px; line-height: 1.45; letter-spacing: .02em; color: var(--ink-subtle); text-wrap: pretty; }
+/* Final figure for screen readers while the visible copy counts up (set by JS). */
+.bb-fact__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Tablet (≤ 1023px): four facts go two by two. */
+@media (max-width: 1023px) {
+  .bb-facts--4 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+/* Mobile (≤ 767px): one column. Facts read as number | label rows. */
+@media (max-width: 767px) {
+  .bb-facts { grid-template-columns: minmax(0,1fr); row-gap: 32px; }
+  .bb-fact { flex-direction: row; align-items: center; gap: 24px; padding-top: 20px; }
+  .bb-fact__n { flex: 0 0 44%; font-size: clamp(56px, 13vw, 96px); }
+  .bb-fact__n--txt { max-width: none; font-size: clamp(28px, 6.5vw, 48px); }
+}
+
+/* Small mobile (≤ 479px): facts stack again, number above label. */
+@media (max-width: 479px) {
+  .bb-fact { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .bb-fact__n { flex: none; font-size: 72px; }
+  .bb-fact__n--txt { font-size: 36px; }
+}

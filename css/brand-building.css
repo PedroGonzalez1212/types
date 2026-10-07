@@ -1,6 +1,8 @@
 /* Brand Building — solution detail page. Hover, responsive and state styles
    that the canvas design expressed as style-hover / JS-computed props. */
 
+@import url('facts.css');
+
 a:hover { color: inherit; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
@@ -16,12 +18,7 @@ a:hover { color: inherit; }
 .bb-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
 .bb-cta:hover .ty-tri { background: currentColor; }
 
-/* ---------- Facts (market stats) ---------- */
-.bb-facts { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); column-gap: 24px; row-gap: 48px; }
-.bb-fact { min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 28px; border-top: 1px solid var(--ink); }
-.bb-fact__n { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(72px,8vw,128px); line-height: .92; letter-spacing: -0.05em; color: var(--brand-green); }
-.bb-fact__u { font-size: .36em; letter-spacing: -0.02em; font-weight: 400; }
-.bb-fact__l { margin: 0; max-width: 32ch; font-family: var(--font-text); font-size: clamp(17px,1.4vw,19px); line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+/* ---------- Facts (market stats): see facts.css ---------- */
 
 /* ---------- Services rows ---------- */
 .bb-row { position: relative; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; row-gap: 16px; align-items: start; margin: 0 -16px; padding: clamp(32px,4vw,56px) 16px; border-radius: 4px; transition: background-color .2s, box-shadow .2s, transform .3s cubic-bezier(.22,1,.36,1); }
@@ -104,12 +101,9 @@ a:hover { color: inherit; }
   .bb-card__btn { grid-area: btn; align-self: end; margin-top: 0; }
 }
 
-/* Mobile (≤ 767px): one column. Facts read as number | label rows. */
+/* Mobile (≤ 767px): one column. */
 @media (max-width: 767px) {
   .bb-cta { font-size: 18px; padding: 18px 28px; }
-  .bb-facts { grid-template-columns: minmax(0,1fr); row-gap: 32px; }
-  .bb-fact { flex-direction: row; align-items: center; gap: 24px; padding-top: 20px; }
-  .bb-fact__n { flex: 0 0 44%; font-size: clamp(56px, 13vw, 96px); }
   .bb-row { grid-template-columns: minmax(0,1fr); row-gap: 14px; }
   .bb-row:hover { background-color: transparent; box-shadow: none; transform: none; }
   .bb-row__sol { font-size: 17px; }
@@ -122,11 +116,9 @@ a:hover { color: inherit; }
   .bb-card__btn { margin-top: 0; }
 }
 
-/* Small mobile (≤ 479px): facts stack again, number above label. */
+/* Small mobile (≤ 479px) */
 @media (max-width: 479px) {
   .bb-cta { font-size: 17px; padding: 16px 24px; }
-  .bb-fact { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .bb-fact__n { flex: none; font-size: 72px; }
   .bb-steps { gap: 4px; }
   .bb-steps__t { font-size: 13px; letter-spacing: -0.01em; }
   .bb-steps__n { font-size: 11px; }
