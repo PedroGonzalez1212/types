@@ -13,7 +13,7 @@ a:hover { color: inherit; }
 .bb-skip:focus { left: 16px; }
 
 /* ---------- Primary CTA (Book a discovery call) ---------- */
-.bb-cta { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
+.bb-cta { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; white-space: nowrap; }
 .bb-cta .ty-tri { background: currentColor; height: 14px; width: 12.1px; }
 .bb-cta:hover { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; }
 .bb-cta:hover .ty-tri { background: currentColor; }

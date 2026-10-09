@@ -104,6 +104,9 @@ a:hover { color: var(--brand-green); }
   [data-r="fit"] { font-size: 18px !important; }
   .hero-in { padding-left: 0 !important; }
   [data-blob] { scale: 2; }
+  /* The three don't fit on one line, so they stack: types, "Powered by", The
+     Typesetter — the credit always sits between the two logos. */
+  .ft-brand { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
 @media (max-width: 479px) {
   .ty-header > a:first-child img { height: 30px !important; }
@@ -111,7 +114,6 @@ a:hover { color: var(--brand-green); }
   [data-r="h1sol"] { font-size: 13vw !important; }
   [data-r="h1about"] { font-size: 14.5vw !important; }
   [data-r="fit"] { font-size: 17px !important; }
-  .ft-brand { gap: 12px 20px; }
   .ft-brand__types img, .ft-brand__ts { height: 44px; }
 }
 @keyframes nav-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
@@ -138,3 +140,9 @@ div:has(> [data-blob]) { filter: none !important; }
    for pairs that touch outright (t·y, r·y, f·i, f·t, E·x). */
 .kern { letter-spacing: 0.02em; }
 .kern-lg { letter-spacing: 0.03em; }
+
+/* Footer legal row: copyright left, studio credit right */
+.footer-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; border-top: 1px solid #d7dade; font-size: 14px; line-height: 20px; color: var(--ink-subtle); }
+.footer-legal p { margin: 0; }
+.footer-credit { color: var(--ink); font-weight: 600; text-decoration: none; background: linear-gradient(var(--brand-teal), var(--brand-teal)) left bottom / 0 1px no-repeat; transition: color .2s ease, background-size .25s ease; }
+.footer-credit:hover, .footer-credit:focus-visible { color: var(--brand-teal); background-size: 100% 1px; }

@@ -36,7 +36,11 @@ textarea.cf-input { min-height: 112px; line-height: 26px; resize: vertical; }
 
 .cf-services { margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 .cf-services legend { margin-bottom: 14px; }
-.cf-svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+/* Services only ever sit 4, 2 or 1 per row (never 3 + 1), by the form's width. */
+.cf-form { container-type: inline-size; }
+.cf-svc-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@container (min-width: 452px) { .cf-svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 916px) { .cf-svc-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .cf-svc {
   display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 64px;
   padding: 10px 16px 10px 14px; box-sizing: border-box; text-align: left;
@@ -95,7 +99,13 @@ textarea.cf-input { min-height: 112px; line-height: 26px; resize: vertical; }
   .hm-hero { padding-left: 0 !important; }
 }
 @media (max-width: 767px) {
-  #content { padding: 96px 16px 48px !important; }
+  /* The hero fills exactly the first screen: svh is the viewport with the
+     browser bars showing, so the title never sits under the address bar. */
+  #root, #content { min-height: 100vh !important; min-height: 100svh !important; }
+  #content { padding: 96px 16px max(40px, env(safe-area-inset-bottom)) !important; }
+  /* A second spacer under the hero lifts it off the bottom edge: the free
+     space splits 1 : 1.6 above/below, so the title sits in the upper half. */
+  #content::after { content: ""; flex: 1.6; }
   .hm-hero { gap: 20px !important; }
   .hm-h1 { font-size: 12.5vw !important; }
   /* The rotating word gets its own line, so long words never re-wrap the title. */
@@ -116,7 +126,28 @@ textarea.cf-input { min-height: 112px; line-height: 26px; resize: vertical; }
    arrives, instead of stacking taller than the pinned screen. */
 [data-sol-grid].is-track { display: flex !important; gap: 16px !important; will-change: transform; }
 [data-sol-grid].is-track > [data-sol] { flex: 0 0 min(80vw, 340px); }
-.is-track [data-sol-card] > span:last-child { row-gap: 18px !important; padding: 24px !important; }
-.is-track [data-sol-card] > span:last-child > span:nth-child(1) { font-size: 28px !important; }
-.is-track [data-sol-card] > span:last-child > span:nth-child(2) { font-size: 16px !important; }
-.is-track [data-sol-card] > span:last-child > span:nth-child(3) { font-size: 15px !important; gap: 10px !important; }
+:is(.is-track, .is-stack) [data-sol-card] > span:last-child { row-gap: 18px !important; padding: 24px !important; }
+:is(.is-track, .is-stack) [data-sol-card] > span:last-child > span:nth-child(1) { font-size: 28px !important; }
+:is(.is-track, .is-stack) [data-sol-card] > span:last-child > span:nth-child(2) { font-size: 16px !important; }
+:is(.is-track, .is-stack) [data-sol-card] > span:last-child > span:nth-child(3) { font-size: 15px !important; gap: 10px !important; }
+
+/* ---------- Solutions as a vertical stack (mobile, < 768px wide) ----------
+   main.js adds .is-stack: the cards sit one under another and, with the
+   heading, scroll by like ordinary content, with no opening or exit effect.
+   After the last card the screen fades to black for the title phase. The
+   pinned screen is held to the visible height so the content slides inside it. */
+[data-sol-sticky].is-stack-host { height: 100vh; height: 100svh; overflow: hidden; }
+[data-sol-grid].is-stack { display: flex !important; flex-direction: column; gap: 16px !important; margin: 0 !important; will-change: transform; }
+/* From 540px wide there is room for two cards per row, so a single column
+   doesn't stretch them; cards in a row share the taller one's height. */
+@media (min-width: 540px) {
+  [data-sol-grid].is-stack { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+/* ---------- Method · Build: the four solution links ----------
+   A plain wrap could leave three on one line and one below; this grid only
+   ever lays them out 4, 2 or 1 per row, by the width of the step itself. */
+.m-sols-box { container-type: inline-size; }
+.m-sols { display: grid !important; grid-template-columns: max-content; justify-items: start; }
+@container (min-width: 420px) { .m-sols { grid-template-columns: repeat(2, max-content); } }
+@container (min-width: 760px) { .m-sols { grid-template-columns: repeat(4, max-content); } }

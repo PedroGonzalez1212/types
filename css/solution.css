@@ -3,13 +3,18 @@
    .ty-accent-* class on each section, so one stylesheet serves all three. */
 
 a:hover { color: inherit; }
+
+/* Hero: svh is the screen with the browser bars showing, so on phones the
+   bottom of the hero (quote and CTA) never sits under the address bar. */
+#hero { min-height: 100vh !important; min-height: 100svh !important; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* ---------- Primary CTA (Book a discovery call) ---------- */
-.sol-cta { background: var(--accent); border-color: var(--accent); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
+.sol-cta { background: var(--accent); border-color: var(--accent); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; white-space: nowrap; }
 .sol-cta:hover, .sol-card__btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.sol-cta .ty-tri, .sol-cta:hover .ty-tri { background: currentColor; height: 14px; width: 12.1px; }
 
 /* ---------- Services rows: Service · Diagnosis · Solution ---------- */
 .sol-rows-head, .sol-row { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; }
@@ -98,4 +103,20 @@ a:hover { color: inherit; }
   .sol-steps__n { font-size: 11px; }
   .sol-deliv { padding: 20px; }
   .sol-deliv__list { gap: 8px 16px; }
+}
+
+/* ---------- Short screens (phones in landscape, small phones) ----------
+   The hero is sized by width, so on a short screen it ran past the bottom.
+   Here the title also follows the visible height (svh) and the spacing
+   tightens, so the whole hero — eyebrow to CTA — fits on the first screen. */
+@media (max-height: 640px) {
+  #hero > div:last-child { padding-top: 96px !important; padding-bottom: 24px !important; }
+  #hero .hero-in { gap: 16px !important; }
+  #hero .ty-btn { font-size: 16px; padding: 12px 22px; }
+  #hero [data-hi]:last-child { gap: 16px !important; }
+  #hero [data-r="h1sol"] { font-size: min(13vw, 12svh, 176px) !important; }
+  #hero [data-r="fit"] { font-size: 16px !important; max-width: 46ch; }
+}
+@media (max-height: 640px) and (max-width: 767px) {
+  #hero > div:last-child { padding-top: 84px !important; }
 }

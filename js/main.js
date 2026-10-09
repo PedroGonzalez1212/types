@@ -113,15 +113,27 @@
     var s = sol; if (!s) return;
     var L = PROPS.scrollLength, EL = PROPS.exitLength;
     var TLf = PROPS.titleLength, nh = (100 + 200 * L + 100 * EL + 100 * TLf) + 'vh';
+    var gridEl = s.querySelector('[data-sol-grid]'), st = s.querySelector('[data-sol-sticky]'), stack = gridEl.classList.contains('is-stack');
+    // Mobile stack: heading and cards scroll by at the page's own pace (D px),
+    // the screen fades to black as the last card leaves (FD), holds (HOLD), and
+    // the title phase follows; the final 100vh is where Method slides over.
+    var D = stack ? st.firstElementChild.offsetTop + st.firstElementChild.offsetHeight + gridEl.offsetHeight + parseFloat(getComputedStyle(st).rowGap || 0) : 0;
+    var FD = innerHeight * .35, HOLD = innerHeight * .15;
+    if (stack) nh = 'calc(' + Math.round(D + HOLD + innerHeight * TLf) + 'px + 100vh)';
     if (s.style.height !== nh) { s.style.height = nh; fitGrid && fitGrid(); }
     var r = s.getBoundingClientRect(), cl = function (v) { return Math.min(1, Math.max(0, v)); }, ease = function (v) { return 1 - Math.pow(1 - v, 3); }, io = function (v) { return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
-    var RV = innerHeight * 2 * L, EX = innerHeight * EL, rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var RV = stack ? D : innerHeight * 2 * L, EX = innerHeight * EL, rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var p = rmo ? 1 : cl(-r.top / Math.max(1, RV) * 1.08);
     var ex = rmo ? 0 : cl((-r.top - RV) / Math.max(1, EX));
     var cv = grid;
     if (cv) { lineCap = r.top - cv.getBoundingClientRect().top + RV + innerHeight * 1.5; if (lineT > lineCap) gridScroll(); }
-    solExit(s, ex, cl, io);
-    solTitle(s, rmo ? 0 : cl((-r.top - RV - EX) / Math.max(1, innerHeight * TLf)), cl, io);
+    if (stack) {
+      solStack(s, st, gridEl, -r.top, D, FD, cl);
+      solTitle(s, cl((-r.top - D - HOLD) / Math.max(1, innerHeight * TLf)), cl, io);
+    } else {
+      solExit(s, ex, cl, io);
+      solTitle(s, rmo ? 0 : cl((-r.top - RV - EX) / Math.max(1, innerHeight * TLf)), cl, io);
+    }
     var tEl = s.querySelector('[data-type]'), caret = s.querySelector('[data-caret]');
     if (tEl) {
       var full = 'What’s Next?';
@@ -130,22 +142,27 @@
       if (tEl.textContent.length !== n) tEl.textContent = full.slice(0, n);
       caret.style.opacity = rmo ? 0 : 1 - cl((p - .02) / .06);
     }
-    var st = s.querySelector('[data-sol-sticky]');
     if (st) st.style.top = '0px';
     // Mobile track: the row of cards slides left with the scroll. Card i is centred
     // when its slice below has fully opened it (p ≈ .13, .39, .62, .85), and is
     // already sliding in while it starts to open.
-    var gridEl = s.querySelector('[data-sol-grid]');
     if (gridEl.classList.contains('is-track')) {
       var K = [.13, .39, .62, .85], c0 = gridEl.firstElementChild, cw = c0.offsetWidth + 16, idx = 0;
       for (var j = 1; j < K.length; j++) idx += cl((p - K[j - 1]) / (K[j] - K[j - 1]));
       var shift = Math.max(0, gridEl.scrollWidth - gridEl.clientWidth);
       var x = Math.min(shift, Math.max(0, idx * cw - (gridEl.clientWidth - c0.offsetWidth) / 2));
       gridEl.style.transform = 'translateX(' + (-x) + 'px)';
-    } else if (gridEl.style.transform) gridEl.style.transform = '';
+    } else if (!stack && gridEl.style.transform) gridEl.style.transform = '';
     // Cards open one after another: each gets its own slice of the scroll progress.
     s.querySelectorAll('[data-sol]').forEach(function (col, i) {
       var card = col.querySelector('[data-sol-card]');
+      if (stack) {
+        // No opening effect on the stack: every card is shown whole.
+        card.style.clipPath = 'none';
+        card.querySelector('[data-sol-fill]').style.opacity = 0;
+        card.querySelectorAll('[data-sol-in]').forEach(function (n2) { n2.style.opacity = 1; n2.style.transform = 'none'; });
+        return;
+      }
       var S0 = [0, .24, .47, .7][i] ?? 0, LN = i ? .3 : .26, q = cl((p - S0) / LN);
       var R = (1 - ease(cl(q / .12))) * 100;
       var qb = io(cl((q - .12) / .32)), qt = io(cl((q - .17) / .32));
@@ -155,6 +172,22 @@
         n2.style.opacity = qb > 0 ? 1 : 0; n2.style.transform = 'none';
       });
     });
+  }
+
+  // Mobile stack: while the section is pinned, heading and cards are moved up by
+  // exactly the distance scrolled (d), so they read as ordinary scrolling content.
+  // As the last card leaves, a plain black cover fades in and the header and
+  // background grid fade out; the title phase then starts from that black screen.
+  function solStack(s, st, gridEl, d, D, FD, cl) {
+    var y = 'translateY(' + (-Math.min(D, Math.max(0, d))) + 'px)';
+    st.firstElementChild.style.transform = y; gridEl.style.transform = y;
+    s.querySelectorAll('[data-sol]').forEach(function (col) { col.style.transform = ''; });
+    var k = cl((d - (D - FD)) / FD), cover = s.querySelector('[data-sol-cover]'), edge = s.querySelector('[data-sol-edge]');
+    cover.style.clipPath = k ? 'none' : 'polygon(0 0,0 0,0 0)'; cover.style.opacity = k;
+    if (edge) { edge.style.opacity = 0; edge.style.clipPath = 'polygon(0 0,0 0,0 0)'; }
+    var cv = grid; if (cv) { cv.style.opacity = k ? 1 - k : ''; cv.style.transform = ''; }
+    var hd = header(); if (hd) hd.style.transform = k ? 'translateY(' + (-k * (hd.offsetHeight + 40)) + 'px)' : '';
+    exCell = null;
   }
 
   function solExit(s, ex, cl, io) {
@@ -223,11 +256,14 @@
 
   function solLayout() {
     var s = sol; if (!s) return;
-    // Breakpoints (see css/site.css): ≥ 1024 four columns · 768–1023 a 2×2 grid
-    // (when there is height for it) · < 768, or under 560px tall, a sliding track.
-    var track = innerWidth < 768 || innerHeight < 560;
-    var cols = track ? 4 : (innerWidth < 1024 && innerHeight >= 700) ? 2 : 4, gridEl = s.querySelector('[data-sol-grid]');
+    // Breakpoints (see css/site.css): ≥ 1024 four columns, or under 560px tall a
+    // sliding track · < 1024 a stack that scrolls by, two cards per row from
+    // 540px and one below (see css/home.css).
+    var stack = innerWidth < 1024, track = !stack && innerHeight < 560;
+    var cols = 4, gridEl = s.querySelector('[data-sol-grid]');
     gridEl.classList.toggle('is-track', track);
+    gridEl.classList.toggle('is-stack', stack);
+    s.querySelector('[data-sol-sticky]').classList.toggle('is-stack-host', stack);
     gridEl.style.gridTemplateColumns = 'repeat(' + cols + ',minmax(0,1fr))';
     gridEl.style.gap = innerWidth < 1280 ? '16px' : '24px';
     var hd = header();
@@ -237,9 +273,9 @@
     var avail = innerHeight - pt - eb.parentElement.offsetHeight - parseFloat(cs.rowGap || 0) - parseFloat(cs.paddingBottom || 0);
     var lim = innerHeight - parseFloat(cs.paddingBottom || 0);
     var zMin = innerWidth < 1000 ? .6 : .75;
-    var z = track ? 1 : Math.max(zMin, Math.min(1, (avail - 4) / gridEl.offsetHeight));
+    var z = track || stack ? 1 : Math.max(zMin, Math.min(1, (avail - 4) / gridEl.offsetHeight));
     gridEl.style.zoom = z;
-    for (var k = 0; k < 4 && !track && z > zMin; k++) {
+    for (var k = 0; k < 4 && !track && !stack && z > zMin; k++) {
       var b = gridEl.getBoundingClientRect().bottom - st.getBoundingClientRect().top;
       if (b <= lim) break;
       z = Math.max(zMin, z * (lim - 4) / b); gridEl.style.zoom = z;
@@ -247,8 +283,8 @@
     var cv = grid;
     if (cv) {
       var cr = cv.getBoundingClientRect(), r = s.getBoundingClientRect(), gb = gridEl.getBoundingClientRect(), sb = st.getBoundingClientRect(), RV = innerHeight * 2 * PROPS.scrollLength;
-      // On the track the grid box runs off-screen, so aim at the middle of the screen.
-      var gx = (track ? sb.left + sb.width / 2 : gb.left + gb.width / 2) - cr.left, gy = gb.top + gb.height / 2 - sb.top - (cr.top - r.top - RV - .06 * innerHeight * PROPS.exitLength), md = function (a, n) { return ((a % n) + n) % n; };
+      // On the track and the stack the grid box runs off-screen, so aim at the middle of the screen.
+      var gx = (track || stack ? sb.left + sb.width / 2 : gb.left + gb.width / 2) - cr.left, gy = (stack ? sb.top + sb.height / 2 : gb.top + gb.height / 2) + gb.height / 2 - sb.top - (cr.top - r.top - RV - .06 * innerHeight * PROPS.exitLength), md = function (a, n) { return ((a % n) + n) % n; };
       gOff = { x: md(gx - 14 + 28, 56) - 28, y: md(gy - 30.17 + 48.5, 97) - 48.5 };
       gTarget = { x: gx, y: gy }; exCell = null;
       if (drawGrid && !graf) drawGrid(performance.now());
@@ -261,9 +297,11 @@
     var rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var hd = header(), hh = hd ? hd.offsetHeight : 80;
     var base = s.getBoundingClientRect().top + scrollY;
-    // Solutions lands with every card open; on the mobile track, with the first one open.
+    // Solutions lands with every card open; on the track, with the first one open;
+    // on the mobile stack, at the section's top, as plain scrolling content.
     var track = id === 'solutions' && s.querySelector('[data-sol-grid].is-track');
-    var y = id === 'solutions' ? base + (rmo ? 0 : track ? innerHeight * .22 : innerHeight * 2 * PROPS.scrollLength / 1.08 + 2) : id === 'method' ? base + 2 : base - hh;
+    var stack = id === 'solutions' && s.querySelector('[data-sol-grid].is-stack');
+    var y = id === 'solutions' ? base + (rmo ? 0 : stack ? 0 : track ? innerHeight * .22 : innerHeight * 2 * PROPS.scrollLength / 1.08 + 2) : id === 'method' ? base + 2 : base - hh;
     window.scrollTo({ top: y, behavior: smooth && !rmo ? 'smooth' : 'auto' });
     return true;
   }

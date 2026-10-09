@@ -2,6 +2,10 @@
    900px, plus hover states the design expressed as interaction props. */
 
 a:hover { color: inherit; }
+
+/* Hero: svh is the screen with the browser bars showing, so on phones the
+   bottom of the hero never sits under the address bar. */
+#hero { min-height: 92vh !important; min-height: 92svh !important; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
@@ -69,4 +73,20 @@ a:hover { color: inherit; }
   .ab-qitem { grid-template-columns: minmax(0, 1fr); row-gap: 12px; padding: 28px 0; }
   .ab-qitem__n { padding-top: 0; }
   .ab-qitem__t { font-size: 26px; }
+}
+
+/* ---------- Short screens (phones in landscape, small phones) ----------
+   The hero is sized by width, so on a short screen it ran past the bottom.
+   Here the title and statement also follow the visible height (svh) and the
+   spacing tightens, so the whole hero fits on the first screen. */
+@media (max-height: 700px) {
+  #hero > div:last-child { padding-top: 104px !important; padding-bottom: 24px !important; gap: 24px !important; }
+  #hero > div:last-child > div { gap: 24px !important; }
+  #hero [data-r="h1about"] { font-size: min(14.5vw, 15svh, 200px) !important; }
+  #hero .ab-grid { padding-top: 20px !important; row-gap: 12px !important; }
+  #hero .ab-wide { font-size: min(28px, 5.5svh) !important; }
+  #hero .ab-b p { font-size: 16px !important; line-height: 1.45 !important; }
+}
+@media (max-height: 700px) and (max-width: 767px) {
+  #hero > div:last-child { padding-top: 84px !important; }
 }

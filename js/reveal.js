@@ -1,4 +1,4 @@
-/* Types — slide-in reveal for the lower home sections (About, FAQ).
+/* Types — slide-in reveal for the lower home sections (About, FAQ, Contact).
    Elements marked data-ab-in="left|right" come in the first time a quarter of
    them is on screen. The entrance follows the breakpoint:
      ≥ 1024px  slide in from their side (80px)
@@ -31,4 +31,26 @@
     });
   }, { threshold: mobile ? 0.12 : 0.25 });
   els.forEach(function (el) { io.observe(el); });
+
+  // Staggered groups: data-ab-stagger="<selector>" names the pieces inside the
+  // element that rise in one after another (the contact form: note, fields,
+  // each service, notes, submit). Once in, their inline styles are cleared so
+  // the pieces' own hover/focus transitions apply again.
+  [].slice.call(document.querySelectorAll('[data-ab-stagger]')).forEach(function (g) {
+    var items = [].slice.call(g.querySelectorAll(g.dataset.abStagger));
+    items.forEach(function (el, i) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity .7s cubic-bezier(.2,.7,.2,1) ' + (i * .06) + 's, transform .7s cubic-bezier(.2,.7,.2,1) ' + (i * .06) + 's';
+    });
+    var gio = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (e) { return e.isIntersecting; })) return;
+      gio.disconnect();
+      items.forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+      setTimeout(function () {
+        items.forEach(function (el) { el.style.opacity = el.style.transform = el.style.transition = ''; });
+      }, 700 + items.length * 60 + 100);
+    }, { threshold: mobile ? 0.08 : 0.15 });
+    gio.observe(g);
+  });
 })();
