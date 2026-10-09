@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/faq.css">
+<link rel="stylesheet" href="css/solution.css">
 <link rel="stylesheet" href="css/brand-building.css">
 </head>
 <body>
@@ -33,10 +35,10 @@
 <!-- 01 Hero -->
 <section id="hero" class="ty-accent-green" style="position:relative;z-index:2;overflow:visible;min-height:100vh;display:flex;flex-direction:column;background:var(--surface-page);color:var(--ink);isolation:isolate">
   <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;bottom:-28vh;z-index:0;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(#000 0,#000 calc(100% - 34vh),transparent 100%);mask-image:linear-gradient(#000 0,#000 calc(100% - 34vh),transparent 100%)"><div id="blobs-a" style="position:absolute;inset:0;filter:blur(110px);opacity:.4">
-    <div data-blob="" style="position:absolute;left:48%;top:44%;width:46vw;height:22vw;border-radius:50%;background:var(--brand-teal);opacity:.5"></div>
-    <div data-blob="" style="position:absolute;right:-8%;top:12%;width:30vw;height:48vw;border-radius:50%;background:var(--brand-teal);opacity:.8"></div>
-    <div data-blob="" style="position:absolute;left:55%;top:70%;width:34vw;height:12vw;border-radius:50%;background:var(--brand-teal);opacity:.6;transform:rotate(-8deg)"></div>
-    <div data-blob="" style="position:absolute;left:4%;top:78%;width:40vw;height:30vw;border-radius:50%;background:var(--brand-teal);opacity:.5"></div>
+    <div data-blob="" style="position:absolute;left:48%;top:44%;width:46vw;height:22vw;border-radius:50%;background:var(--accent);opacity:.5"></div>
+    <div data-blob="" style="position:absolute;right:-8%;top:12%;width:30vw;height:48vw;border-radius:50%;background:var(--accent);opacity:.8"></div>
+    <div data-blob="" style="position:absolute;left:55%;top:70%;width:34vw;height:12vw;border-radius:50%;background:var(--accent);opacity:.6;transform:rotate(-8deg)"></div>
+    <div data-blob="" style="position:absolute;left:4%;top:78%;width:40vw;height:30vw;border-radius:50%;background:var(--accent);opacity:.5"></div>
   </div></div>
   <canvas id="grid-a" aria-hidden="true" style="position:absolute;top:0;left:0;z-index:1;width:100%;height:calc(100% + 28vh);display:block;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 70% 80% at 80% 45%,#000 20%,transparent 78%),linear-gradient(#000 0,#000 calc(100% - 34vh),transparent 100%);-webkit-mask-composite:source-in;mask-image:radial-gradient(ellipse 70% 80% at 80% 45%,#000 20%,transparent 78%),linear-gradient(#000 0,#000 calc(100% - 34vh),transparent 100%);mask-composite:intersect"></canvas>
   <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:flex-end;box-sizing:border-box;padding:140px clamp(16px,4vw,32px) clamp(56px,9vh,104px)">
@@ -90,28 +92,26 @@
 <!-- 03 What we do -->
 <section id="what-we-do" class="ty-accent-green" style="background:var(--surface-page);color:var(--ink);scroll-margin-top:96px">
   <div style="max-width:1200px;margin:0 auto;box-sizing:border-box;padding:0 clamp(16px,4vw,32px) clamp(96px,12vw,160px)">
-    <h2 style="margin:0 0 clamp(24px,3vw,40px);display:flex;align-items:center;gap:12px;font-family:var(--font-text);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted)"><span class="ty-tri" aria-hidden="true" style="height:8px;width:6.9px;background:var(--accent)"></span>Services</h2>
+    <h2 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">Services</h2>
+    <div aria-hidden="true" class="sol-rows-head"><span></span><span class="sol-lbl">Diagnosis</span><span class="sol-lbl">Solution</span></div>
     <div id="services" style="border-bottom:1px solid var(--ink)">
-      <article data-row="" class="bb-row">
-        <span data-rl="" aria-hidden="true" class="bb-row__line"></span>
-        <div data-rc="" class="bb-row__idx"><span>01</span><span aria-hidden="true" class="bb-row__tris"><span class="ty-tri"></span></span></div>
-        <h3 data-rc="" class="bb-row__title">Corporate Identity</h3>
-        <p data-rc="" class="bb-row__pain">When your brand looks and sounds different every time, people struggle to understand who you are and why you matter.</p>
-        <p data-rc="" class="bb-row__sol">Define a clear visual and verbal identity that creates consistency, recognition and trust.</p>
+      <article data-row="" class="sol-row">
+        <span data-rl="" aria-hidden="true" class="sol-row__line"></span>
+        <h3 data-rc="" class="sol-row__title">Corporate Identity</h3>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Diagnosis</span><p class="sol-row__pain">When your brand looks and sounds different every time, people struggle to understand who you are and why you matter.</p></div>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Solution</span><p class="sol-row__sol">Define a clear visual and verbal identity that creates consistency, recognition and trust.</p></div>
       </article>
-      <article data-row="" class="bb-row">
-        <span data-rl="" aria-hidden="true" class="bb-row__line"></span>
-        <div data-rc="" class="bb-row__idx"><span>02</span><span aria-hidden="true" class="bb-row__tris"><span class="ty-tri"></span><span class="ty-tri"></span></span></div>
-        <h3 data-rc="" class="bb-row__title">Commercial Assets</h3>
-        <p data-rc="" class="bb-row__pain">A strong brand means little if your sales team can’t use it effectively.</p>
-        <p data-rc="" class="bb-row__sol">Turn your positioning into websites, presentations and digital tools that help your company communicate value and generate opportunities.</p>
+      <article data-row="" class="sol-row">
+        <span data-rl="" aria-hidden="true" class="sol-row__line"></span>
+        <h3 data-rc="" class="sol-row__title">Commercial Assets</h3>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Diagnosis</span><p class="sol-row__pain">A strong brand means little if your sales team can’t use it effectively.</p></div>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Solution</span><p class="sol-row__sol">Turn your positioning into websites, presentations and digital tools that help your company communicate value and generate opportunities.</p></div>
       </article>
-      <article data-row="" class="bb-row">
-        <span data-rl="" aria-hidden="true" class="bb-row__line"></span>
-        <div data-rc="" class="bb-row__idx"><span>03</span><span aria-hidden="true" class="bb-row__tris"><span class="ty-tri"></span><span class="ty-tri"></span><span class="ty-tri"></span></span></div>
-        <h3 data-rc="" class="bb-row__title">Market Authority</h3>
-        <p data-rc="" class="bb-row__pain">Prospects trust proof more than promises.</p>
-        <p data-rc="" class="bb-row__sol">Build credibility through case studies, testimonials and thought leadership strategies.</p>
+      <article data-row="" class="sol-row">
+        <span data-rl="" aria-hidden="true" class="sol-row__line"></span>
+        <h3 data-rc="" class="sol-row__title">Market Authority</h3>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Diagnosis</span><p class="sol-row__pain">Prospects trust proof more than promises.</p></div>
+        <div data-rc="" class="sol-row__cell"><span class="sol-lbl">Solution</span><p class="sol-row__sol">Build credibility through case studies, testimonials and thought leadership strategies.</p></div>
       </article>
     </div>
   </div>
@@ -151,54 +151,24 @@
 <section id="faq" class="ty-accent-green" style="background:var(--surface-page);color:var(--ink);border-top:1px solid var(--border-subtle);scroll-margin-top:96px">
   <div style="max-width:1200px;margin:0 auto;box-sizing:border-box;padding:clamp(80px,10vw,152px) clamp(16px,4vw,32px);display:flex;flex-direction:column;gap:clamp(32px,4vw,56px)">
     <h2 data-in="" style="margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(36px,4.4vw,64px);line-height:1.04;letter-spacing:-0.035em">FAQs</h2>
-
-    <!-- Desktop: vertical tabs + sticky answer panel -->
-    <div class="bb-faq-desk">
-      <div role="tablist" aria-label="FAQs" aria-orientation="vertical" class="bb-faq-tabs">
-        <button data-in="" role="tab" id="faq-t0" aria-selected="true" aria-controls="faq-panel" tabindex="0" class="bb-faq-tab"><span>How do I know if our problem is really branding and not lead generation?</span><span class="ty-tri" aria-hidden="true"></span></button>
-        <button data-in="" role="tab" id="faq-t1" aria-selected="false" aria-controls="faq-panel" tabindex="-1" class="bb-faq-tab"><span>We’ve been operating for years. Why would we need to invest in branding now?</span><span class="ty-tri" aria-hidden="true"></span></button>
-        <button data-in="" role="tab" id="faq-t2" aria-selected="false" aria-controls="faq-panel" tabindex="-1" class="bb-faq-tab"><span>We already have a logo and website. Isn’t that enough?</span><span class="ty-tri" aria-hidden="true"></span></button>
-        <button data-in="" role="tab" id="faq-t3" aria-selected="false" aria-controls="faq-panel" tabindex="-1" class="bb-faq-tab"><span>How do you measure the success of a branding initiative?</span><span class="ty-tri" aria-hidden="true"></span></button>
-        <button data-in="" role="tab" id="faq-t4" aria-selected="false" aria-controls="faq-panel" tabindex="-1" class="bb-faq-tab"><span>We’ve worked with branding agencies before and didn’t see measurable results. What’s different?</span><span class="ty-tri" aria-hidden="true"></span></button>
-      </div>
-      <div data-in="" id="faq-panel" role="tabpanel" aria-labelledby="faq-t0" tabindex="0" class="bb-faq-panel">
-        <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)"></span>
-        <p data-fi="" id="faq-answer" style="margin:0;font-family:var(--font-text);font-size:17px;line-height:1.65;color:var(--brand-green);text-wrap:pretty"></p>
-      </div>
-    </div>
-
-    <!-- Mobile: accordion. Answers here are also the source for the desktop panel. -->
-    <div class="bb-faq-mob">
-      <div data-in="" class="bb-faq-item">
-        <h3 style="margin:0"><button aria-expanded="true" aria-controls="faq-m0" class="bb-faq-q"><span>How do I know if our problem is really branding and not lead generation?</span><span class="ty-tri" aria-hidden="true"></span></button></h3>
-        <p id="faq-m0" class="bb-faq-a">If people struggle to understand what your company does, what makes you different, or why you matter, your problem is likely branding. A clear sign is when employees, sales materials, and communication channels all describe the business differently. Before generating more demand, people need to clearly understand who you are and why they should trust you.</p>
-      </div>
-      <div data-in="" class="bb-faq-item">
-        <h3 style="margin:0"><button aria-expanded="false" aria-controls="faq-m1" class="bb-faq-q"><span>We’ve been operating for years. Why would we need to invest in branding now?</span><span class="ty-tri" aria-hidden="true"></span></button></h3>
-        <p id="faq-m1" class="bb-faq-a" hidden>Because the company you are today is likely very different from the one your brand was built for. As markets, customers, services, and teams evolve, your brand should evolve with them. Effective branding ensures your market perception reflects who you are today. Not who you were years ago.</p>
-      </div>
-      <div data-in="" class="bb-faq-item">
-        <h3 style="margin:0"><button aria-expanded="false" aria-controls="faq-m2" class="bb-faq-q"><span>We already have a logo and website. Isn’t that enough?</span><span class="ty-tri" aria-hidden="true"></span></button></h3>
-        <p id="faq-m2" class="bb-faq-a" hidden>No. A logo and website are important assets, but they are only part of your brand. Your brand is reflected in every proposal, presentation, sales conversation, social media post, and customer interaction. A strong brand creates consistency across all these touchpoints, helping people recognize, understand, and trust your company.</p>
-      </div>
-      <div data-in="" class="bb-faq-item">
-        <h3 style="margin:0"><button aria-expanded="false" aria-controls="faq-m3" class="bb-faq-q"><span>How do you measure the success of a branding initiative?</span><span class="ty-tri" aria-hidden="true"></span></button></h3>
-        <p id="faq-m3" class="bb-faq-a" hidden>The success of a branding initiative is measured by clarity and alignment. Internally, teams should have a shared understanding of the company’s purpose, direction, and voice. Externally, customers should quickly grasp its value, while prospects encounter a cohesive experience across every interaction.</p>
-      </div>
-      <div data-in="" class="bb-faq-item">
-        <h3 style="margin:0"><button aria-expanded="false" aria-controls="faq-m4" class="bb-faq-q"><span>We’ve worked with branding agencies before and didn’t see measurable results. What’s different?</span><span class="ty-tri" aria-hidden="true"></span></button></h3>
-        <p id="faq-m4" class="bb-faq-a" hidden>Many branding projects focus on aesthetics, while effective branding focuses on alignment. The goal is not to create a better logo or website, but to ensure your identity, communication, and market perception accurately reflect who you are and where you want to go. When those elements work together, your brand becomes easier to understand, trust, and remember.</p>
-      </div>
-    </div>
+    <!-- Source copy for the FAQ. js/faq.js renders it as tabs or an accordion. -->
+    <dl id="faq-data" hidden>
+      <div data-faq><dt>How do I know if our problem is really branding and not lead generation?</dt><dd>If people struggle to understand what your company does, what makes you different, or why you matter, your problem is likely branding. A clear sign is when employees, sales materials, and communication channels all describe the business differently. Before generating more demand, people need to clearly understand who you are and why they should trust you.</dd></div>
+      <div data-faq><dt>We’ve been operating for years. Why would we need to invest in branding now?</dt><dd>Because the company you are today is likely very different from the one your brand was built for. As markets, customers, services, and teams evolve, your brand should evolve with them. Effective branding ensures your market perception reflects who you are today. Not who you were years ago.</dd></div>
+      <div data-faq><dt>We already have a logo and website. Isn’t that enough?</dt><dd>No. A logo and website are important assets, but they are only part of your brand. Your brand is reflected in every proposal, presentation, sales conversation, social media post, and customer interaction. A strong brand creates consistency across all these touchpoints, helping people recognize, understand, and trust your company.</dd></div>
+      <div data-faq><dt>How do you measure the success of a branding initiative?</dt><dd>The success of a branding initiative is measured by clarity and alignment. Internally, teams should have a shared understanding of the company’s purpose, direction, and voice. Externally, customers should quickly grasp its value, while prospects encounter a cohesive experience across every interaction.</dd></div>
+      <div data-faq><dt>We’ve worked with branding agencies before and didn’t see measurable results. What’s different?</dt><dd>Many branding projects focus on aesthetics, while effective branding focuses on alignment. The goal is not to create a better logo or website, but to ensure your identity, communication, and market perception accurately reflect who you are and where you want to go. When those elements work together, your brand becomes easier to understand, trust, and remember.</dd></div>
+    </dl>
+    <div id="faq-root"></div>
   </div>
 </section>
 
 <!-- 08 Final CTA + What's next -->
 <section id="next" class="ty-accent-green" style="position:relative;z-index:2;overflow:visible;background:var(--surface-page);color:var(--ink);isolation:isolate">
   <div aria-hidden="true" style="position:absolute;top:-28vh;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(transparent 0,#000 34vh,#000 100%);mask-image:linear-gradient(transparent 0,#000 34vh,#000 100%)"><div id="blobs-b" style="position:absolute;inset:28vh 0 0 0;filter:blur(110px);opacity:.4">
-    <div data-blob="" style="position:absolute;left:20%;top:-10%;width:60vw;height:26vw;border-radius:50%;background:var(--brand-teal);opacity:.55"></div>
-    <div data-blob="" style="position:absolute;right:-10%;top:30%;width:30vw;height:40vw;border-radius:50%;background:var(--brand-teal);opacity:.6"></div>
-    <div data-blob="" style="position:absolute;left:-10%;top:55%;width:36vw;height:30vw;border-radius:50%;background:var(--brand-teal);opacity:.4"></div>
+    <div data-blob="" style="position:absolute;left:20%;top:-10%;width:60vw;height:26vw;border-radius:50%;background:var(--accent);opacity:.55"></div>
+    <div data-blob="" style="position:absolute;right:-10%;top:30%;width:30vw;height:40vw;border-radius:50%;background:var(--accent);opacity:.6"></div>
+    <div data-blob="" style="position:absolute;left:-10%;top:55%;width:36vw;height:30vw;border-radius:50%;background:var(--accent);opacity:.4"></div>
   </div></div>
   <canvas id="grid-b" aria-hidden="true" style="position:absolute;top:-28vh;left:0;z-index:1;width:100%;height:calc(100% + 28vh);display:block;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 60% 55% at 50% 32%,#000 15%,transparent 80%),linear-gradient(transparent 0,#000 34vh,#000 100%);-webkit-mask-composite:source-in;mask-image:radial-gradient(ellipse 60% 55% at 50% 32%,#000 15%,transparent 80%),linear-gradient(transparent 0,#000 34vh,#000 100%);mask-composite:intersect"></canvas>
   <div style="position:relative;z-index:2;max-width:1200px;margin:0 auto;box-sizing:border-box;padding:clamp(96px,12vw,176px) clamp(16px,4vw,32px) clamp(64px,8vw,96px);display:flex;flex-direction:column;gap:clamp(64px,8vw,120px)">
@@ -260,11 +230,11 @@
         </div>
         <nav aria-label="Footer" style="display:flex;flex-direction:column;gap:4px;min-width:160px">
           <p style="margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-subtle)">Explore</p>
-        <a href="about.html" class="hv-ink" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">About</a>
-        <a href="brand-building.html" class="hv-ink" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Brand Building</a>
-        <a href="lead-generation.html" class="hv-ink" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Lead Generation</a>
-        <a href="content-globalization.html" class="hv-ink" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Content Globalization</a>
-        <a href="business-intelligence.html" class="hv-ink" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Business Intelligence</a>
+        <a href="about.html" class="hv-teal" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">About</a>
+        <a href="brand-building.html" class="hv-green" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Brand Building</a>
+        <a href="lead-generation.html" class="hv-magenta" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Lead Generation</a>
+        <a href="content-globalization.html" class="hv-teal" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Content Globalization</a>
+        <a href="business-intelligence.html" class="hv-orange" style="display:inline-flex;align-items:center;min-height:36px;font-size:15px;font-weight:600;color:var(--ink-muted);text-decoration:none;transition:color .15s">Business Intelligence</a>
         </nav>
       </div>
     </div>
@@ -273,5 +243,6 @@
 </footer>
 <script src="js/nav.js" defer></script>
 <script src="js/brand-building.js" defer></script>
+<script src="js/faq.js" defer></script>
 </body>
 </html>

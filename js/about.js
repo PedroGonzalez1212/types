@@ -111,6 +111,7 @@
         var sib = k++;
         n.style.transition = 'opacity .8s ' + EZ + ',transform .8s ' + EZ; n.style.transitionDelay = (sib * step) + 'ms';
         n.style.opacity = '1'; n.style.transform = 'none';
+        n.addEventListener('transitionend', function f(ev) { if (ev.target !== n) return; n.removeEventListener('transitionend', f); n.style.transition = n.style.transitionDelay = ''; }); // free hover transitions
         n.querySelectorAll('[data-draw]').forEach(function (d) { d.style.transition = 'transform 1.1s ' + EZ; d.style.transitionDelay = (sib * step) + 'ms'; d.style.transform = 'scaleX(1)'; });
         n.querySelectorAll('[data-count]').forEach(function (c) { setTimeout(function () { countUp(c); }, sib * step); });
       });

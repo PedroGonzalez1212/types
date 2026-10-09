@@ -167,6 +167,7 @@
         n.style.transition = 'opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)';
         n.style.transitionDelay = (k++ * step) + 'ms';
         n.style.opacity = '1'; n.style.transform = 'none';
+        n.addEventListener('transitionend', function f(ev) { if (ev.target !== n) return; n.removeEventListener('transitionend', f); n.style.transition = n.style.transitionDelay = ''; }); // free hover transitions
       });
     }, { rootMargin: mobile ? '0px 0px -6% 0px' : '0px 0px -10% 0px' });
     ins.forEach(function (n) { io.observe(n); });

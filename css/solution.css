@@ -9,7 +9,7 @@ a:hover { color: inherit; }
 
 /* ---------- Primary CTA (Book a discovery call) ---------- */
 .sol-cta { background: var(--accent); border-color: var(--accent); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
-.sol-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
+.sol-cta:hover, .sol-card__btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
 /* ---------- Services rows: Service · Diagnosis · Solution ---------- */
 .sol-rows-head, .sol-row { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; }

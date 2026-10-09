@@ -15,21 +15,12 @@ a:hover { color: inherit; }
 /* ---------- Primary CTA (Book a discovery call) ---------- */
 .bb-cta { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; text-decoration: none; font-size: 20px; font-weight: 600; padding: 20px 36px; gap: 14px; }
 .bb-cta .ty-tri { background: currentColor; height: 14px; width: 12.1px; }
-.bb-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--surface-page); }
+.bb-cta:hover { background: var(--brand-green); border-color: var(--brand-green); color: #ffffff; }
 .bb-cta:hover .ty-tri { background: currentColor; }
 
 /* ---------- Facts (market stats): see facts.css ---------- */
 
-/* ---------- Services rows ---------- */
-.bb-row { position: relative; display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; row-gap: 16px; align-items: start; margin: 0 -16px; padding: clamp(32px,4vw,56px) 16px; border-radius: 4px; transition: background-color .2s, box-shadow .2s, transform .3s cubic-bezier(.22,1,.36,1); }
-.bb-row:hover { background-color: var(--surface-hover); box-shadow: 0 0 8px 2px var(--surface-hover); transform: scale(1.02); z-index: 1; }
-.bb-row__line { position: absolute; left: 16px; right: 16px; top: 0; height: 1px; background: var(--ink); transform-origin: 0 50%; }
-.bb-row__idx { display: flex; flex-direction: column; gap: 16px; font-family: var(--font-text); font-size: 13px; font-weight: 600; letter-spacing: .18em; color: var(--ink-muted); }
-.bb-row__tris { display: flex; gap: 5px; }
-.bb-row__tris .ty-tri { height: 16px; width: 13.9px; background: var(--accent); }
-.bb-row__title { margin: 0; font-family: var(--font-display); font-size: clamp(28px,3vw,46px); font-weight: 500; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
-.bb-row__pain { margin: 0; font-family: var(--font-text); font-size: 17px; line-height: 1.55; color: var(--ink-muted); text-wrap: pretty; }
-.bb-row__sol { margin: 0; font-family: var(--font-text); font-size: 19px; font-weight: 500; line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+/* ---------- Services rows: see solution.css ---------- */
 
 /* ---------- Method strip ---------- */
 .bb-steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
@@ -40,21 +31,7 @@ a:hover { color: inherit; }
 .bb-cols__a { grid-column: 1 / span 5; min-width: 0; }
 .bb-cols__b { grid-column: 7 / span 6; }
 
-/* ---------- FAQ ---------- */
-.bb-faq-desk { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); column-gap: 24px; align-items: start; }
-.bb-faq-tabs { grid-column: 1 / span 6; display: flex; flex-direction: column; border-top: 1px solid var(--border-subtle); }
-.bb-faq-tab { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 56px; padding: 22px 16px 22px 0; background: none; border: 0; border-bottom: 1px solid var(--border-subtle); cursor: pointer; text-align: left; color: var(--ink-muted); font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; transition: color .15s; }
-.bb-faq-tab:hover, .bb-faq-tab[aria-selected="true"] { color: var(--ink); }
-.bb-faq-tab .ty-tri { flex: none; height: 12px; width: 10.4px; background: var(--border-control); transition: background-color .15s, transform .2s; }
-.bb-faq-tab[aria-selected="true"] .ty-tri { background: var(--brand-green); transform: translateX(6px); }
-.bb-faq-panel { grid-column: 7 / span 6; position: sticky; top: 128px; box-sizing: border-box; padding: clamp(28px,3vw,40px); background: var(--surface-raised); border: 1px solid var(--border-subtle); border-radius: 2px; display: flex; flex-direction: column; gap: 20px; }
-
-.bb-faq-mob { display: none; border-bottom: 1px solid var(--border-subtle); }
-.bb-faq-item { border-top: 1px solid var(--border-subtle); }
-.bb-faq-q { width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.35; }
-.bb-faq-q .ty-tri { flex: none; height: 12px; width: 10.4px; background: var(--accent); transition: transform .3s; }
-.bb-faq-q[aria-expanded="true"] .ty-tri { transform: rotate(90deg); }
-.bb-faq-a { margin: 0 0 24px; font-family: var(--font-text); font-size: 16px; line-height: 1.6; color: var(--ink-muted); }
+/* ---------- FAQ: see faq.css ---------- */
 
 /* ---------- What's next cards ---------- */
 .bb-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
@@ -72,26 +49,18 @@ a:hover { color: inherit; }
 .bb-card__list .ty-tri { height: 8px; width: 6.9px; background: var(--accent); }
 .bb-card__btn { justify-self: start; margin-top: 8px; background: var(--accent); border-color: var(--accent); color: #ffffff; }
 .bb-card__btn .ty-tri { background: currentColor; }
+.bb-card__btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
 /* ---------- Responsive (breakpoints: see site.css) ---------- */
 
 /* Laptop (≤ 1279px) */
 @media (max-width: 1279px) {
   .bb-card__link { padding: 28px; row-gap: 20px; }
-  .bb-row__sol { font-size: 18px; }
-  .bb-faq-tab { font-size: 17px; }
 }
 
-/* Tablet (≤ 1023px): index + title share the first line of each service, with
-   pain | solution side by side below; FAQ turns into the accordion; "What's
-   next" cards become full-width rows split in two. */
+/* Tablet (≤ 1023px): "What's next" cards become full-width rows split in two. */
 @media (max-width: 1023px) {
-  .bb-row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); row-gap: 20px; }
-  .bb-row__idx { grid-column: 1 / -1; flex-direction: row; align-items: center; }
-  .bb-row__title { grid-column: 1 / -1; }
   .bb-cols__a, .bb-cols__b { grid-column: 1 / -1; }
-  .bb-faq-desk { display: none; }
-  .bb-faq-mob { display: block; }
   .bb-cards { grid-template-columns: minmax(0,1fr); gap: 16px; }
   .bb-card__link { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "n n" "title list" "q list" "q btn"; column-gap: 32px; align-items: start; }
   .bb-card__n { grid-area: n; }
@@ -104,10 +73,6 @@ a:hover { color: inherit; }
 /* Mobile (≤ 767px): one column. */
 @media (max-width: 767px) {
   .bb-cta { font-size: 18px; padding: 18px 28px; }
-  .bb-row { grid-template-columns: minmax(0,1fr); row-gap: 14px; }
-  .bb-row:hover { background-color: transparent; box-shadow: none; transform: none; }
-  .bb-row__sol { font-size: 17px; }
-  .bb-row__pain { font-size: 16px; }
   .bb-cols { grid-template-columns: repeat(4,minmax(0,1fr)); }
   .bb-steps__t { font-size: 17px; overflow-wrap: normal; }
   .bb-card__link { grid-template-columns: minmax(0,1fr); grid-template-areas: none; padding: 24px; row-gap: 20px; }
@@ -122,6 +87,4 @@ a:hover { color: inherit; }
   .bb-steps { gap: 4px; }
   .bb-steps__t { font-size: 13px; letter-spacing: -0.01em; }
   .bb-steps__n { font-size: 11px; }
-  .bb-faq-q { font-size: 17px; padding: 18px 0; }
-  .bb-faq-a { font-size: 15px; }
 }

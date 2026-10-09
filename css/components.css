@@ -29,7 +29,8 @@
 .ty-muted { color: var(--ink-muted); }
 
 /* ---------- Button ---------- */
-.ty-btn { display: inline-flex; align-items: center; gap: var(--space-3, 12px); font-family: var(--font-text); font-size: 15px; line-height: 20px; font-weight: 600; padding: var(--space-3, 12px) var(--space-6, 24px); border-radius: var(--radius-sm, 2px); border: 1px solid transparent; text-decoration: none; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
+.ty-btn { display: inline-flex; align-items: center; gap: var(--space-3, 12px); font-family: var(--font-text); font-size: 15px; line-height: 20px; font-weight: 600; padding: var(--space-3, 12px) var(--space-6, 24px); border-radius: var(--radius-sm, 2px); border: 1px solid transparent; text-decoration: none; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, scale .25s cubic-bezier(.22,1,.36,1); }
+.ty-btn:hover, .ty-btn:focus-visible { scale: 1.04; }
 .ty-roll { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .2em; margin-block: -.2em; }
 .ty-roll__in { display: block; position: relative; transition: transform .5s cubic-bezier(.7, 0, .2, 1); }
 .ty-roll__in::after { content: attr(data-t); content: attr(data-t) / ""; position: absolute; left: 0; top: calc(100% + .4em); white-space: nowrap; }

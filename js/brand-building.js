@@ -1,6 +1,7 @@
-/* Types — Brand Building. Hero grid/blob animation, scroll reveals, method strip
-   and FAQ tabs/accordion, ported from the Claude Design canvas component to plain JS.
-   Loaded with `defer`, so the DOM below is already parsed when this runs. */
+/* Types — Brand Building. Hero grid/blob animation, scroll reveals, method strip,
+   ported from the Claude Design canvas component to plain JS.
+   Loaded with `defer`, so the DOM below is already parsed when this runs.
+   Services rows use solution.css; FAQ: faq.js. */
 
 (function () {
   "use strict";
@@ -155,51 +156,10 @@
         n.style.transition = 'opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)';
         n.style.transitionDelay = (k++ * step) + 'ms';
         n.style.opacity = '1'; n.style.transform = 'none';
+        n.addEventListener('transitionend', function f(ev) { if (ev.target !== n) return; n.removeEventListener('transitionend', f); n.style.transition = n.style.transitionDelay = ''; }); // free hover transitions
       });
     }, { rootMargin: mobile ? '0px 0px -6% 0px' : '0px 0px -10% 0px' });
     ins.forEach(function (n) { io.observe(n); });
-  }
-
-  // ---------- FAQ: desktop tabs + mobile accordion share one selection ----------
-  function setupFaq() {
-    var tabs = [].slice.call(document.querySelectorAll('.bb-faq-tab'));
-    var qs = [].slice.call(document.querySelectorAll('.bb-faq-q'));
-    var answers = [].slice.call(document.querySelectorAll('.bb-faq-a')).map(function (p) { return p.textContent; });
-    var panel = document.getElementById('faq-panel'), ans = document.getElementById('faq-answer');
-    var fq = 0;
-    var isMob = function () { return innerWidth < 1024; }; // accordion below the tablet breakpoint (brand-building.css)
-    var pulse = function () {
-      if (reduce) return;
-      panel.querySelectorAll('[data-fi]').forEach(function (n, k) {
-        n.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 550, delay: k * 70, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
-      });
-    };
-    var render = function () {
-      tabs.forEach(function (t, i) { t.setAttribute('aria-selected', String(i === fq)); t.tabIndex = i === fq ? 0 : -1; });
-      qs.forEach(function (q, i) {
-        q.setAttribute('aria-expanded', String(i === fq));
-        document.getElementById(q.getAttribute('aria-controls')).hidden = i !== fq;
-      });
-      ans.textContent = answers[fq] || answers[0];
-      panel.setAttribute('aria-labelledby', 'faq-t' + Math.max(0, fq));
-    };
-    var pick = function (i) {
-      if (i === fq) return;
-      fq = i; render(); pulse();
-    };
-    tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { pick(i); });
-      t.addEventListener('mouseenter', function () { pick(i); });
-      t.addEventListener('keydown', function (e) {
-        var d = { ArrowDown: 1, ArrowUp: -1 }[e.key]; if (!d) return;
-        e.preventDefault();
-        var k = (Math.max(0, fq) + d + tabs.length) % tabs.length;
-        pick(k); tabs[k].focus();
-      });
-    });
-    // On mobile, tapping the open question collapses it.
-    qs.forEach(function (q, i) { q.addEventListener('click', function () { pick(isMob() && i === fq ? -1 : i); }); });
-    render();
   }
 
   // ---------- Blobs: slow drifting loop ----------
@@ -222,7 +182,6 @@
   function init() {
     document.documentElement.lang = 'en';
     splitWords();
-    setupFaq();
 
     addEventListener('resize', function () { redrawGrids(); words(); });
     addEventListener('scroll', function () {

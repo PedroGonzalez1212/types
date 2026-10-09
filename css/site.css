@@ -35,12 +35,14 @@ a:hover { color: var(--brand-green); }
 .skip-link { position: absolute; left: -9999px; top: 16px; z-index: 60; padding: 12px 16px; background: #ffffff; color: #0a0b0d; font-family: var(--font-text); font-size: 16px; font-weight: 600; border-radius: 2px; }
 .skip-link:focus { left: 16px; }
 
-/* ---------- Hover helpers (links that light up in a brand color) ---------- */
-.hv-ink:hover     { color: var(--ink); }
-.hv-green:hover   { color: var(--brand-green);   border-bottom-color: var(--brand-green); }
-.hv-magenta:hover { color: var(--brand-magenta); border-bottom-color: var(--brand-magenta); }
-.hv-teal:hover    { color: var(--brand-teal);    border-bottom-color: var(--brand-teal); }
-.hv-orange:hover  { color: var(--brand-orange);  border-bottom-color: var(--brand-orange); }
+/* ---------- Hover helpers (links that light up in a brand color) ----------
+   !important: these links set their resting color inline, which would
+   otherwise win over :hover. */
+.hv-ink:hover     { color: var(--ink) !important; }
+.hv-green:hover   { color: var(--brand-green) !important;   border-bottom-color: var(--brand-green); }
+.hv-magenta:hover { color: var(--brand-magenta) !important; border-bottom-color: var(--brand-magenta); }
+.hv-teal:hover    { color: var(--brand-teal) !important;    border-bottom-color: var(--brand-teal); }
+.hv-orange:hover  { color: var(--brand-orange) !important;  border-bottom-color: var(--brand-orange); }
 
 /* ---------- Footer brand: Types · Powered by · The Typesetter ---------- */
 .ft-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 16px clamp(24px, 3vw, 40px); }
@@ -130,3 +132,9 @@ div:has(> [data-blob]) { filter: none !important; }
   will-change: transform;
 }
 @media (min-width: 768px) { [data-blob] { scale: 1.5; } }
+
+/* Optical kerning for pairs the tight display tracking closes up: the wrapped
+   letter gets a bit more air after it. .kern for rw·a in "forward"; .kern-lg
+   for pairs that touch outright (t·y, r·y, f·i, f·t, E·x). */
+.kern { letter-spacing: 0.02em; }
+.kern-lg { letter-spacing: 0.03em; }

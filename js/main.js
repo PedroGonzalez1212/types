@@ -338,7 +338,7 @@
   function replay() {
     clearInterval(timer); cancelAnimationFrame(graf); graf = 0; timeouts.forEach(clearTimeout); timeouts = [];
     root.getAnimations({ subtree: true }).forEach(function (a) { a.cancel(); });
-    if (word) { word.textContent = WORDS[0]; paintWord(0); }
+    if (word) { setWord(word, WORDS[0]); paintWord(0); }
     content.style.opacity = '0'; blobs.style.opacity = '0';
     revealed = false; cells.forEach(function (c) { c.st = null; }); drawGrid(0);
     intro.style.display = ''; intro.style.background = 'var(--surface-page)';
@@ -354,6 +354,8 @@
       ], { duration: 14000 + i * 3000, iterations: Infinity, easing: 'ease-in-out' });
     });
   }
+  // The display face sets "ty" too tight; open that pair up (see .kern in site.css).
+  function setWord(w, t) { w.innerHTML = t.replace('ty', '<span class="kern">t</span>y'); }
   // Each rotating word takes one of the four brand colors, with a soft glow.
   function paintWord(i) {
     if (!word) return;
@@ -371,7 +373,7 @@
       var next = WORDS[i], k = i;
       [word].filter(Boolean).forEach(function (w) {
         w.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-105%)', opacity: 0 }], { duration: 450, easing: e, fill: 'forwards' }).onfinish = function () {
-          w.textContent = next; paintWord(k);
+          setWord(w, next); paintWord(k);
           w.animate([{ transform: 'translateY(105%)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 550, easing: e, fill: 'forwards' });
         };
       });
@@ -389,12 +391,13 @@
     var gridEl = el.querySelector('[data-m-grid]'), left = el.querySelector('[data-m-left]'), right = el.querySelector('[data-m-right]'), fill = el.querySelector('[data-m-fill]'), markEl = el.querySelector('[data-m-mark]'), wordEl = el.querySelector('[data-m-word]'), count = el.querySelector('[data-m-count]'), steps = $('[data-m-step]');
     var track = el.querySelector('[data-m-track]'), divL = count.parentElement;
     var act = 0, busy = false, pb = innerHeight * .3, tb = pb, ty = innerHeight * .5, t0 = innerHeight * .7, narrow = false;
+    var setMWord = function (t) { wordEl.innerHTML = t.replace('Ex', '<span class="kern-lg">E</span>x'); };
     var swap = function () {
       if (busy || wordEl.textContent === N[act]) return;
-      if (rm) { wordEl.textContent = N[act]; return; }
+      if (rm) { setMWord(N[act]); return; }
       busy = true;
       wordEl.animate([{ transform: 'none' }, { transform: 'translateY(-105%)' }], { duration: 280, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).onfinish = function () {
-        wordEl.textContent = N[act];
+        setMWord(N[act]);
         wordEl.animate([{ transform: 'translateY(105%)' }, { transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).onfinish = function () { busy = false; swap(); };
       };
     };

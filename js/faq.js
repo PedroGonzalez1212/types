@@ -3,7 +3,8 @@
    - wide: vertical tabs on the left, the selected answer in a panel on the right
      (hover or click selects; ↑/↓ move between questions).
    - narrow (below data-bp, default 1024px — the tablet breakpoint): an accordion,
-     one answer open at a time. Its rows rise in one after another on first view.
+     one answer open at a time.
+   Either layout rises in, row by row, the first time it scrolls into view.
    Used on every page that has a FAQ section.
    The first sentence of each answer is set in bold accent, as in the design. */
 
@@ -69,7 +70,10 @@
       prev = i;
     }
     pick(Math.max(0, sel));
-    return el('div', { 'class': 'faq-desk' }, [list, panel]);
+    var desk = el('div', { 'class': 'faq-desk' }, [list, panel]);
+    // Questions rise in one after another; the answer panel follows just behind the first.
+    stagger(desk, tabs.concat(panel), function (i) { return i < tabs.length ? 120 + i * 90 : 260; });
+    return desk;
   }
 
   // ---------- Mobile: accordion ----------
@@ -90,22 +94,23 @@
       });
     }
     pick(sel);
-    stagger(wrap);
+    stagger(wrap, [].slice.call(wrap.children));
     return wrap;
   }
 
-  // Accordion entrance: rows rise in one after another the first time they show.
+  // Entrance: the given nodes rise in one after another the first time the FAQ
+  // scrolls into view (tabs + panel on desktop, accordion rows on mobile).
   var staggered = false;
-  function stagger(wrap) {
+  function stagger(wrap, rows, delay) {
     if (rm || staggered || !('IntersectionObserver' in window)) return;
-    var rows = [].slice.call(wrap.children);
+    delay = delay || function (i) { return 120 + i * 90; };
     rows.forEach(function (r) { r.style.opacity = '0'; });
     var io = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return;
       io.disconnect(); staggered = true;
       rows.forEach(function (r, i) {
         r.style.opacity = '';
-        r.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 650, delay: 120 + i * 90, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
+        r.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'none' }], { duration: 650, delay: delay(i), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' });
       });
     }, { rootMargin: '0px 0px -15% 0px' });
     io.observe(wrap);
