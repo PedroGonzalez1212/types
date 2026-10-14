@@ -392,14 +392,14 @@
       ], { duration: 14000 + i * 3000, iterations: Infinity, easing: 'ease-in-out' });
     });
   }
-  // The display face sets "ty" too tight; open that pair up (see .kern in site.css).
-  function setWord(w, t) { w.innerHTML = t.replace('ty', '<span class="kern">t</span>y'); }
+  // The display face sets "ty" and "fi" too tight; open those pairs up (see .kern in site.css).
+  function setWord(w, t) { w.innerHTML = t.replace('ty', '<span class="kern">t</span>y').replace('fi', '<span class="kern-lg">f</span>i'); }
   // Each rotating word takes one of the four brand colors, with a soft glow.
   function paintWord(i) {
     if (!word) return;
     var c = PROPS.wordColors ? ['--brand-green', '--brand-magenta', '--brand-teal', '--brand-orange'][i % 4] : '--brand-green';
     word.style.color = 'var(' + c + ')';
-    word.style.textShadow = PROPS.wordGlow ? '0 0 .35em rgba(255,255,255,.14), 0 0 .08em rgba(255,255,255,.18)' : 'none';
+    word.style.textShadow = PROPS.wordGlow ? '0 0 .3em rgba(255,255,255,.06), 0 0 .06em rgba(255,255,255,.08)' : 'none';
   }
   function startRotation() {
     clearInterval(timer);
@@ -429,7 +429,7 @@
     var gridEl = el.querySelector('[data-m-grid]'), left = el.querySelector('[data-m-left]'), right = el.querySelector('[data-m-right]'), fill = el.querySelector('[data-m-fill]'), markEl = el.querySelector('[data-m-mark]'), wordEl = el.querySelector('[data-m-word]'), count = el.querySelector('[data-m-count]'), steps = $('[data-m-step]');
     var track = el.querySelector('[data-m-track]'), divL = count.parentElement;
     var act = 0, busy = false, pb = innerHeight * .3, tb = pb, ty = innerHeight * .5, t0 = innerHeight * .7, narrow = false;
-    var setMWord = function (t) { wordEl.innerHTML = t.replace('Ex', '<span class="kern-lg">E</span>x'); };
+    var setMWord = function (t) { wordEl.innerHTML = t.replace('Ex', '<span class="kern-ex">E</span>x'); };
     var swap = function () {
       if (busy || wordEl.textContent === N[act]) return;
       if (rm) { setMWord(N[act]); return; }

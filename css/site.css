@@ -136,10 +136,12 @@ div:has(> [data-blob]) { filter: none !important; }
 @media (min-width: 768px) { [data-blob] { scale: 1.5; } }
 
 /* Optical kerning for pairs the tight display tracking closes up: the wrapped
-   letter gets a bit more air after it. .kern for rw·a in "forward"; .kern-lg
-   for pairs that touch outright (t·y, r·y, f·i, f·t, E·x). */
+   letter gets a bit more air after it. .kern for rw·a in "forward"; .kern-ex
+   for E·x in the Method word; .kern-lg for pairs that touch outright at real
+   sizes (t·y, r·y, f·i, f·t). */
 .kern { letter-spacing: 0.02em; }
-.kern-lg { letter-spacing: 0.03em; }
+.kern-ex { letter-spacing: 0.03em; }
+.kern-lg { letter-spacing: 0.06em; }
 
 /* Footer legal row: copyright left, studio credit right */
 .footer-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; border-top: 1px solid #d7dade; font-size: 14px; line-height: 20px; color: var(--ink-subtle); }

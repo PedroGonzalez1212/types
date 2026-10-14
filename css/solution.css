@@ -16,6 +16,21 @@ a:hover { color: inherit; }
 .sol-cta:hover, .sol-card__btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 .sol-cta .ty-tri, .sol-cta:hover .ty-tri { background: currentColor; height: 14px; width: 12.1px; }
 
+/* ---------- Certification band (Content Globalization) ----------
+   Always white, like the header and footer, so the logo and ISO seal
+   sit on the background they were drawn for. */
+.sol-cert { background: #ffffff; color: #0a0b0d; border-top: 3px solid var(--brand-teal); border-bottom: 3px solid var(--brand-teal); }
+.sol-cert__in { box-sizing: border-box; padding: clamp(32px,4vw,48px) 0 clamp(32px,4vw,48px) max(clamp(16px,4vw,32px), calc((100% - 1200px) / 2 + clamp(16px,4vw,32px))); display: flex; align-items: center; justify-content: flex-start; gap: 32px 0; }
+.sol-cert__txt { display: flex; flex-direction: column; gap: 12px; max-width: 560px; }
+.sol-cert__title { margin: 0; font-family: var(--font-display); font-size: clamp(24px,2.4vw,34px); font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.sol-cert__desc { margin: 0; font-family: var(--font-text); font-size: 17px; line-height: 1.55; color: #33373e; text-wrap: pretty; }
+.sol-cert__logos { display: flex; align-items: center; margin: 0 auto; gap: clamp(20px,2.4vw,32px); flex-shrink: 0; }
+.sol-cert__ts-link { display: flex; align-items: center; min-height: 44px; transition: opacity .15s; }
+.sol-cert__ts-link:hover { opacity: .8; }
+.sol-cert__ts { display: block; height: clamp(60px,5.4vw,80px); width: auto; }
+.sol-cert__sep { align-self: stretch; width: 1px; background: #d5d8dc; }
+.sol-cert__iso { display: block; height: clamp(108px,9.6vw,144px); width: auto; }
+
 /* ---------- Services rows: Service · Diagnosis · Solution ---------- */
 .sol-rows-head, .sol-row { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,3.4fr) minmax(0,3.4fr); column-gap: 24px; }
 .sol-rows-head { padding: 0 0 clamp(16px,2vw,24px); }
@@ -83,6 +98,9 @@ a:hover { color: inherit; }
 /* Mobile (≤ 767px): everything stacks in one column. */
 @media (max-width: 767px) {
   .sol-cta { font-size: 18px; padding: 18px 28px; }
+  .sol-cert__in { flex-direction: column; align-items: flex-start; padding-right: clamp(16px,4vw,32px); }
+  .sol-cert__logos { margin: 0; }
+  .sol-cert__desc { font-size: 16px; }
   .sol-row { grid-template-columns: minmax(0,1fr); row-gap: 16px; }
   .sol-row:hover { background-color: transparent; }
   .sol-row__sol { font-size: 17px; }

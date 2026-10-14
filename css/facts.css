@@ -5,8 +5,8 @@
 
 .bb-facts { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); column-gap: 24px; row-gap: 48px; }
 .bb-facts--4 { grid-template-columns: repeat(4,minmax(0,1fr)); }
-.bb-fact { min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 28px; border-top: 1px solid var(--ink); }
-.bb-fact__n { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(72px,8vw,128px); line-height: .92; letter-spacing: -0.05em; color: var(--accent); }
+.bb-fact { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.bb-fact__n { margin: 0; font-family: var(--font-logo); font-weight: 500; font-size: clamp(72px,8vw,128px); line-height: .92; letter-spacing: -0.05em; color: var(--accent); }
 /* A phrase in place of the number: half size, wrapping to two lines so it
    takes the same height as a figure. */
 .bb-fact__n--txt { max-width: 4.2em; font-size: clamp(36px,4vw,64px); letter-spacing: -0.03em; }
@@ -18,6 +18,18 @@
 /* Final figure for screen readers while the visible copy counts up (set by JS). */
 .bb-fact__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
+/* Side by side (≥ 768px): number, label and source share row tracks across
+   the row (subgrid), so every source starts on the same line even when one
+   wraps to two lines. */
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 768px) {
+    .bb-fact { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 12px; }
+    .bb-fact__b { display: contents; }
+    .bb-fact__n { margin-bottom: 8px; }
+    .bb-fact__s { margin: 0; }
+  }
+}
+
 /* Tablet (≤ 1023px): four facts go two by two. */
 @media (max-width: 1023px) {
   .bb-facts--4 { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -26,7 +38,7 @@
 /* Mobile (≤ 767px): one column. Facts read as number | label rows. */
 @media (max-width: 767px) {
   .bb-facts { grid-template-columns: minmax(0,1fr); row-gap: 32px; }
-  .bb-fact { flex-direction: row; align-items: center; gap: 24px; padding-top: 20px; }
+  .bb-fact { flex-direction: row; align-items: center; gap: 24px; }
   .bb-fact__n { flex: 0 0 44%; font-size: clamp(56px, 13vw, 96px); }
   .bb-fact__n--txt { max-width: none; font-size: clamp(28px, 6.5vw, 48px); }
 }
