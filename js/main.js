@@ -10,7 +10,7 @@
   // Defaults for the knobs the canvas editor exposed as live-tunable props.
   var PROPS = {
     skipIntro: false, gridDuration: 3800,
-    scrollLength: 0.8, exitLength: 1, titleLength: 0.9,
+    scrollLength: 0.8, exitLength: 1,
     wordColors: true, wordGlow: true
   };
   var WORDS = ['clarity.', 'confidence.', 'focus.', 'intelligence.'];
@@ -34,7 +34,7 @@
   var markX = null, lineCap, lineT = 0, line = 0;
   var gOff, gTarget, exCell = null, cells = [];
   var drawGrid = null, onResize, ro;
-  var fitGrid, fitDD, hdRo, solRo, mOff;
+  var fitGrid, fitDD, hdRo, solRo, mOff, mEnter, handed = false;
 
   function later(f, ms) { timeouts.push(setTimeout(f, ms)); }
   function header() { return root && root.querySelector('header'); }
@@ -112,14 +112,14 @@
   function solTick() {
     var s = sol; if (!s) return;
     var L = PROPS.scrollLength, EL = PROPS.exitLength;
-    var TLf = PROPS.titleLength, nh = (100 + 200 * L + 100 * EL + 100 * TLf) + 'vh';
+    var nh = (100 + 200 * L + 100 * EL) + 'vh';
     var gridEl = s.querySelector('[data-sol-grid]'), st = s.querySelector('[data-sol-sticky]'), stack = gridEl.classList.contains('is-stack');
     // Mobile stack: heading and cards scroll by at the page's own pace (D px),
     // the screen fades to black as the last card leaves (FD), holds (HOLD), and
-    // the title phase follows; the final 100vh is where Method slides over.
+    // the final 100vh is where Method takes over.
     var D = stack ? st.firstElementChild.offsetTop + st.firstElementChild.offsetHeight + gridEl.offsetHeight + parseFloat(getComputedStyle(st).rowGap || 0) : 0;
     var FD = innerHeight * .35, HOLD = innerHeight * .15;
-    if (stack) nh = 'calc(' + Math.round(D + HOLD + innerHeight * TLf) + 'px + 100vh)';
+    if (stack) nh = 'calc(' + Math.round(D + HOLD) + 'px + 100vh)';
     if (s.style.height !== nh) { s.style.height = nh; fitGrid && fitGrid(); }
     var r = s.getBoundingClientRect(), cl = function (v) { return Math.min(1, Math.max(0, v)); }, ease = function (v) { return 1 - Math.pow(1 - v, 3); }, io = function (v) { return v < .5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2; };
     var RV = stack ? D : innerHeight * 2 * L, EX = innerHeight * EL, rmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -129,10 +129,10 @@
     if (cv) { lineCap = r.top - cv.getBoundingClientRect().top + RV + innerHeight * 1.5; if (lineT > lineCap) gridScroll(); }
     if (stack) {
       solStack(s, st, gridEl, -r.top, D, FD, cl);
-      solTitle(s, cl((-r.top - D - HOLD) / Math.max(1, innerHeight * TLf)), cl, io);
+      solHandoff(s, -r.top >= D + HOLD - 1);
     } else {
       solExit(s, ex, cl, io);
-      solTitle(s, rmo ? 0 : cl((-r.top - RV - EX) / Math.max(1, innerHeight * TLf)), cl, io);
+      solHandoff(s, -r.top >= RV + EX - 1);
     }
     var tEl = s.querySelector('[data-type]'), caret = s.querySelector('[data-caret]');
     if (tEl) {
@@ -234,24 +234,16 @@
     if (edge) { edge.style.opacity = t >= 1 ? 0 : cover.style.opacity; edge.style.clipPath = triPoly(R + 4); }
   }
 
-  function solTitle(s, ti, cl, io) {
-    var st = s.querySelector('[data-sol-sticky]'), el = s.querySelector('[data-m-title]'); if (!el) return;
-    var hd = header();
-    var on = ti > 0, gy = on ? '#0a0b0d' : '';
+  // Once the triangle has filled the screen, Method (pinned right behind it) is
+  // already in place: hand over to it and play its entrance (methSetup).
+  function solHandoff(s, on) {
+    var gy = on ? '#0a0b0d' : '';
     if (root) root.style.zIndex = on ? '3' : '';
     s.style.background = on ? '#0a0b0d' : 'transparent';
     document.documentElement.style.background = gy; document.body.style.background = gy;
-    if (!on) { el.style.opacity = 0; return; }
-    var mh = document.querySelector('[data-m-h2]'), ms = mh && mh.closest('section'), mr = mh ? mh.getBoundingClientRect() : null, sr = st.getBoundingClientRect();
-    var big = parseFloat(getComputedStyle(el).fontSize), scF = mh ? parseFloat(getComputedStyle(mh).fontSize) * (parseFloat(mh.parentElement.style.zoom) || 1) / big : .5;
-    el.style.width = 'max-content';
-    var W = st.offsetWidth, H = st.offsetHeight, w = el.offsetWidth, h = el.offsetHeight, cs = getComputedStyle(st);
-    var g = io(cl(ti / .38)), mv = io(cl((ti - .5) / .4));
-    var s0 = .12 + .88 * g, sc = s0 + (scF - s0) * mv;
-    var cx = (W - w * sc) / 2, cy = (H - h * sc) / 2, fx = mr ? mr.left - sr.left : parseFloat(cs.paddingLeft), fy = mr ? mr.top - ms.getBoundingClientRect().top : parseFloat(cs.paddingTop);
-    el.style.opacity = cl(ti / .12);
-    el.style.transform = 'translate(' + (cx + (fx - cx) * mv) + 'px,' + (cy + (fy - cy) * mv) + 'px) scale(' + sc + ')';
-    if (hd) { var D = hd.offsetHeight + 40; hd.style.transform = mv < 1 ? 'translateY(' + (-(1 - mv) * D) + 'px)' : ''; }
+    var hd = header();
+    if (on && hd) hd.style.transform = '';
+    if (on !== handed) { handed = on; mEnter && mEnter(on); }
   }
 
   function solLayout() {
@@ -426,8 +418,8 @@
     var $ = function (s) { return [].slice.call(el.querySelectorAll(s)); };
     var lblOn = function (a) { $('[data-m-lbl]').forEach(function (l, i) { l.style.color = i === a ? 'var(--brand-teal)' : 'var(--ink-muted)'; }); };
     var N = ['Explore', 'Design', 'Build', 'Measure', 'Evolve'];
-    var gridEl = el.querySelector('[data-m-grid]'), left = el.querySelector('[data-m-left]'), right = el.querySelector('[data-m-right]'), fill = el.querySelector('[data-m-fill]'), markEl = el.querySelector('[data-m-mark]'), wordEl = el.querySelector('[data-m-word]'), count = el.querySelector('[data-m-count]'), steps = $('[data-m-step]');
-    var track = el.querySelector('[data-m-track]'), divL = count.parentElement;
+    var gridEl = el.querySelector('[data-m-grid]'), left = el.querySelector('[data-m-left]'), right = el.querySelector('[data-m-right]'), fill = el.querySelector('[data-m-fill]'), markEl = el.querySelector('[data-m-mark]'), wordEl = el.querySelector('[data-m-word]'), steps = $('[data-m-step]');
+    var track = el.querySelector('[data-m-track]'), divL = wordEl.parentElement.parentElement;
     var act = 0, busy = false, pb = innerHeight * .3, tb = pb, ty = innerHeight * .5, t0 = innerHeight * .7, narrow = false;
     var setMWord = function (t) { wordEl.innerHTML = t.replace('Ex', '<span class="kern-ex">E</span>x'); };
     var swap = function () {
@@ -488,15 +480,35 @@
           n.style.transform = narrow ? 'translateY(' + ((1 - v) * 28) + 'px)' : 'translateX(' + ((1 - v) * (innerWidth < 1024 ? 40 : 72)) + 'px)';
         });
       });
-      count.textContent = String(a + 1).padStart(2, '0') + ' / 05'; lblOn(a);
+      lblOn(a);
       if (a !== act) { act = a; swap(); }
+    };
+    // Entrance, played when the Solutions triangle hands over (solHandoff): the header
+    // drops back in, the left column settles piece by piece, the word rises out of its
+    // mask and the timeline draws down. Scrolling back up sends the header out again.
+    var ins = [];
+    mEnter = function (on) {
+      ins.forEach(function (a) { a.cancel(); }); ins = [];
+      if (rm) return;
+      var hd = header(), e = 'cubic-bezier(.22,1,.36,1)';
+      var go = function (n, kf, o) { if (n) ins.push(n.animate(kf, Object.assign({ easing: e, fill: 'backwards' }, o))); };
+      if (!on) { go(hd, [{ transform: 'none' }, { transform: hd ? hd.style.transform || 'none' : 'none' }], { duration: 350, easing: 'cubic-bezier(.4,0,1,1)' }); return; }
+      var rise = [{ opacity: 0, transform: 'translateY(18px)', filter: 'blur(6px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }];
+      if (hd) go(hd, [{ transform: 'translateY(' + (-(hd.offsetHeight + 40)) + 'px)' }, { transform: 'none' }], { duration: 900, delay: 450 });
+      [].slice.call(left.children[0].children).forEach(function (n, i) { go(n, rise, { duration: 1000, delay: 120 + i * 110 }); });
+      go(divL, [{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: 300 });
+      go(wordEl, [{ transform: 'translateY(105%)' }, { transform: 'none' }], { duration: 1100, delay: 360 });
+      [].slice.call(left.children, 2).forEach(function (n, i) { go(n, rise, { duration: 1000, delay: 560 + i * 120 }); });
+      go(track, [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0)' }], { duration: 1600, delay: 420 });
+      [fill, markEl].forEach(function (n) { go(n, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 520 }); });
+      steps.forEach(function (s) { go(s, [{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 1100, delay: 640 }); });
     };
     var fitAll = function () { layout(); tick(); };
     var raf2 = 0, on = function () { if (!raf2) raf2 = requestAnimationFrame(function () { raf2 = 0; tick(); }); };
     fitAll(); addEventListener('resize', fitAll); document.fonts && document.fonts.ready.then(fitAll);
     var to = setTimeout(fitAll, 1500);
     addEventListener('scroll', on, { passive: true });
-    mOff = function () { clearTimeout(to); removeEventListener('resize', fitAll); removeEventListener('scroll', on); cancelAnimationFrame(raf2); };
+    mOff = function () { mEnter = null; clearTimeout(to); removeEventListener('resize', fitAll); removeEventListener('scroll', on); cancelAnimationFrame(raf2); };
   }
 
   // ---------- Boot ----------
